@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{#hide the dashboard UI#}
+{% block aside %}{% endblock %}
+{% block header %}{% endblock %}
+{% block footer %}{% endblock %}
+{% block customize %}{% endblock %}
+
+{#title#}
+{% block title %}505 Internal Error{% endblock %}
+
+{% block content %}
+    <div class="wrapper">
+        <div class="gradient">
+            <div class="container">
+                <img src="" class="img-fluid mb-4 w-50" alt="">
+                <h2 class="mb-0 mt-4 text-white">Oops! This Page is Not Found.</h2>
+                <p class="mt-2 text-white">The requested page dose not exist.</p>
+                <a class="btn bg-white text-primary d-inline-flex align-items-center" href="{% url 'index' %}">Back to
+                    Home</a>
+            </div>
+            <div class="box">
+                <div class="c xl-circle">
+                    <div class="c lg-circle">
+                        <div class="c md-circle">
+                            <div class="c sm-circle">
+                                <div class="c xs-circle">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
