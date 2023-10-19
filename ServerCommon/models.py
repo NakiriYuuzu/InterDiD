@@ -41,6 +41,7 @@ class ArtworkItems(models.Model):
 
 class Beacons(models.Model):
     beacon_id = models.AutoField(primary_key=True)
+    beacon_name = models.CharField(max_length=255)
     beacon_uuid = models.CharField(max_length=100)
     artworks = models.ForeignKey(Artworks, on_delete=models.CASCADE, null=True)
 

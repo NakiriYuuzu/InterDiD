@@ -16,8 +16,8 @@ from linebot.v3.messaging import (
 
 # LineConfigurations
 configuration = Configuration(
-    access_token='WMtFq0lIOiIBNjdtU1W9ZuIXVc9xTaoRBi9xfwfQy5XeY6iG0MsFB6k1C/4m/gHHb2JXke4o50KEgCfblJqaBsTgEe'
-                 '/VfRFeEorfR2Hd8w3IQzyzeq3B0ViRibIQlGUa4IZ49jSVhWrKJ3vB65FvMgdB04t89/1O/w1cDnyilFU='
+    access_token='BHu8wZ/6u7BSSRNOIJjkH2WcVRcGThJmAGSyYnOpHUKLMTMZ7OMf3LNmSff5m9emb2JXke4o50KEgCfblJqaBsTgEe'
+                 '/VfRFeEorfR2Hd8w3HlktyazGJzXrwgw5+0aZJgX5MQ51mND80p2fG2eqX3AdB04t89/1O/w1cDnyilFU='
 )
 handler = WebhookHandler('3e03ed5ebb5a6598ab290f478591a1a8')
 line_bot_api = MessagingApi(ApiClient(configuration))
