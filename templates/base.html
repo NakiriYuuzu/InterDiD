@@ -23,6 +23,8 @@
     <link rel="stylesheet" href="{% static 'assets/css/customizer.min.css' %}">
     <!-- RTL Css -->
     <link rel="stylesheet" href="{% static 'assets/css/rtl.min.css' %}">
+    <script src="{% static 'assets/js/core/axios.min.js' %}"></script>
+    <script src="{% static 'assets/js/core/jquery-3.7.1.min.js' %}"></script>
     {% block css %}{% endblock %}
 </head>
 <body class="">
@@ -138,10 +140,10 @@
                             </i>
                             <span class="item-name">Games</span>
                         </a>
-                    </li> <!-- Beacon -->
+                    </li> <!-- games -->
                     <li class="nav-item">
-                        <a class="nav-link collapsed" data-bs-toggle="collapse" href="#sidebar-form" role="button"
-                           aria-expanded="false" aria-controls="sidebar-form">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'games' %}active{% endif %}"
+                           aria-current="page" href="{% url 'index' %}">
                             <i class="icon">
                                 <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
                                      xmlns="http://www.w3.org/2000/svg">
@@ -154,47 +156,8 @@
                                 </svg>
                             </i>
                             <span class="item-name">Beacon</span>
-                            <i class="right-icon">
-                                <svg class="icon-18" xmlns="http://www.w3.org/2000/svg" width="18" fill="none"
-                                     viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                          d="M9 5l7 7-7 7"></path>
-                                </svg>
-                            </i>
                         </a>
-                        <ul class="sub-nav collapse" id="sidebar-form" data-bs-parent="#sidebar-menu" style="">
-                            <li class="nav-item">
-                                <a class="nav-link {% if request.resolver_match.url_name == 'form_beacon' %}active{% endif %}"
-                                   href="{% url 'form_beacon' %}">
-                                    <i class="icon">
-                                        <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10"
-                                             viewBox="0 0 24 24" fill="currentColor">
-                                            <g>
-                                                <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
-                                            </g>
-                                        </svg>
-                                    </i>
-                                    <i class="sidenav-mini-icon"> BLE </i>
-                                    <span class="item-name">Beacon</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link {% if request.resolver_match.url_name == 'beacon' %}active{% endif %}"
-                                   href="{% url 'form_artwork' %}">
-                                    <i class="icon">
-                                        <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10"
-                                             viewBox="0 0 24 24" fill="currentColor">
-                                            <g>
-                                                <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
-                                            </g>
-                                        </svg>
-                                    </i>
-                                    <i class="sidenav-mini-icon"> BLE </i>
-                                    <span class="item-name">Beacon</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li> <!-- Games -->
+                    </li> <!-- beacon -->
                     <li class="nav-item">
                         <a class="nav-link collapsed" data-bs-toggle="collapse" href="#sidebar-form" role="button"
                            aria-expanded="false" aria-controls="sidebar-form">

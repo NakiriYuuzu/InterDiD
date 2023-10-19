@@ -48,6 +48,7 @@ def form_beacon(request):
     username = request.user.username[0].upper() + request.user.username[1:]
     beacon_list = Beacons.objects.all()
     artwork_list = Artworks.objects.all()
+    print(len(beacon_list))
 
     if request.method == 'POST':
         action = request.POST.get('action', None)
@@ -59,7 +60,11 @@ def form_beacon(request):
             messages.error(request, 'Please fill beacon name and uuid!')
             return redirect('/form_beacon/')
 
-        if len(beacon_uuid) > 10:
+        if len(beacon_list) >= 10:
+            messages.error(request, 'Please fill beacon less than 10!')
+            return redirect('/form_beacon/')
+
+        if len(beacon_uuid) >= 10:
             messages.error(request, 'Please fill uuid less than 10 characters!')
             return redirect('/form_beacon/')
 
@@ -71,6 +76,13 @@ def form_beacon(request):
                     artworks_id=artwork,
                 )
                 messages.success(request, f'successfully add {beacon_name}.')
+                return redirect('/form_beacon/')
+            elif action == 'edit':
+                beacon, created = Beacons.objects.update_or_create(
+                    beacon_uuid=beacon_uuid,
+                    defaults={'beacon_name': beacon_name, 'artworks_id': artwork}
+                )
+                messages.success(request, f'successfully edit {beacon_name}.')
                 return redirect('/form_beacon/')
         except IntegrityError:
             return redirect('/form_beacon/')
