@@ -1,86 +1,62 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}InterDiD Beacon{% endblock %}
-{% block username %}{{ username }}{% endblock %}
 
 {% block content %}
-    <div class="conatiner-fluid content-inner mt-n5 py-0">
-        <div>
-            {% if messages %} {# MESSAGE CONTEXT #}
-                {% for message in messages %}
-                    {% if message.tags == 'success' %}
-                        <div class="alert alert-left alert-success alert-dismissible fade show mb-3" role="alert">
-                            <span>{{ message }}</span>
-                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"
-                                    aria-label="Close"></button>
-                        </div>
-                    {% elif message.tags == 'error' %}
-                        <div class="alert alert-left alert-danger alert-dismissible fade show mb-3" role="alert">
-                            <span>{{ message }}</span>
-                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"
-                                    aria-label="Close"></button>
-                        </div>
-                    {% else %}
-                        <div class="alert alert-left alert-info alert-dismissible fade show mb-3" role="alert">
-                            <span>{{ message }}</span>
-                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"
-                                    aria-label="Close"></button>
-                        </div>
-                    {% endif %}
-                {% endfor %}
-            {% endif %} {# END MESSAGE CONTEXT #}
-            <div class="row">
-                <div class="col-sm-12 col-lg-6">
-                    <div class="overflow-hidden card" data-aos="fade-up" data-aos-delay="600">
-                        <div class="flex-wrap card-header d-flex justify-content-between">
-                            <div class="header-title">
-                                <h4 class="mb-2 card-title">Line Beacons</h4>
-                                <p class="mb-0">
-                                    <svg class="me-2 text-primary icon-24" width="24" viewBox="0 0 24 24">
-                                        <path fill="currentColor"
-                                              d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path>
-                                    </svg>
-                                    Current Total Beacons: {{ beacon_list|length }}
-                                </p>
+    <div id="app" xmlns:v-on="http://www.w3.org/1999/xhtml">
+        <div class="conatiner-fluid content-inner mt-n5 py-0">
+            <div :class="alertClass" role="alert" v-show="alert">
+                <span>[[message]]</span>
+                {#                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"#}
+                {#                        @click="hideAlert()"></button>#}
+            </div>
+            <div>
+                <div class="row">
+                    <div class="col-sm-12 col-lg-6">
+                        <div class="overflow-hidden card" data-aos="fade-up" data-aos-delay="600">
+                            <div class="flex-wrap card-header d-flex justify-content-between">
+                                <div class="header-title">
+                                    <h4 class="mb-2 card-title">Line Beacons</h4>
+                                    <p class="mb-0">
+                                        <svg class="me-2 text-primary icon-24" width="24" viewBox="0 0 24 24">
+                                            <path fill="currentColor"
+                                                  d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path>
+                                        </svg>
+                                        Current Total Beacons: [[totalBeacon]]
+                                    </p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="p-0 card-body">
-                            <div class="mt-4 table-responsive">
-                                <table id="basic-table" class="table mb-0 table-striped" role="grid">
-                                    <thead>
-                                    <tr>
-                                        <th>Beacon Name</th>
-                                        <th>Beacon UUID</th>
-                                        <th>Artwork</th>
-                                        <th>Function</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% for beacon in beacon_list %}
+                            <div class="p-0 card-body">
+                                <div class="mt-4 table-responsive">
+                                    <table id="basic-table" class="table mb-0 table-striped" role="grid">
+                                        <thead>
                                         <tr>
+                                            <th>Beacon Name</th>
+                                            <th>Beacon UUID</th>
+                                            <th>Artwork</th>
+                                            <th>Function</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr v-for="beacon in beacons">
+                                            <td>
+                                                [[ beacon.beacon_name ]]
+                                            </td>
+                                            <td>
+                                                [[ beacon.beacon_uuid ]]
+                                            </td>
+                                            <td v-if="beacon.artworks">
+                                                [[ beacon.artworks.product_title ]]
+                                            </td>
+                                            <td v-else>
+                                                None
+                                            </td>
                                             <td>
                                                 <div class="d-flex align-items-center">
-                                                    <img class="rounded bg-soft-primary img-fluid avatar-40 me-3"
-                                                         src="{% static 'assets/images/shapes/01.png' %}"
-                                                         alt="profile">
-                                                    <h6>{{ beacon.beacon_name }}</h6>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                {{ beacon.beacon_uuid }}
-                                            </td>
-                                            <td>
-                                                {% if beacon.artworks %}
-                                                    {{ beacon.artworks.product_title }}
-                                                {% else %}
-                                                    None
-                                                {% endif %}
-                                            </td>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <button class="btn btn-icon btn-primary mx-2" data-bs-toggle="modal"
+                                                    <button class="btn btn-icon btn-primary mx-2"
+                                                            data-bs-toggle="modal"
                                                             data-bs-target="#editModal"
-                                                            data-beacon-id="{{ beacon.beacon_id }}">
+                                                            @click="selectBeacon(beacon)">
                                                         <span class="btn-inner">
                                                             <svg class="icon-20" width="20" viewBox="0 0 24 24"
                                                                  fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -99,7 +75,7 @@
                                                         </span>
                                                     </button>
                                                     <button class="btn btn-icon btn-danger mx-2 delete-beacon"
-                                                            data-id="{{ beacon.beacon_id }}">
+                                                            @click="deleteBeacon(beacon)">
                                                         <span class="btn-inner">
                                                             <svg class="icon-20" width="20" viewBox="0 0 24 24"
                                                                  fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -116,167 +92,239 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-sm-12 col-lg-6">
-                    <div class="card">
-                        <div class="card-header d-flex justify-content-between">
-                            <div class="header-title">
-                                <h4 class="card-title">Add Beacons</h4>
+                    <div class="col-sm-12 col-lg-6">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between">
+                                <div class="header-title">
+                                    <h4 class="card-title">Add Beacons</h4>
+                                </div>
                             </div>
-                        </div>
-                        <div class="card-body">
-                            <form class="row g-3 needs-validation" method="post" novalidate>
-                                {% csrf_token %}
-                                <div class="col-md-12 position-relative"> {# Beacon Name #}
-                                    <label for="ble_name" class="form-label">Beacon Name</label>
-                                    <input type="text" class="form-control" id="ble_name" name="ble_name">
-                                    <div class="valid-tooltip">Looks good!</div>
-                                    <div class="invalid-tooltip">Required Beacon Name!</div>
-                                </div>
-                                <div class="col-md-12 position-relative"> {# Beacon UUID #}
-                                    <label for="ble_uuid" class="form-label">Beacon UUID</label>
-                                    <input type="text" class="form-control" id="ble_uuid" name="ble_uuid" maxlength="10"
-                                           required>
-                                    <div class="valid-tooltip">Looks good!</div>
-                                    <div class="invalid-tooltip">Required Beacon UUID!</div>
-                                </div>
-                                <div class="col-md-12 position-relative"> {# Artwork Selection #}
-                                    <label for="artwork" class="form-label">Artwork Pairing</label>
-                                    <select class="form-select" id="artwork" name="artwork">
-                                        <option selected disabled value="">
-                                            {% if artwork_list|length == 0 %}
-                                                None Data
-                                            {% else %}
-                                                Choose...
-                                            {% endif %}
-                                        </option>
-                                        {% for artwork in artwork_list %}
-                                            <option value="{{ artwork.artwork_id }}">{{ artwork.product_title }}</option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
-                                <div class="col-12">
-                                    <button class="btn btn-primary" type="submit" name="action" value="add">
-                                        Submit form
-                                    </button>
-                                </div>
-                            </form>
+                            <div class="card-body">
+                                <form class="row g-3 needs-validation" v-on:submit.prevent="addOrUpdateBeacon('post')"
+                                      novalidate>
+                                    {% csrf_token %}
+                                    <div class="col-md-12 position-relative">
+                                        <label for="beacon_name" class="form-label">Beacon Name</label>
+                                        <input type="text" class="form-control" id="beacon_name" required
+                                               v-model="beacon.beacon_name">
+                                        <div v-if="beacon.beacon_name !== ''" class="valid-tooltip">Looks good!</div>
+                                        <div v-else class="invalid-tooltip">Required Beacon Name!</div>
+                                    </div>
+                                    <div class="col-md-12 position-relative">
+                                        <label for="beacon_uuid" class="form-label">Beacon UUID</label>
+                                        <input type="text" class="form-control" id="beacon_uuid" maxlength="10" required
+                                               v-model="beacon.beacon_uuid">
+                                        <div v-if="beacon.beacon_uuid !== ''" class="valid-tooltip">Looks good!</div>
+                                        <div v-else class="invalid-tooltip">Required Beacon UUID!</div>
+                                    </div>
+                                    <div class="col-md-12 position-relative">
+                                        <label for="artworks" class="form-label">Artwork Pairing</label>
+                                        <select class="form-select" id="artworks" name="artwork"
+                                                v-model="beacon.artworks">
+                                            <option v-if="artworks.length > 0" selected value="">
+                                                None
+                                            </option>
+                                            <option v-else value="">
+                                                No Artworks Available
+                                            </option>
+                                            <option v-for="artwork in artworks" :value="artwork.artwork_id">
+                                                [[artwork.product_title]]
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="col-12">
+                                        <button class="btn btn-primary" type="submit"
+                                                :disabled="beacon.beacon_name === '' || beacon.beacon_uuid === ''">
+                                            Submit form
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">New message</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form method="post">
-                        {% csrf_token %}
-                        <div class="mb-3">
-                            <label for="beacon_name" class="col-form-label">Beacon Name:</label>
-                            <input type="text" class="form-control" id="beacon_name" name="ble_name">
-                        </div>
-                        <div class="mb-3">
-                            <label for="beacon_uuid" class="col-form-label">Beacon UUID:</label>
-                            <input type="text" class="form-control" id="beacon_uuid" name="ble_uuid">
-                        </div>
-                        <div class="mb-3">
-                            <label for="artwork_id" class="form-label">Artwork Pairing</label>
-                            <select class="form-select" id="artwork_id" name="artwork">
-                                <option selected disabled value="">
-                                    {% if artwork_list|length == 0 %}
-                                        None Data
-                                    {% else %}
-                                        Choose...
-                                    {% endif %}
-                                </option>
-                                {% for artwork in artwork_list %}
-                                    <option value="{{ artwork.artwork_id }}">{{ artwork.product_title }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal"
-                                    name="action" value="edit">Save
-                            </button>
-                        </div>
-                    </form>
+        <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Edit [[selectedBeacon.beacon_name]]</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form novalidate v-on:submit.prevent="addOrUpdateBeacon('put')">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="beacon_name" class="col-form-label">Beacon Name:</label>
+                                <input type="text" class="form-control" id="beacon_name"
+                                       v-model="selectedBeacon.beacon_name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="beacon_uuid" class="col-form-label">Beacon UUID:</label>
+                                <input type="text" class="form-control" id="beacon_uuid"
+                                       v-model="selectedBeacon.beacon_uuid" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="artworks" class="form-label">Artworks</label>
+                                <select class="form-select" id="artworks" v-model="selectedBeacon.artworks">
+                                    <option v-if="artworks.length > 0" selected value="">
+                                        None
+                                    </option>
+                                    <option v-else value="">
+                                        No Artworks Available
+                                    </option>
+                                    <option v-for="artwork in artworks" :value="artwork.artwork_id">
+                                        [[artwork.product_title]]
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @click="cancelEdit">Close</button>
+                                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal"
+                                        :disabled="selectedBeacon.beacon_name === '' || selectedBeacon.beacon_uuid === ''">
+                                    Save
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 {% endblock %}
+
 {% block script %}
     <script type="application/javascript">
-        const host = '{{ request.scheme }}://{{ request.get_host }}/api/beacons'
-        const token = '{{ csrf_token }}'
+        const app = Vue.createApp({
+            delimiters: ['[[', ']]'],
+            data() {
+                return {
+                    token: '{{ csrf_token }}',
 
-        {# Modal Form [EDIT] #}
-        document.addEventListener("DOMContentLoaded", function () {
-            document.getElementById('deleteAlert').style.display = 'none'
-            let beaconButtons = document.querySelectorAll('[data-beacon-id]')
+                    alert: false,
+                    message: null,
+                    isSuccess: true,
+                    alertTimer: null,
 
-            beaconButtons.forEach(function (button) {
-                button.addEventListener('click', function (event) {
-                    const beaconId = event.currentTarget.getAttribute('data-beacon-id')
-
-                    axios.get(`${host}?beacon_id=${beaconId}`, {
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRFToken': token
-                        }
-                    }).then((response) => {
-                        console.log(response)
-                        if (response.status === 200) {
-                            const data = response.data[0]
-                            document.getElementById('beacon_name').value = data.beacon_name
-                            document.getElementById('beacon_uuid').value = data.beacon_uuid
-
-                            if (data.artworks) {
-                                document.getElementById('artwork_id').value = data.artworks.artwork_id
-                            }
-                        }
+                    beacon: {beacon_name: '', beacon_uuid: '', artworks: ''},
+                    totalBeacon: 0,
+                    originalBeacon: {},
+                    selectedBeacon: {},
+                    beacons: [],
+                    artworks: []
+                }
+            },
+            created() {
+                this.fetchData('beacons', '/api/beacons')
+                this.fetchData('artworks', '/api/artworks?query=True')
+            },
+            computed: {
+                alertClass() {
+                    return [
+                        'alert', 'alert-left', 'alert-dismissible', 'fade', 'show', 'mb-3',
+                        this.isSuccess ? 'alert-success' : 'alert-danger'
+                    ]
+                }
+            },
+            mounted() {
+                $('#editModal').on('hide.bs.modal', this.cancelEdit);
+            },
+            methods: {
+                fetchData(key, url) {
+                    axios.get(url)
+                        .then(response => {
+                            this[key] = null
+                            this[key] = response.data
+                            if (key === 'beacons') this.totalBeacon = this.beacons.length
+                        })
+                        .catch(this.handleError)
+                },
+                addOrUpdateBeacon(method) {
+                    axios({
+                        method: method,
+                        url: '/api/beacons',
+                        headers: this.getHeaders(),
+                        data: method === 'post' ? this.beacon : this.selectedBeacon
                     })
-                })
-            })
-        })
-
-        {# Button [DELETE] #}
-        $(document).ready(function () {
-            $('.delete-beacon').click(function () {
-                const beaconId = $(this).attr('data-id')
-
-                axios.delete(host, {
-                    headers: {
+                        .then(_ => {
+                            this.fetchData('beacons', '/api/beacons')
+                            this.fetchData('artworks', '/api/artworks?query=True')
+                            this.handleSuccess(method === 'post' ? `added successfully!` : "updated successfully!")
+                        })
+                        .catch(this.handleError)
+                },
+                deleteBeacon(beacon) {
+                    axios({
+                        method: 'delete',
+                        url: `/api/beacons`,
+                        headers: this.getHeaders(),
+                        data: {'beacon_id': beacon.beacon_id}
+                    })
+                        .then(_ => {
+                            this.fetchData('beacons', '/api/beacons')
+                            this.fetchData('artworks', '/api/artworks?query=True')
+                            this.handleSuccess(`Beacon ${beacon.beacon_name} deleted successfully!`)
+                        })
+                        .catch(this.handleError)
+                },
+                handleSuccess(message) {
+                    this.showAlert(true, message)
+                    this.fetchData('beacons', '/api/beacons')
+                    this.resetBeacon()
+                },
+                handleError(error) {
+                    console.log(error)
+                    this.showAlert(false, `Error: ${error.response.data.error}`)
+                },
+                getHeaders() {
+                    return {
                         'Content-Type': 'application/json',
-                        'X-CSRFToken': token
-                    },
-                    data: {
-                        'beacon_id': beaconId
+                        'X-CSRFToken': this.token
                     }
-                }).then((response) => {
-                    if (response.status === 200) {
-                        document.getElementById("deleteAlertText").innerHTML = 'Beacon Deleted Successfully!'
-                        document.getElementById("deleteAlert").style.display = 'display'
-                        document.querySelector(`[data-id='${beaconId}']`).closest('tr').remove()
+                },
+                showAlert(isSuccess, message) {
+                    if (this.alertTimer) {
+                        clearTimeout(this.alertTimer)
                     }
-                }).catch((error) => {
-                    alert(error)
-                })
-            })
+
+                    this.alert = true
+                    this.isSuccess = isSuccess
+                    this.message = message
+                    this.alertTimer = setTimeout(() => {
+                        this.hideAlert()
+                    }, 5000)
+                },
+                hideAlert() {
+                    this.alert = false
+                    this.message = null
+
+                    if (this.alertTimer) {
+                        clearTimeout(this.alertTimer)
+                        this.alertTimer = null
+                    }
+                },
+                selectBeacon(beacon) {
+                    this.selectedBeacon = Object.assign({}, beacon)
+                    this.originalBeacon = Object.assign({}, beacon)
+                },
+                cancelEdit() {
+                    this.selectedBeacon = Object.assign({}, this.originalBeacon)
+                },
+                resetBeacon() {
+                    this.beacon = {beacon_name: '', beacon_uuid: '', artworks: ''}
+                }
+            }
         })
+
+        app.mount('#App')
+
     </script>
 {% endblock %}

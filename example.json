@@ -1,0 +1,8 @@
+{
+  "APP_NAME": "InterDiD",
+  "APP_VERSION": "0.0.1",
+  "APP_LANGUAGE": "en",
+  "DJANGO_SECRET_KEY": "your_django_secret_key",
+  "LINE_ACCESS_KEY": "your_line_access_key",
+  "LINE_SECRET_KEY": "your_line_secret_key"
+}

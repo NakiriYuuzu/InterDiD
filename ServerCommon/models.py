@@ -43,7 +43,7 @@ class Beacons(models.Model):
     beacon_id = models.AutoField(primary_key=True)
     beacon_name = models.CharField(max_length=255)
     beacon_uuid = models.CharField(max_length=100, unique=True)
-    artworks = models.ForeignKey(Artworks, on_delete=models.CASCADE, null=True)
+    artworks = models.ForeignKey(Artworks, on_delete=models.CASCADE, null=True, unique=True)
 
     def __str__(self):
         return self.beacon_uuid

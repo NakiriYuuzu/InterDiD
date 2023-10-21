@@ -14,12 +14,13 @@ from linebot.v3.messaging import (
     MessagingApi
 )
 
+from InterDiD import settings
+
 # LineConfigurations
 configuration = Configuration(
-    access_token='BHu8wZ/6u7BSSRNOIJjkH2WcVRcGThJmAGSyYnOpHUKLMTMZ7OMf3LNmSff5m9emb2JXke4o50KEgCfblJqaBsTgEe'
-                 '/VfRFeEorfR2Hd8w3HlktyazGJzXrwgw5+0aZJgX5MQ51mND80p2fG2eqX3AdB04t89/1O/w1cDnyilFU='
+    access_token=settings.LINE_ACCESS_KEY
 )
-handler = WebhookHandler('3e03ed5ebb5a6598ab290f478591a1a8')
+handler = WebhookHandler(settings.LINE_SECRET_KEY)
 line_bot_api = MessagingApi(ApiClient(configuration))
 
 

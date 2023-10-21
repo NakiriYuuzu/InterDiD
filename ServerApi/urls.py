@@ -1,6 +1,6 @@
 from django.urls import path
 from ServerApi.line.linebot import LinebotView
-from ServerApi.views import *
+from ServerApi.views import BeaconsView, ArtworksView
 from rest_framework_simplejwt.views import TokenVerifyView, TokenObtainPairView
 
 urlpatterns = [
@@ -10,4 +10,5 @@ urlpatterns = [
     path('linebot', LinebotView.as_view()),
 
     path('beacons', BeaconsView.as_view()),
+    path('artworks', ArtworksView.as_view()),
 ]
