@@ -1,0 +1,466 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}InterDiD 作品集設定{% endblock %}
+
+{% block content %}
+    <div class="conatiner-fluid content-inner mt-n5 py-0" xmlns:v-on="http://www.w3.org/1999/xhtml">
+        <div>
+            <div :class="alertClass" role="alert" v-show="alert">
+                <span>[[message]]</span>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 col-lg-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between">
+                            <div class="header-title">
+                                <h4 class="card-title" style="font-weight: bold">設定作品集 & 上傳單個作品</h4>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <form class="mt-3 text-center" v-on:submit.prevent="submitArtwork">
+                                {% csrf_token %}
+                                <ul id="top-tab-list" class="p-0 row list-inline">
+                                    <li :class="classForStep[1]">
+                                        <a @click="goToStep(1)">
+                                            <div class="iq-icon me-3">
+                                                <svg class="svg-icon icon-20" xmlns="http://www.w3.org/2000/svg"
+                                                     width="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                          stroke-width="2"
+                                                          d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"></path>
+                                                </svg>
+                                            </div>
+                                            <span class="dark-wizard" style="font-weight: bold">作品集</span>
+                                        </a>
+                                    </li>
+                                    <li :class="classForStep[2]">
+                                        <a @click="goToStep(2)">
+                                            <div class="iq-icon me-3">
+                                                <svg class="svg-icon icon-20" xmlns="http://www.w3.org/2000/svg"
+                                                     width="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                          stroke-width="2"
+                                                          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                                </svg>
+                                            </div>
+                                            <span class="dark-wizard" style="font-weight: bold">單個作品</span>
+                                        </a>
+                                    </li>
+                                    <li :class="classForStep[3]">
+                                        <a @click="goToStep(3)">
+                                            <div class="iq-icon me-3">
+                                                <svg class="svg-icon icon-20" xmlns="http://www.w3.org/2000/svg"
+                                                     width="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                          stroke-width="2"
+                                                          d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                          stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                                </svg>
+                                            </div>
+                                            <span class="dark-wizard" style="font-weight: bold">圖片上傳</span>
+                                        </a>
+                                    </li>
+                                    <li :class="classForStep[4]">
+                                        <a @click="goToStep(4)">
+                                            <div class="iq-icon me-3">
+                                                <svg class="svg-icon icon-20" xmlns="http://www.w3.org/2000/svg"
+                                                     width="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                          stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                                </svg>
+                                            </div>
+                                            <span class="dark-wizard" style="font-weight: bold">預覽並送出</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <!-- fieldsets -->
+                                <fieldset v-show="currentStep === 1">
+                                    <div class="form-card text-start">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <h2 class="mb-5 steps" style="font-weight: bold">
+                                                    Step 1 - 4：請選擇作品集，或者新增作品集
+                                                </h2>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="d-flex justify-content-start mb-3">
+                                                <ul class="nav nav-tabs nav-tunnel nav-slider" data-toggle="slider-tab"
+                                                    role="tablist">
+                                                    <li class="nav-item" role="presentation">
+                                                        <button :class="switchButton" role="tab"
+                                                                type="button" @click="onNewOrSelectClick(true)"
+                                                                style="font-weight: bold">
+                                                            現有作品集
+                                                        </button>
+                                                    </li>
+                                                    <li class="nav-item" role="presentation">
+                                                        <button :class="switchButton" role="tab"
+                                                                type="button" @click="onNewOrSelectClick(false)"
+                                                                style="font-weight: bold">
+                                                            新增作品集
+                                                        </button>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-md-6" v-if="selectOrNew">
+                                                <div class="form-group">
+                                                    <label for="selectedArtwork" class="form-label"
+                                                           style="font-weight: bold">選擇作品集: *
+                                                    </label>
+                                                    <select class="form-select" id="selectedArtwork"
+                                                            v-model="artworkForm.artworks">
+                                                        <option v-if="artworks.length > 0" selected value="">
+                                                            None
+                                                        </option>
+                                                        <option v-else value="">
+                                                            No Artworks Available
+                                                        </option>
+                                                        <option v-for="artwork in artworks" :value="artwork.artwork_id">
+                                                            [[artwork.product_title]]
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6" v-else>
+                                                <div class="form-group">
+                                                    <label class="form-label" for="artworks" style="font-weight: bold">
+                                                        新增作品集: *
+                                                    </label>
+                                                    <input type="text" class="form-control" id="artworks"
+                                                           v-model="artworkForm.artworks"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button :disabled="artworkForm.artworks === ''" @click="verifyStep(2)"
+                                                type="button" class="btn btn-primary next action-button float-end">Next
+                                        </button>
+                                    </div>
+                                </fieldset>
+                                <fieldset v-show="currentStep === 2">
+                                    <div class="form-card text-start">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <h2 class="mb-5 steps" style="font-weight: bold">
+                                                    Step 2 - 4：請填寫作品標題與描述
+                                                </h2>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="form-label" for="artwork_item_title"
+                                                           style="font-weight: bold">作品標題: *</label>
+                                                    <input type="text" class="form-control" id="artwork_item_title"
+                                                           v-model="artworkForm.artwork_item_title"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="form-label" for="artwork_item_description"
+                                                           style="font-weight: bold">作評敘述: *</label>
+                                                    <input type="text" class="form-control"
+                                                           v-model="artworkForm.artwork_item_description"
+                                                           id="artwork_item_description"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn btn-primary next action-button float-end"
+                                            @click="verifyStep(3)">Next
+                                    </button>
+                                    <button type="button" @click="goToStep(1)"
+                                            class="btn btn-dark previous action-button-previous float-end me-1">Previous
+                                    </button>
+                                </fieldset>
+                                <fieldset v-show="currentStep === 3">
+                                    <div class="form-card text-start">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <h2 class="mb-5 steps" style="font-weight: bold">
+                                                    Step 3 - 4：請上傳作品圖片
+                                                </h2>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">上傳您的作品: *</label>
+                                            <input type="file" class="form-control" accept="image/*" ref="imageInput"
+                                                   @change="fileUpload">
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn btn-primary next action-button float-end"
+                                            @click="verifyStep(4)">Next
+                                    </button>
+                                    <button type="button" @click="goToStep(2)"
+                                            class="btn btn-dark previous action-button-previous float-end me-1">Previous
+                                    </button>
+                                </fieldset>
+                                <fieldset v-show="currentStep === 4">
+                                    <div class="form-card">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <h2 class="mb-5 steps">
+                                                    Step 4 - 4：預覽無誤，請點擊送出！
+                                                </h2>
+                                            </div>
+                                        </div>
+                                        <div class="row justify-content-center">
+
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn btn-primary next action-button float-end"
+                                            @click="submitArtwork" :disabled="isSubmit">Submit
+                                    </button>
+                                    <button type="button" @click="goToStep(3)"
+                                            class="btn btn-dark previous action-button-previous float-end me-1">Previous
+                                    </button>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block script %}
+    <script type="application/javascript">
+        const app = Vue.createApp({
+            delimiters: ['[[', ']]'],
+            data() {
+                return {
+                    token: '{{ csrf_token }}',
+
+                    alert: false,
+                    message: null,
+                    isSuccess: true,
+                    alertTimer: null,
+                    selectOrNew: true,
+                    isSubmit: false,
+
+                    finishStep: 0,
+                    currentStep: 1,
+                    classForStep: {1: '', 2: '', 3: '', 4: ''},
+
+                    artworks: [],
+                    artworkForm: {
+                        artworks: '',
+                        artwork_item_title: '',
+                        artwork_item_description: '',
+                        artwork_item_image: ''
+                    },
+                }
+            },
+            created() {
+                this.fetchArtworks()
+            },
+            mounted() {
+                this.updateClassForSteps()
+            },
+            watch: {
+                currentStep: 'updateClassForSteps'
+            },
+            computed: {
+                switchButton() {
+                    return ['nav-link', 'd-flex', 'align-items-center', this.selectOrNew ? 'active' : '']
+                },
+                alertClass() {
+                    return [
+                        'alert', 'alert-left', 'alert-dismissible', 'fade', 'show', 'mb-3',
+                        this.isSuccess ? 'alert-success' : 'alert-danger'
+                    ]
+                },
+            },
+            methods: {
+                fetchArtworks() {
+                    axios.get('/api/artworks')
+                        .then(response => {
+                            this.artworks = response.data
+                        })
+                        .catch(this.handleError)
+                },
+                updateClassForSteps() {
+                    for (const step of [1, 2, 3, 4]) {
+                        this.classForStep[step] = this.calculateTitleClass(step).join(' ');
+                    }
+                },
+                goToStep(step) {
+                    if (step >= this.finishStep + 1) {
+                        this.showAlert(false, '請先完成上一步驟')
+                        return
+                    }
+
+                    this.currentStep = step
+                },
+                verifyStep(step) {
+                    if (!this.validateStepData()) {
+                        return
+                    }
+                    // 驗證資料
+                    switch (this.currentStep) {
+                        case 1:
+                            if (this.artworkForm.artworks === '') {
+                                this.showAlert(false, '請選擇作品集')
+                                return
+                            }
+                            break
+
+                        case 2:
+                            if (this.artworkForm.artwork_item_title === '' || this.artworkForm.artwork_item_description === '') {
+                                this.showAlert(false, '請填寫作品標題與描述')
+                                return
+                            }
+                            break
+                        case 3:
+                            if (!this.artworkForm.artwork_item_image) {
+                                this.showAlert(false, '請上傳作品圖片')
+                                return
+                            }
+                            break
+                    }
+
+                    // 檢查是否嘗試跳過步驟
+                    if (this.finishStep + 1 > step) {
+                        this.currentStep = step
+                        return
+                    }
+
+                    // 如果所有條件都通過，更新 finishStep 和 currentStep
+                    if (step > this.finishStep) {
+                        this.currentStep = step
+                        this.finishStep = step
+                    }
+                },
+                validateStepData() {
+                    const {
+                        artworks,
+                        artwork_item_title,
+                        artwork_item_description,
+                        artwork_item_image
+                    } = this.artworkForm
+
+                    let validations = []
+                    switch (this.currentStep) {
+                        case 1:
+                            validations = [
+                                {condition: artworks === '', message: '請選擇作品集'}
+                            ]
+                            break
+                        case 2:
+                            validations = [
+                                {condition: artwork_item_title === '', message: '請填寫作品標題'},
+                                {condition: artwork_item_description === '', message: '請填寫作品描述'}
+                            ]
+                            break
+                        case 3:
+                            validations = [
+                                {condition: !artwork_item_image, message: '請上傳作品圖片'}
+                            ]
+                            break
+                        default:
+                            return true
+                    }
+
+                    for (const {condition, message} of validations) {
+                        if (condition) {
+                            this.showAlert(false, message)
+                            return false
+                        }
+                    }
+                    return true
+                },
+                calculateTitleClass(step) {
+                    return ['mb-2', 'col-lg-3', 'col-md-6', 'text-start', this.currentStep === step ? 'active' : '']
+                },
+                onNewOrSelectClick(type) {
+                    this.selectOrNew = type
+                    console.log(`${this.selectOrNew}`)
+                },
+                fileUpload(event) {
+                    const file = event.target.files[0] // 獲取選擇的文件
+                    if (file) {
+                        this.artworkForm.artwork_item_image = file
+                    } else {
+                        this.showAlert(false, '未選擇文件')
+                    }
+                },
+                submitArtwork() {
+                    this.isSubmit = true
+
+                    if (!this.validateStepData()) {
+                        this.isSubmit = false
+                        return
+                    }
+
+                    if (this.selectOrNew === false) {
+                        if (/^\d+$/.test(this.artworkForm.artworks)) {
+                            this.showAlert(false, '作品集名稱不能為數字')
+                            this.isSubmit = false
+                            return
+                        }
+                    }
+
+                    const formData = new FormData()
+                    formData.append('artworks', this.artworkForm.artworks)
+                    formData.append('artwork_item_title', this.artworkForm.artwork_item_title)
+                    formData.append('artwork_item_description', this.artworkForm.artwork_item_description)
+                    formData.append('artwork_item_image', this.artworkForm.artwork_item_image)
+
+                    axios({
+                        method: 'post',
+                        url: '/api/artworks',
+                        headers: {
+                            'X-CSRFToken': this.token
+                        },
+                        data: formData
+                    }).then(response => {
+                        this.showAlert(true, '作品上傳成功，請等待3秒後繼續')
+                        setTimeout(() => this.resetFormAndState(response), 200)
+                    }).catch(this.handleError)
+                },
+                resetFormAndState() {
+                    this.artworkForm = {
+                        artworks: '',
+                        artwork_item_title: '',
+                        artwork_item_description: '',
+                        artwork_item_image: ''
+                    }
+                    this.$refs.imageInput.value = ''
+
+                    this.selectOrNew = true
+                    this.finishStep = 0
+                    this.currentStep = 1
+                    this.isSubmit = false
+
+                    this.fetchArtworks()
+                    this.goToStep(1)
+                },
+                handleError(error) {
+                    this.isSubmit = false
+                    console.log(error.response.data)
+                },
+                showAlert(isSuccess, message) {
+                    if (this.alertTimer) {
+                        clearTimeout(this.alertTimer)
+                    }
+
+                    this.alert = true
+                    this.isSuccess = isSuccess
+                    this.message = message
+                    this.alertTimer = setTimeout(() => this.hideAlert(), 3000)
+                },
+                hideAlert() {
+                    this.alert = false
+                    this.message = null
+
+                    if (this.alertTimer) {
+                        clearTimeout(this.alertTimer)
+                        this.alertTimer = null
+                    }
+                },
+            }
+        })
+        app.mount('#App')
+    </script>
+{% endblock %}

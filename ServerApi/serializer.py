@@ -8,18 +8,21 @@ class UsersSerializer(serializers.ModelSerializer):
         fields = ['user_id', 'line_id', 'unique_code', 'create_at']
 
 
-class ArtworksSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Artworks
-        fields = ['artwork_id', 'product_title']
-
-
 class ArtworkItemsSerializer(serializers.ModelSerializer):
-    artworks = ArtworksSerializer(read_only=True)
+    artwork_item_title = serializers.CharField(required=True)
+    artwork_item_description = serializers.CharField(required=True)
 
     class Meta:
         model = ArtworkItems
         fields = ['artwork_item_id', 'artworks', 'artwork_item_image', 'artwork_item_title', 'artwork_item_description']
+
+
+class ArtworksSerializer(serializers.ModelSerializer):
+    artwork_items = ArtworkItemsSerializer(read_only=True, many=True)
+
+    class Meta:
+        model = Artworks
+        fields = ['artwork_id', 'product_title', 'artwork_items']
 
 
 class BeaconsSerializer(serializers.ModelSerializer):

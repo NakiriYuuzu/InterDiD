@@ -23,6 +23,8 @@
     <link rel="stylesheet" href="{% static 'assets/css/customizer.min.css' %}">
     <!-- RTL Css -->
     <link rel="stylesheet" href="{% static 'assets/css/rtl.min.css' %}">
+    <!-- Yuuzu CSS -->
+    <link rel="stylesheet" href="{% static 'assets/css/yuuzu.css' %}">
     <!-- init js -->
     {% if mode %}
         <script src="{% static 'assets/js/core/vue.global.js' %}"></script>
@@ -189,6 +191,21 @@
                             </a>
                             <ul class="sub-nav collapse" id="sidebar-form" data-bs-parent="#sidebar-menu" style="">
                                 <li class="nav-item">
+                                    <a class="nav-link {% if request.resolver_match.url_name == 'list_artwork' %}active{% endif %}"
+                                       href="{% url 'list_artwork' %}">
+                                        <i class="icon">
+                                            <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10"
+                                                 viewBox="0 0 24 24" fill="currentColor">
+                                                <g>
+                                                    <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
+                                                </g>
+                                            </svg>
+                                        </i>
+                                        <i class="sidenav-mini-icon"> List </i>
+                                        <span class="item-name">List Artwork</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
                                     <a class="nav-link {% if request.resolver_match.url_name == 'form_artwork' %}active{% endif %}"
                                        href="{% url 'form_artwork' %}">
                                         <i class="icon">
@@ -199,8 +216,8 @@
                                                 </g>
                                             </svg>
                                         </i>
-                                        <i class="sidenav-mini-icon"> Art </i>
-                                        <span class="item-name">Artwork</span>
+                                        <i class="sidenav-mini-icon"> Add </i>
+                                        <span class="item-name">Add Artwork</span>
                                     </a>
                                 </li>
                             </ul>
@@ -724,8 +741,6 @@
 <script src="{% static 'assets/js/plugins/setting.js' %}"></script>
 <!-- Slider-tab Script -->
 <script src="{% static 'assets/js/plugins/slider-tabs.js' %}"></script>
-<!-- Form Wizard Script -->
-<script src="{% static 'assets/js/plugins/form-wizard.js' %}"></script>
 <!-- AOS Animation Plugin-->
 <script src="{% static 'assets/vendor/aos/dist/aos.js' %}"></script>
 <!-- App Script -->

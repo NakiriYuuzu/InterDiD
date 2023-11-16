@@ -3,8 +3,15 @@
 ---
 
 ## Features
-- [ ] Dockerized
-- [x] Linebot
+- [ ] Frontend
+  - [ ] Web
+  - [ ] Quiz
+  - [ ] puzzle
+- [ ] backend
+  - [x] API
+  - [x] Database
+  - [x] Linebot
+  - [ ] Dockerized
 
 ## Getting Started
 1. Clone the repository

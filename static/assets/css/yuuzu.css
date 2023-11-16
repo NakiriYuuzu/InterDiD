@@ -1,0 +1,33 @@
+/* 表格滑鼠的顯示 */
+.onHover {
+    transition: background-color 0.3s ease; /* 鼠標懸停時的過渡效果 */
+    cursor: pointer; /* 將鼠標懸停時的光標變成手型，表示可點擊 */
+}
+
+.onHover:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.onHover td:first-child {
+    font-weight: bold;
+}
+
+/* 處理圖片放大 */
+.full-screen-image-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+}
+
+.full-screen-image {
+    max-width: 90%;
+    max-height: 90%;
+}
+

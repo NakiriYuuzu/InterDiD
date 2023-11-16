@@ -23,14 +23,18 @@ def sign_in(request):
         return render(request, 'auth/sign-in.html', locals())
 
 
-@login_required
 def index(request):
+    return render(request, 'index.html', locals())
+
+
+@login_required
+def dashboard(request):
     msg = {
         'title': 'InterDiD',
         'mode': settings.DEBUG,
         'username': request.user.username[0].upper() + request.user.username[1:],
     }
-    return render(request, 'index.html', msg)
+    return render(request, 'dashboard/dashboard.html', msg)
 
 
 @login_required
@@ -40,8 +44,17 @@ def form_beacon(request):
         'mode': settings.DEBUG,
         'username': request.user.username[0].upper() + request.user.username[1:],
     }
-    return render(request, 'form/form_beacon.html', msg)
+    return render(request, 'dashboard/form_beacon.html', msg)
 
+
+@login_required
+def list_artwork(request):
+    msg = {
+        'title': 'InterDiD',
+        'mode': settings.DEBUG,
+        'username': request.user.username[0].upper() + request.user.username[1:],
+    }
+    return render(request, 'dashboard/list_artwork.html', msg)
 
 @login_required
 def form_artwork(request):
@@ -50,7 +63,7 @@ def form_artwork(request):
         'mode': settings.DEBUG,
         'username': request.user.username[0].upper() + request.user.username[1:],
     }
-    return render(request, 'form/form_artwork.html', msg)
+    return render(request, 'dashboard/form_artwork.html', msg)
 
 
 @login_required

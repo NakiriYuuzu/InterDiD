@@ -1,0 +1,434 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}InterDiD Artwork{% endblock %}
+{% block content %}
+    <div id="app" xmlns:v-on="http://www.w3.org/1999/xhtml">
+        <div class="conatiner-fluid content-inner mt-n5 py-0">
+            <div :class="alertClass" role="alert" v-show="alert">
+                <span>[[message]]</span>
+            </div>
+            <div v-if="fullScreenImageUrl" class="full-screen-image-container" @click="fullScreenImageUrl = null">
+                <img :src="fullScreenImageUrl" class="full-screen-image" alt="">
+            </div>
+            <div>
+                <div class="row">
+                    <div class="col-sm-12 col-lg-6">
+                        <div class="overflow-hidden card" data-aos="fade-up" data-aos-delay="600">
+                            <div class="flex-wrap card-header d-flex justify-content-between">
+                                <div class="header-title">
+                                    <h4 class="mb-2 card-title" style="font-weight: bold">作品集列表</h4>
+                                    <p class="mb-0" style="font-weight: bold">
+                                        <svg class="me-2 text-primary icon-24" width="24" viewBox="0 0 24 24">
+                                            <path fill="currentColor"
+                                                  d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path>
+                                        </svg>
+                                        總作品集: [[artworks.length]]
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="p-0 card-body">
+                                <div class="mt-4 table-responsive">
+                                    <table id="basic-table" class="table mb-0 table-striped" role="grid">
+                                        <thead>
+                                        <tr>
+                                            <th style="font-weight: bold">作品集名稱</th>
+                                            <th style="font-weight: bold">作品集數量</th>
+                                            <th style="font-weight: bold">功能</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr class="onHover" v-for="artwork in artworks"
+                                            v-on:click="onArtworksClicked(artwork)">
+                                            <td>[[artwork.product_title]]</td>
+                                            <td>[[artwork.artwork_items.length]]</td>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <button class="btn btn-icon btn-primary mx-2"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#editModal"
+                                                            @click="">
+                                                        <span class="btn-inner">
+                                                            <svg class="icon-20" width="20" viewBox="0 0 24 24"
+                                                                 fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <path opacity="0.4"
+                                                                      d="M19.9927 18.9534H14.2984C13.7429 18.9534 13.291 19.4124 13.291 19.9767C13.291 20.5422 13.7429 21.0001 14.2984 21.0001H19.9927C20.5483 21.0001 21.0001 20.5422 21.0001 19.9767C21.0001 19.4124 20.5483 18.9534 19.9927 18.9534Z"
+                                                                      fill="currentColor">
+                                                                </path>
+                                                                <path d="M10.309 6.90385L15.7049 11.2639C15.835 11.3682 15.8573 11.5596 15.7557 11.6929L9.35874 20.0282C8.95662 20.5431 8.36402 20.8344 7.72908 20.8452L4.23696 20.8882C4.05071 20.8903 3.88775 20.7613 3.84542 20.5764L3.05175 17.1258C2.91419 16.4915 3.05175 15.8358 3.45388 15.3306L9.88256 6.95545C9.98627 6.82108 10.1778 6.79743 10.309 6.90385Z"
+                                                                      fill="currentColor">
+                                                                </path>
+                                                                <path opacity="0.4"
+                                                                      d="M18.1208 8.66544L17.0806 9.96401C16.9758 10.0962 16.7874 10.1177 16.6573 10.0124C15.3927 8.98901 12.1545 6.36285 11.2561 5.63509C11.1249 5.52759 11.1069 5.33625 11.2127 5.20295L12.2159 3.95706C13.126 2.78534 14.7133 2.67784 15.9938 3.69906L17.4647 4.87078C18.0679 5.34377 18.47 5.96726 18.6076 6.62299C18.7663 7.3443 18.597 8.0527 18.1208 8.66544Z"
+                                                                      fill="currentColor">
+                                                                </path>
+                                                            </svg>
+                                                        </span>
+                                                    </button>
+                                                    <button class="btn btn-icon btn-danger mx-2"
+                                                            @click="">
+                                                        <span class="btn-inner">
+                                                            <svg class="icon-20" width="20" viewBox="0 0 24 24"
+                                                                 fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <path opacity="0.4"
+                                                                      d="M19.643 9.48851C19.643 9.5565 19.11 16.2973 18.8056 19.1342C18.615 20.8751 17.4927 21.9311 15.8092 21.9611C14.5157 21.9901 13.2494 22.0001 12.0036 22.0001C10.6809 22.0001 9.38741 21.9901 8.13185 21.9611C6.50477 21.9221 5.38147 20.8451 5.20057 19.1342C4.88741 16.2873 4.36418 9.5565 4.35445 9.48851C4.34473 9.28351 4.41086 9.08852 4.54507 8.93053C4.67734 8.78453 4.86796 8.69653 5.06831 8.69653H18.9388C19.1382 8.69653 19.3191 8.78453 19.4621 8.93053C19.5953 9.08852 19.6624 9.28351 19.643 9.48851Z"
+                                                                      fill="currentColor">
+                                                                </path>
+                                                                <path d="M21 5.97686C21 5.56588 20.6761 5.24389 20.2871 5.24389H17.3714C16.7781 5.24389 16.2627 4.8219 16.1304 4.22692L15.967 3.49795C15.7385 2.61698 14.9498 2 14.0647 2H9.93624C9.0415 2 8.26054 2.61698 8.02323 3.54595L7.87054 4.22792C7.7373 4.8219 7.22185 5.24389 6.62957 5.24389H3.71385C3.32386 5.24389 3 5.56588 3 5.97686V6.35685C3 6.75783 3.32386 7.08982 3.71385 7.08982H20.2871C20.6761 7.08982 21 6.75783 21 6.35685V5.97686Z"
+                                                                      fill="currentColor">
+                                                                </path>
+                                                            </svg>
+                                                        </span>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-lg-6">
+                        <div class="overflow-hidden card" v-show="selectedArtwork.artwork_items"
+                             data-aos="fade-up" data-aos-delay="600">
+                            <div class="flex-wrap card-header d-flex justify-content-between">
+                                <div class="header-title">
+                                    <h4 class="mb-2 card-title" style="font-weight: bold">選擇中的作品</h4>
+                                    <p class="mb-0" style="font-weight: bold">
+                                        <svg class="me-2 text-primary icon-24" width="24" viewBox="0 0 24 24">
+                                            <path fill="currentColor"
+                                                  d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path>
+                                        </svg>
+                                        作品數量: [[selectedArtworkSize]]
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="p-0 card-body">
+                                <div class="mt-4 table-responsive">
+                                    <table id="basic-table" class="table mb-0 table-striped" role="grid">
+                                        <thead>
+                                        <tr>
+                                            <th style="font-weight: bold">作品名稱</th>
+                                            <th style="font-weight: bold">作品詳細</th>
+                                            <th style="font-weight: bold">作品圖片</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr class="onHover" v-for="artwork in selectedArtwork.artwork_items"
+                                            data-bs-toggle="modal" data-bs-target="#detailEditModal"
+                                            @click="onArtworkItemClicked(artwork)">
+                                            <td>
+                                                [[ artwork.artwork_item_title ]]
+                                            </td>
+                                            <td>
+                                                [[ artwork.artwork_item_description ]]
+                                            </td>
+                                            <td>
+                                                <svg class="bd-placeholder-img bd-placeholder-img-lg img-fluid"
+                                                     width="100%" height="100px" xmlns="http://www.w3.org/2000/svg"
+                                                     aria-label="Placeholder: Responsive image" role="img"
+                                                     preserveAspectRatio="xMidYMid slice" focusable="false">
+                                                    <image :href="artwork.artwork_item_image" x="0" y="0"
+                                                           height="100px" width="100%"></image>
+                                                </svg>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="staticBackdropLabel" style="font-weight: bold">
+                                    修改[[selectedArtwork.product_title]]</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form novalidate v-on:submit.prevent="editArtworks('artworks')">
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                        <label for="product_title" class="col-form-label">作品集名稱:</label>
+                                        <input type="text" class="form-control" id="product_title"
+                                               v-model="selectedArtwork.product_title" required>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                                @click="onCancelEdited()">Close
+                                        </button>
+                                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">
+                                            Save
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="detailEditModal" tabindex="-1" aria-labelledby="detailEditModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="staticBackdropLabel" style="font-weight: bold">
+                                    修改[[selectedArtworkItem.artwork_item_title]]</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form novalidate v-on:submit.prevent="editArtworks('artwork_items')">
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                        <label for="artwork_item_title" class="col-form-label">作品名稱: *</label>
+                                        <input type="text" class="form-control" id="artwork_item_title"
+                                               v-model="selectedArtworkItem.artwork_item_title" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="artwork_item_description" class="col-form-label">作品敘述: *</label>
+                                        <input type="text" class="form-control" id="artwork_item_description"
+                                               v-model="selectedArtworkItem.artwork_item_description" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">更新您的作品: </label>
+                                        <input type="file" class="form-control" accept="image/*"
+                                               ref="artwork_item_image"
+                                               @change="fileUpload" style="margin-bottom: 16px">
+
+                                        <div v-if="isImageUpdated">
+                                            <svg class="bd-placeholder-img bd-placeholder-img-lg img-fluid" role="img"
+                                                 width="100%" height="300" xmlns="http://www.w3.org/2000/svg"
+                                                 aria-label="Placeholder: Responsive image" focusable="false"
+                                                 preserveAspectRatio="xMidYMid slice">
+                                                <image :href="newImageUrl" x="0" y="0" height="300"
+                                                       width="100%"></image>
+                                            </svg>
+                                        </div>
+                                        <div v-else>
+                                            <svg class="bd-placeholder-img bd-placeholder-img-lg img-fluid" role="img"
+                                                 width="100%" height="300" xmlns="http://www.w3.org/2000/svg"
+                                                 aria-label="Placeholder: Responsive image" focusable="false"
+                                                 @click="showImageFullScreen(selectedArtworkItem.artwork_item_image)"
+                                                 preserveAspectRatio="xMidYMid slice" >
+                                                <image :href="selectedArtworkItem.artwork_item_image" x="0" y="0"
+                                                       height="300" width="100%"></image>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
+                                                @click="onArtworkItemDeleted()">Delete
+                                        </button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                                @click="onCancelEdited()">Close
+                                        </button>
+                                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block script %}
+    <script type="application/javascript">
+        const app = Vue.createApp({
+            delimiters: ['[[', ']]'],
+            data() {
+                return {
+                    token: null,
+                    alert: false,
+                    message: null,
+                    isSuccess: false,
+                    newImageUrl: null,
+                    newImageFile: null,
+                    isImageUpdated: false,
+                    fullScreenImageUrl: null,
+
+                    artworks: [],
+                    selectedArtwork: {},
+                    selectedArtworkSize: 0,
+                    selectedArtworkItem: {},
+
+                    // original
+                    originalProductTitle: '',
+                    originalSelectedArtworkItem: null
+                }
+            },
+            created() {
+                this.getArtworks()
+                this.token = this.getCookie('csrftoken')
+            },
+            mounted() {
+                $('#editModal').on('hide.bs.modal', this.onCancelEdited)
+                $('#detailEditModal').on('hide.bs.modal', this.onCancelEdited)
+            },
+            computed: {
+                alertClass() {
+                    return [
+                        'alert', 'alert-left', 'alert-dismissible', 'fade', 'show', 'mb-3',
+                        this.isSuccess ? 'alert-success' : 'alert-danger'
+                    ]
+                },
+            },
+            methods: {
+                getCookie(name) {
+                    let cookieValue = null;
+                    if (document.cookie && document.cookie !== '') {
+                        const cookies = document.cookie.split(';')
+                        for (let i = 0; i < cookies.length; i++) {
+                            const cookie = cookies[i].trim()
+                            // 判斷這個 cookie 的開頭是否為所需的名稱
+                            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                                cookieValue = decodeURIComponent(cookie.substring(name.length + 1))
+                                break
+                            }
+                        }
+                    }
+                    return cookieValue
+                },
+                getArtworks() {
+                    axios.get('/api/artworks')
+                        .then(response => {
+                            this.artworks = response.data
+                        })
+                        .catch(this.handleError)
+                },
+                editArtworks(type) {
+                    let formData = new FormData()
+                    if (type === 'artworks') {
+                        formData.append('artwork_id', this.selectedArtwork.artwork_id)
+                        formData.append('product_title', this.selectedArtwork.product_title)
+                    } else {
+                        if (this.isImageUpdated) {
+                            formData.append('artworks', this.selectedArtworkItem.artworks)
+                            formData.append('artwork_item_id', this.selectedArtworkItem.artwork_item_id)
+                            formData.append('artwork_item_title', this.selectedArtworkItem.artwork_item_title)
+                            formData.append('artwork_item_description', this.selectedArtworkItem.artwork_item_description)
+                            formData.append('artwork_item_image', this.newImageFile)
+                        } else {
+                            formData.append('artworks', this.selectedArtworkItem.artworks)
+                            formData.append('artwork_item_id', this.selectedArtworkItem.artwork_item_id)
+                            formData.append('artwork_item_title', this.selectedArtworkItem.artwork_item_title)
+                            formData.append('artwork_item_description', this.selectedArtworkItem.artwork_item_description)
+                        }
+                    }
+                    axios.put('/api/artworks', formData, {
+                        headers: {
+                            'X-CSRFToken': this.token,
+                            'Content-Type': 'multipart/form-data'
+                        }
+                    }).then(response => {
+                        if (type === 'artworks') {
+                            this.selectedArtwork = response.data
+                            this.showAlert(true, `修改成功${this.selectedArtwork.product_title}`)
+                        } else {
+                            this.newImageFile = null
+                            this.isImageUpdated = false
+                            Object.keys(this.originalSelectedArtworkItem).forEach(key => {
+                                this.selectedArtworkItem[key] = response.data[key]
+                            })
+                            this.showAlert(true, `修改成功${this.selectedArtworkItem.artwork_item_title}`)
+                        }
+                    }).catch(this.handleError)
+                },
+                deleteArtworks(type, id) {
+                    let url = type === 'artworks' ? `/api/artworks?artwork_id=${id}` : `/api/artworks?artwork_item_id=${id}`
+                    axios.delete(url, {
+                        headers: {'X-CSRFToken': this.token}
+                    }).then(response => {
+                        if (type === 'artworks') {
+                            this.selectedArtwork = {}
+                            this.selectedArtworkSize = 0
+                            this.getArtworks()
+                        } else {
+                            this.selectedArtwork.artwork_items = this.selectedArtwork.artwork_items.filter(item => item.artwork_item_id !== id)
+                            this.selectedArtworkSize = this.selectedArtwork.artwork_items.length
+                        }
+                        this.showAlert(true, `刪除成功${response.data}`)
+                    }).catch(this.handleError)
+                },
+                fileUpload(event) {
+                    const file = event.target.files[0] // 獲取選擇的文件
+                    if (file) {
+                        let reader = new FileReader()
+                        let vm = this
+                        reader.onload = function (e) {
+                            vm.newImageUrl = e.target.result
+                        }
+                        reader.readAsDataURL(file)
+
+                        this.newImageFile = file
+                        this.isImageUpdated = true
+                    } else {
+                        this.showAlert(false, '未選擇文件')
+                    }
+                },
+                showImageFullScreen(imageUrl) {
+                    this.fullScreenImageUrl = imageUrl
+                    console.log(this.fullScreenImageUrl)
+                },
+                onArtworksClicked(artwork) {
+                    this.selectedArtwork = artwork
+                    this.originalProductTitle = artwork.product_title
+                    this.selectedArtworkSize = artwork.artwork_items.length
+                },
+                onArtworksDeleted() {
+                    this.deleteArtworks('artworks', this.selectedArtwork.artwork_id)
+                },
+                onArtworkItemClicked(artwork) {
+                    this.selectedArtworkItem = artwork
+                    this.originalSelectedArtworkItem = JSON.parse(JSON.stringify(artwork))
+                },
+                onArtworkItemDeleted() {
+                    this.deleteArtworks('artwork_item', this.selectedArtworkItem.artwork_item_id)
+                },
+                onCancelEdited() {
+                    this.resetData()
+                },
+                handleError(error) {
+                    this.showAlert(false, error.response.data)
+                    this.resetData()
+                },
+                resetData() {
+                    if (this.originalProductTitle)
+                        this.selectedArtwork.product_title = this.originalProductTitle
+                    if (this.originalSelectedArtworkItem) {
+                        Object.keys(this.originalSelectedArtworkItem).forEach(key => {
+                            this.selectedArtworkItem[key] = this.originalSelectedArtworkItem[key]
+                        })
+                    }
+                    this.newImageUrl = null
+                    this.isImageUpdated = false
+                },
+                showAlert(isSuccess, message) {
+                    if (this.alertTimer) {
+                        clearTimeout(this.alertTimer)
+                    }
+                    this.alert = true
+                    this.isSuccess = isSuccess
+                    this.message = message
+                    this.alertTimer = setTimeout(() => this.hideAlert(), 3000)
+                },
+                hideAlert() {
+                    this.alert = false
+                    this.message = null
+                    if (this.alertTimer) {
+                        clearTimeout(this.alertTimer)
+                        this.alertTimer = null
+                    }
+                },
+            }
+        })
+        app.mount('#App')
+    </script>
+{% endblock %}

@@ -13,17 +13,14 @@ import json
 import os
 from datetime import timedelta
 from pathlib import Path
-
 from django.conf import settings
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Read config.json to setup Django's settings
 with open('config.json') as config_file:
     config = json.load(config_file)
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config['DJANGO_SECRET_KEY']
@@ -35,13 +32,14 @@ DEBUG = True
 
 # Hosting
 ALLOWED_HOSTS = ['*']
+APP_HOST = config['APP_HOST']
 
 # Route
-LOGIN_URL = '/login'
+LOGIN_URL = '/admin/login'
+ROOT_URLCONF = 'InterDiD.urls'
 
 # CSRF TRUST
-CSRF_TRUSTED_ORIGINS = ['https://7858-125-228-31-174.ngrok-free.app']
-
+CSRF_TRUSTED_ORIGINS = [APP_HOST]
 
 # Application definition
 INSTALLED_APPS = [
@@ -77,9 +75,6 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication'
     ),
 }
-
-
-ROOT_URLCONF = 'InterDiD.urls'
 
 TEMPLATES = [
     {
@@ -152,16 +147,16 @@ USE_TZ = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
+# Root Folder
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'templates')
-]
-
-STATIC_ROOT = os.path.join(BASE_DIR, 'templates/static')
-
-# STATIC_ROOT = os.path.join(BASE_DIR, 'templates')
+# Media files
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

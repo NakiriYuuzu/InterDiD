@@ -1,499 +1,351 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block username %}{{ username }}{% endblock %}
+{% block aside %}{% endblock %}
+{% block header %}{% endblock %}
+{% block footer %}{% endblock %}
+{% block customize %}{% endblock %}
 
 {% block content %}
-    <div class="conatiner-fluid content-inner mt-n5 py-0">
-        <div class="row">
-            <div class="col-md-12 col-lg-12">
-                <div class="row row-cols-1">
-                    <div class="overflow-hidden d-slider1 ">
-                        <ul class="p-0 m-0 mb-2 swiper-wrapper list-inline">
-                            <li class="swiper-slide card card-slide" data-aos="fade-up" data-aos-delay="700">
-                                <div class="card-body">
-                                    <div class="progress-widget">
-                                        <div id="circle-progress-01"
-                                             class="text-center circle-progress-01 circle-progress circle-progress-primary"
-                                             data-min-value="0" data-max-value="100" data-value="90"
-                                             data-type="percent">
-                                            <svg class="card-slie-arrow icon-24" width="24" viewBox="0 0 24 24">
-                                                <path fill="currentColor"
-                                                      d="M5,17.59L15.59,7H9V5H19V15H17V8.41L6.41,19L5,17.59Z"></path>
-                                            </svg>
-                                        </div>
-                                        <div class="progress-detail">
-                                            <p class="mb-2">Total Sales</p>
-                                            <h4 class="counter">$560K</h4>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="swiper-slide card card-slide" data-aos="fade-up" data-aos-delay="800">
-                                <div class="card-body">
-                                    <div class="progress-widget">
-                                        <div id="circle-progress-02"
-                                             class="text-center circle-progress-01 circle-progress circle-progress-info"
-                                             data-min-value="0" data-max-value="100" data-value="80"
-                                             data-type="percent">
-                                            <svg class="card-slie-arrow icon-24" width="24" viewBox="0 0 24 24">
-                                                <path fill="currentColor"
-                                                      d="M19,6.41L17.59,5L7,15.59V9H5V19H15V17H8.41L19,6.41Z"></path>
-                                            </svg>
-                                        </div>
-                                        <div class="progress-detail">
-                                            <p class="mb-2">Total Profit</p>
-                                            <h4 class="counter">$185K</h4>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="swiper-slide card card-slide" data-aos="fade-up" data-aos-delay="900">
-                                <div class="card-body">
-                                    <div class="progress-widget">
-                                        <div id="circle-progress-03"
-                                             class="text-center circle-progress-01 circle-progress circle-progress-primary"
-                                             data-min-value="0" data-max-value="100" data-value="70"
-                                             data-type="percent">
-                                            <svg class="card-slie-arrow icon-24" width="24" viewBox="0 0 24 24">
-                                                <path fill="currentColor"
-                                                      d="M19,6.41L17.59,5L7,15.59V9H5V19H15V17H8.41L19,6.41Z"></path>
-                                            </svg>
-                                        </div>
-                                        <div class="progress-detail">
-                                            <p class="mb-2">Total Cost</p>
-                                            <h4 class="counter">$375K</h4>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="swiper-slide card card-slide" data-aos="fade-up" data-aos-delay="1000">
-                                <div class="card-body">
-                                    <div class="progress-widget">
-                                        <div id="circle-progress-04"
-                                             class="text-center circle-progress-01 circle-progress circle-progress-info"
-                                             data-min-value="0" data-max-value="100" data-value="60"
-                                             data-type="percent">
-                                            <svg class="card-slie-arrow icon-24" width="24px" viewBox="0 0 24 24">
-                                                <path fill="currentColor"
-                                                      d="M5,17.59L15.59,7H9V5H19V15H17V8.41L6.41,19L5,17.59Z"></path>
-                                            </svg>
-                                        </div>
-                                        <div class="progress-detail">
-                                            <p class="mb-2">Revenue</p>
-                                            <h4 class="counter">$742K</h4>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="swiper-slide card card-slide" data-aos="fade-up" data-aos-delay="1100">
-                                <div class="card-body">
-                                    <div class="progress-widget">
-                                        <div id="circle-progress-05"
-                                             class="text-center circle-progress-01 circle-progress circle-progress-primary"
-                                             data-min-value="0" data-max-value="100" data-value="50"
-                                             data-type="percent">
-                                            <svg class="card-slie-arrow icon-24" width="24px" viewBox="0 0 24 24">
-                                                <path fill="currentColor"
-                                                      d="M5,17.59L15.59,7H9V5H19V15H17V8.41L6.41,19L5,17.59Z"></path>
-                                            </svg>
-                                        </div>
-                                        <div class="progress-detail">
-                                            <p class="mb-2">Net Income</p>
-                                            <h4 class="counter">$150K</h4>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="swiper-slide card card-slide" data-aos="fade-up" data-aos-delay="1200">
-                                <div class="card-body">
-                                    <div class="progress-widget">
-                                        <div id="circle-progress-06"
-                                             class="text-center circle-progress-01 circle-progress circle-progress-info"
-                                             data-min-value="0" data-max-value="100" data-value="40"
-                                             data-type="percent">
-                                            <svg class="card-slie-arrow icon-24" width="24" viewBox="0 0 24 24">
-                                                <path fill="currentColor"
-                                                      d="M19,6.41L17.59,5L7,15.59V9H5V19H15V17H8.41L19,6.41Z"></path>
-                                            </svg>
-                                        </div>
-                                        <div class="progress-detail">
-                                            <p class="mb-2">Today</p>
-                                            <h4 class="counter">$4600</h4>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="swiper-slide card card-slide" data-aos="fade-up" data-aos-delay="1300">
-                                <div class="card-body">
-                                    <div class="progress-widget">
-                                        <div id="circle-progress-07"
-                                             class="text-center circle-progress-01 circle-progress circle-progress-primary"
-                                             data-min-value="0" data-max-value="100" data-value="30"
-                                             data-type="percent">
-                                            <svg class="card-slie-arrow icon-24 " width="24" viewBox="0 0 24 24">
-                                                <path fill="currentColor"
-                                                      d="M19,6.41L17.59,5L7,15.59V9H5V19H15V17H8.41L19,6.41Z"></path>
-                                            </svg>
-                                        </div>
-                                        <div class="progress-detail">
-                                            <p class="mb-2">Members</p>
-                                            <h4 class="counter">11.2M</h4>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                        <div class="swiper-button swiper-button-next"></div>
-                        <div class="swiper-button swiper-button-prev"></div>
+    <div class="position-relative">
+        <!-- Nav-Start -->
+        <nav class="nav navbar navbar-expand-xl navbar-light iq-navbar header-hover-menu">
+            <div class="container-fluid navbar-inner">
+                <div class="d-flex align-items-center justify-content-between w-100 landing-header">
+                    <a href="../landing-pages/index.html" class="navbar-brand m-0 d-xl-flex d-none">
+                        <!--Logo start-->
+                        <svg class="icon-30 text-primary" width="30" viewBox="0 0 30 30" fill="none"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <rect x="-0.757324" y="19.2427" width="28" height="4" rx="2"
+                                  transform="rotate(-45 -0.757324 19.2427)" fill="currentColor"></rect>
+                            <rect x="7.72803" y="27.728" width="28" height="4" rx="2"
+                                  transform="rotate(-45 7.72803 27.728)" fill="currentColor"></rect>
+                            <rect x="10.5366" y="16.3945" width="16" height="4" rx="2"
+                                  transform="rotate(45 10.5366 16.3945)" fill="currentColor"></rect>
+                            <rect x="10.5562" y="-0.556152" width="28" height="4" rx="2"
+                                  transform="rotate(45 10.5562 -0.556152)" fill="currentColor"></rect>
+                        </svg>
+                        <!--logo End--><h5 class="logo-title">Hope UI</h5>
+                    </a>
+                    <div class="d-flex align-items-center d-xl-none">
+                        <button data-trigger="navbar_main" class="d-xl-none btn btn-primary rounded-pill p-1 pt-0"
+                                type="button">
+                            <svg width="20px" class="icon-20" viewBox="0 0 24 24">
+                                <path fill="currentColor"
+                                      d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z"></path>
+                            </svg>
+                        </button>
+
+                        <a href="../landing-pages/index.html" class="navbar-brand ms-3  d-xl-none">
+                            <!--Logo start-->
+                            <svg class="icon-30 text-primary" width="30" viewBox="0 0 30 30" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <rect x="-0.757324" y="19.2427" width="28" height="4" rx="2"
+                                      transform="rotate(-45 -0.757324 19.2427)" fill="currentColor"></rect>
+                                <rect x="7.72803" y="27.728" width="28" height="4" rx="2"
+                                      transform="rotate(-45 7.72803 27.728)" fill="currentColor"></rect>
+                                <rect x="10.5366" y="16.3945" width="16" height="4" rx="2"
+                                      transform="rotate(45 10.5366 16.3945)" fill="currentColor"></rect>
+                                <rect x="10.5562" y="-0.556152" width="28" height="4" rx="2"
+                                      transform="rotate(45 10.5562 -0.556152)" fill="currentColor"></rect>
+                            </svg>
+                            <!--logo End--> <h5 class="logo-title">Hope UI</h5>
+                        </a>
                     </div>
-                </div>
-            </div>
-            <div class="col-md-12 col-lg-8">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card" data-aos="fade-up" data-aos-delay="800">
-                            <div class="flex-wrap card-header d-flex justify-content-between align-items-center">
-                                <div class="header-title">
-                                    <h4 class="card-title">$855.8K</h4>
-                                    <p class="mb-0">Gross Sales</p>
-                                </div>
-                                <div class="d-flex align-items-center align-self-center">
-                                    <div class="d-flex align-items-center text-primary">
-                                        <svg class="icon-12" xmlns="http://www.w3.org/2000/svg" width="12"
-                                             viewBox="0 0 24 24" fill="currentColor">
-                                            <g>
-                                                <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
-                                            </g>
-                                        </svg>
-                                        <div class="ms-2">
-                                            <span class="text-gray">Sales</span>
-                                        </div>
+                    <ul class="d-block d-xl-none list-unstyled m-0">
+                        <li class="nav-item dropdown iq-responsive-menu ">
+                            <div class="btn btn-sm bg-body" id="navbarDropdown-search-11" role="button"
+                                 data-bs-toggle="dropdown" aria-expanded="false">
+                                <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="11.7669" cy="11.7666" r="8.98856" stroke="currentColor"
+                                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></circle>
+                                    <path d="M18.0186 18.4851L21.5426 22" stroke="currentColor" stroke-width="1.5"
+                                          stroke-linecap="round" stroke-linejoin="round"></path>
+                                </svg>
+                            </div>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown-search-11"
+                                style="width: 18rem;">
+                                <li class="px-3 py-0">
+                                    <div class="form-group input-group mb-0">
+                                        <input type="text" class="form-control" placeholder="Search...">
+                                        <span class="input-group-text">
+                                <svg class="icon-20" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="11.7669" cy="11.7666" r="8.98856" stroke="currentColor"
+                                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></circle>
+                                    <path d="M18.0186 18.4851L21.5426 22" stroke="currentColor" stroke-width="1.5"
+                                          stroke-linecap="round" stroke-linejoin="round"></path>
+                                </svg>
+                            </span>
                                     </div>
-                                    <div class="d-flex align-items-center ms-3 text-info">
-                                        <svg class="icon-12" xmlns="http://www.w3.org/2000/svg" width="12"
-                                             viewBox="0 0 24 24" fill="currentColor">
-                                            <g>
-                                                <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
-                                            </g>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <!-- Horizontal Menu Start -->
+                    <nav id="navbar_main" class="mobile-offcanvas nav navbar navbar-expand-xl hover-nav horizontal-nav">
+                        <div class="container-fluid p-lg-0">
+                            <div class="offcanvas-header px-0">
+                                <a href="../landing-pages/index.html" class="navbar-brand ms-3  d-xl-none">
+                                    <!--Logo start-->
+                                    <svg class="icon-30 text-primary" width="30" viewBox="0 0 30 30" fill="none"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <rect x="-0.757324" y="19.2427" width="28" height="4" rx="2"
+                                              transform="rotate(-45 -0.757324 19.2427)" fill="currentColor"></rect>
+                                        <rect x="7.72803" y="27.728" width="28" height="4" rx="2"
+                                              transform="rotate(-45 7.72803 27.728)" fill="currentColor"></rect>
+                                        <rect x="10.5366" y="16.3945" width="16" height="4" rx="2"
+                                              transform="rotate(45 10.5366 16.3945)" fill="currentColor"></rect>
+                                        <rect x="10.5562" y="-0.556152" width="28" height="4" rx="2"
+                                              transform="rotate(45 10.5562 -0.556152)" fill="currentColor"></rect>
+                                    </svg>
+                                    <!--logo End--> <h5 class="logo-title">Hope UI</h5>
+                                </a>
+                                <button class="btn-close float-end px-3"></button>
+                            </div>
+                            <ul class="navbar-nav iq-nav-menu  list-unstyled" id="header-menu">
+                                <li class="nav-item ">
+                                    <a class="nav-link menu-arrow justify-content-start" data-bs-toggle="collapse"
+                                       href="#homeData" role="button" aria-expanded="false" aria-controls="homeData">
+                                        <span class="item-name">Home</span>
+                                        <svg fill="none" xmlns="http://www.w3.org/2000/svg" class="icon-18" width="18"
+                                             height="18" viewBox="0 0 24 24">
+                                            <path d="M19 8.5L12 15.5L5 8.5" stroke="currentColor" stroke-width="1.5"
+                                                  stroke-linecap="round" stroke-linejoin="round"></path>
                                         </svg>
-                                        <div class="ms-2">
-                                            <span class="text-gray">Cost</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="dropdown">
-                                    <a href="#" class="text-gray dropdown-toggle" id="dropdownMenuButton22"
-                                       data-bs-toggle="dropdown" aria-expanded="false">
-                                        This Week
                                     </a>
-                                    <ul class="dropdown-menu dropdown-menu-end"
-                                        aria-labelledby="dropdownMenuButton22">
-                                        <li><a class="dropdown-item" href="#">This Week</a></li>
-                                        <li><a class="dropdown-item" href="#">This Month</a></li>
-                                        <li><a class="dropdown-item" href="#">This Year</a></li>
+                                    <ul class="iq-header-sub-menu list-unstyled collapse" id="homeData">
+                                        <li class="nav-item"><a class="nav-link active"
+                                                                href="../landing-pages/index.html">App Landing Page</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link " href="../landing-pages/software-landing-page.html">
+                                                Software Landing Page
+                                            </a>
+                                        </li>
                                     </ul>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div id="d-main" class="d-main"></div>
-                            </div>
+                                </li>
+                                <li class="nav-item"><a class="nav-link " href="../landing-pages/about.html">About
+                                    Us </a></li>
+                                <li class="nav-item"><a class="nav-link " href="../landing-pages/feature.html">
+                                    Features </a></li>
+                                <li class="nav-item"><a class="nav-link "
+                                                        href="../landing-pages/pricing.html">Pricing</a></li>
+                                <li class="nav-item"><a class="nav-link " href="../landing-pages/blog.html">Blog</a>
+                                </li>
+                                <li class="nav-item"><a class="nav-link " href="../landing-pages/faq.html">Faq</a></li>
+                                <li class="nav-item"><a class="nav-link " href="../landing-pages/contact-us.html">Contact
+                                    Us</a></li>
+                            </ul>
+                        </div> <!-- container-fluid.// -->
+                    </nav>
+                    <!-- Sidebar Menu End -->
+                </div>
+            </div>
+        </nav>        <!--Nav-End-->
+    </div>
+    <div class="banner-one-app">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6 banner-one-img text-center ms-2 ms-sm-0">
+                    <img src="../landing-pages/assets/images/home-1/banner-top.webp" alt="" class="img-fluid ">
+                </div>
+                <div class="col-sm-6 inner-box">
+                    <p class="mb-2 text-uppercase text-secondary">
+                        Look fit, feel fit
+                    </p>
+                    <h1 class="text-secondary mb-4">The Joy Of<br><span class="text-primary">Right Health</span></h1>
+                    <p class="mb-5">It is a long established fact that a reader will be distracted by the readable
+                        content
+                        of a page when looking at its layout. </p>
+                    <div class="d-flex align-items-center store-btn">
+                        <a href="#" class="btn btn-primary">Download Free</a>
+                        <a href="#" class="btn btn-secondary ms-3">Download Pro</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bg-secondary features-card">
+        <div class="container">
+            <div class="row mx-2 mx-sm-0">
+                <div class="col-lg-6"></div>
+                <div class="col-lg-6 top-feature">
+                    <div class="text-right">
+                        <p class="mb-2 text-white text-uppercase">Why HopeUI rocks</p>
+                        <h2 class="mb-3 text-white notch-feature-txt">Top Notch Features </h2>
+                        <p class="mb-5 text-white pb-5">It is a long established fact that a reader will be distracted
+                            by
+                            the readable content of a page when looking at its layout. </p>
+                    </div>
+                </div>
+            </div>
+            <div class="row row-cols-sm-2 row-cols-lg-4">
+                <div class="col">
+                    <div class="card services-box  rounded-1">
+                        <div class="card-body">
+                            <h4 class="mb-3">400+ UI Components</h4>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. </p>
+                            <svg width="12" height="13" viewBox="0 0 12 13" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                        d="M5.45109 0.343108L5.46396 1.36387L10.0063 1.42104L0.0568434 11.3704L0.787737 12.1013L10.7371 2.15194L10.7943 6.6942L11.8151 6.70706L11.736 0.422159L5.45109 0.343108Z"
+                                        fill="currentColor"/>
+                            </svg>
                         </div>
                     </div>
-                    <div class="col-md-12 col-lg-12">
-                        <div class="overflow-hidden card" data-aos="fade-up" data-aos-delay="600">
-                            <div class="flex-wrap card-header d-flex justify-content-between">
-                                <div class="header-title">
-                                    <h4 class="mb-2 card-title">Enterprise Clients</h4>
-                                    <p class="mb-0">
-                                        <svg class="me-2 text-primary icon-24" width="24" viewBox="0 0 24 24">
-                                            <path fill="currentColor"
-                                                  d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path>
-                                        </svg>
-                                        15 new acquired this month
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="p-0 card-body">
-                                <div class="mt-4 table-responsive">
-                                    <table id="basic-table" class="table mb-0 table-striped" role="grid">
-                                        <thead>
-                                        <tr>
-                                            <th>COMPANIES</th>
-                                            <th>CONTACTS</th>
-                                            <th>ORDER</th>
-                                            <th>COMPLETION</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <img class="rounded bg-soft-primary img-fluid avatar-40 me-3"
-                                                         src="{% static 'assets/images/shapes/01.png' %}" alt="profile">
-                                                    <h6>Addidis Sportwear</h6>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="iq-media-group iq-media-group-1">
-                                                    <a href="#" class="iq-media-1">
-                                                        <div class="icon iq-icon-box-3 rounded-pill">SP</div>
-                                                    </a>
-                                                    <a href="#" class="iq-media-1">
-                                                        <div class="icon iq-icon-box-3 rounded-pill">PP</div>
-                                                    </a>
-                                                    <a href="#" class="iq-media-1">
-                                                        <div class="icon iq-icon-box-3 rounded-pill">MM</div>
-                                                    </a>
-                                                </div>
-                                            </td>
-                                            <td>$14,000</td>
-                                            <td>
-                                                <div class="mb-2 d-flex align-items-center">
-                                                    <h6>60%</h6>
-                                                </div>
-                                                <div class="shadow-none progress bg-soft-primary w-100"
-                                                     style="height: 4px">
-                                                    <div class="progress-bar bg-primary" data-toggle="progress-bar"
-                                                         role="progressbar" aria-valuenow="60" aria-valuemin="0"
-                                                         aria-valuemax="100"></div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <img class="rounded bg-soft-primary img-fluid avatar-40 me-3"
-                                                         src="{% static 'assets/images/shapes/05.png' %}" alt="profile">
-                                                    <h6>Netflixer Platforms</h6>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="iq-media-group iq-media-group-1">
-                                                    <a href="#" class="iq-media-1">
-                                                        <div class="icon iq-icon-box-3 rounded-pill">SP</div>
-                                                    </a>
-                                                    <a href="#" class="iq-media-1">
-                                                        <div class="icon iq-icon-box-3 rounded-pill">PP</div>
-                                                    </a>
-                                                </div>
-                                            </td>
-                                            <td>$30,000</td>
-                                            <td>
-                                                <div class="mb-2 d-flex align-items-center">
-                                                    <h6>25%</h6>
-                                                </div>
-                                                <div class="shadow-none progress bg-soft-primary w-100"
-                                                     style="height: 4px">
-                                                    <div class="progress-bar bg-primary" data-toggle="progress-bar"
-                                                         role="progressbar" aria-valuenow="25" aria-valuemin="0"
-                                                         aria-valuemax="100"></div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <img class="rounded bg-soft-primary img-fluid avatar-40 me-3"
-                                                         src="{% static 'assets/images/shapes/02.png' %}" alt="profile">
-                                                    <h6>Shopifi Stores</h6>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="iq-media-group iq-media-group-1">
-                                                    <a href="#" class="iq-media-1">
-                                                        <div class="icon iq-icon-box-3 rounded-pill">PP</div>
-                                                    </a>
-                                                    <a href="#" class="iq-media-1">
-                                                        <div class="icon iq-icon-box-3 rounded-pill">TP</div>
-                                                    </a>
-                                                </div>
-                                            </td>
-                                            <td>$8,500</td>
-                                            <td>
-                                                <div class="mb-2 d-flex align-items-center">
-                                                    <h6>100%</h6>
-                                                </div>
-                                                <div class="shadow-none progress bg-soft-success w-100"
-                                                     style="height: 4px">
-                                                    <div class="progress-bar bg-success" data-toggle="progress-bar"
-                                                         role="progressbar" aria-valuenow="100" aria-valuemin="0"
-                                                         aria-valuemax="100"></div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <img class="rounded bg-soft-primary img-fluid avatar-40 me-3"
-                                                         src="{% static 'assets/images/shapes/03.png' %}" alt="profile">
-                                                    <h6>Bootstrap Technologies</h6>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="iq-media-group iq-media-group-1">
-                                                    <a href="#" class="iq-media-1">
-                                                        <div class="icon iq-icon-box-3 rounded-pill">SP</div>
-                                                    </a>
-                                                    <a href="#" class="iq-media-1">
-                                                        <div class="icon iq-icon-box-3 rounded-pill">PP</div>
-                                                    </a>
-                                                    <a href="#" class="iq-media-1">
-                                                        <div class="icon iq-icon-box-3 rounded-pill">MM</div>
-                                                    </a>
-                                                    <a href="#" class="iq-media-1">
-                                                        <div class="icon iq-icon-box-3 rounded-pill">TP</div>
-                                                    </a>
-                                                </div>
-                                            </td>
-                                            <td>$20,500</td>
-                                            <td>
-                                                <div class="mb-2 d-flex align-items-center">
-                                                    <h6>100%</h6>
-                                                </div>
-                                                <div class="shadow-none progress bg-soft-success w-100"
-                                                     style="height: 4px">
-                                                    <div class="progress-bar bg-success" data-toggle="progress-bar"
-                                                         role="progressbar" aria-valuenow="100" aria-valuemin="0"
-                                                         aria-valuemax="100"></div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <img class="rounded bg-soft-primary img-fluid avatar-40 me-3"
-                                                         src="{% static 'assets/images/shapes/04.png' %}" alt="profile">
-                                                    <h6>Community First</h6>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="iq-media-group iq-media-group-1">
-                                                    <a href="#" class="iq-media-1">
-                                                        <div class="icon iq-icon-box-3 rounded-pill">MM</div>
-                                                    </a>
-                                                </div>
-                                            </td>
-                                            <td>$9,800</td>
-                                            <td>
-                                                <div class="mb-2 d-flex align-items-center">
-                                                    <h6>75%</h6>
-                                                </div>
-                                                <div class="shadow-none progress bg-soft-primary w-100"
-                                                     style="height: 4px">
-                                                    <div class="progress-bar bg-primary" data-toggle="progress-bar"
-                                                         role="progressbar" aria-valuenow="75" aria-valuemin="0"
-                                                         aria-valuemax="100"></div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+                </div>
+                <div class="col">
+                    <div class="card services-box  rounded-1">
+                        <div class="card-body">
+                            <h4 class="mb-3">Refreshing<br> Design</h4>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. </p>
+                            <svg width="12" height="13" viewBox="0 0 12 13" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                        d="M5.45109 0.343108L5.46396 1.36387L10.0063 1.42104L0.0568434 11.3704L0.787737 12.1013L10.7371 2.15194L10.7943 6.6942L11.8151 6.70706L11.736 0.422159L5.45109 0.343108Z"
+                                        fill="currentColor"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card services-box  rounded-1">
+                        <div class="card-body">
+                            <h4 class="mb-3">Universal UI Toolkit</h4>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. </p>
+                            <svg width="12" height="13" viewBox="0 0 12 13" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                        d="M5.45109 0.343108L5.46396 1.36387L10.0063 1.42104L0.0568434 11.3704L0.787737 12.1013L10.7371 2.15194L10.7943 6.6942L11.8151 6.70706L11.736 0.422159L5.45109 0.343108Z"
+                                        fill="currentColor"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="col mb-4">
+                    <div class="card services-box  rounded-1">
+                        <div class="card-body">
+                            <h4 class="mb-3">Fully<br> Responsive</h4>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. </p>
+                            <svg width="12" height="13" viewBox="0 0 12 13" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                        d="M5.45109 0.343108L5.46396 1.36387L10.0063 1.42104L0.0568434 11.3704L0.787737 12.1013L10.7371 2.15194L10.7943 6.6942L11.8151 6.70706L11.736 0.422159L5.45109 0.343108Z"
+                                        fill="currentColor"/>
+                            </svg>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-12 col-lg-4">
-                <div class="row">
-                    <div class="col-md-12 col-lg-12">
-                        <div class="card credit-card-widget" data-aos="fade-up" data-aos-delay="900">
-                            <div class="pb-4 border-0 card-header">
-                                <div class="p-4 border border-white rounded primary-gradient-card">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <h5 class="font-weight-bold">VISA </h5>
-                                            <P class="mb-0">PREMIUM ACCOUNT</P>
-                                        </div>
-                                        <div class="master-card-content">
-                                            <svg class="master-card-1 icon-60" width="60" viewBox="0 0 24 24">
-                                                <path fill="#ffffff"
-                                                      d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"></path>
-                                            </svg>
-                                            <svg class="master-card-2 icon-60" width="60" viewBox="0 0 24 24">
-                                                <path fill="#ffffff"
-                                                      d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"></path>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    <div class="my-4">
-                                        <div class="card-number">
-                                            <span class="fs-5 me-2">5789</span>
-                                            <span class="fs-5 me-2">****</span>
-                                            <span class="fs-5 me-2">****</span>
-                                            <span class="fs-5">2847</span>
-                                        </div>
-                                    </div>
-                                    <div class="mb-2 d-flex align-items-center justify-content-between">
-                                        <p class="mb-0">Card holder</p>
-                                        <p class="mb-0">Expire Date</p>
-                                    </div>
-                                    <div class="d-flex align-items-center justify-content-between">
-                                        <h6>Mike Smith</h6>
-                                        <h6 class="ms-5">06/11</h6>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="flex-wrap mb-4 d-flex align-itmes-center justify-content-between">
-                                    <div class="d-flex align-itmes-center me-0 me-md-4">
-                                        <div>
-                                            <div class="p-3 mb-2 rounded bg-soft-primary">
-                                                <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                     xmlns="http://www.w3.org/2000/svg">
-                                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                                          d="M16.9303 7C16.9621 6.92913 16.977 6.85189 16.9739 6.77432H17C16.8882 4.10591 14.6849 2 12.0049 2C9.325 2 7.12172 4.10591 7.00989 6.77432C6.9967 6.84898 6.9967 6.92535 7.00989 7H6.93171C5.65022 7 4.28034 7.84597 3.88264 10.1201L3.1049 16.3147C2.46858 20.8629 4.81062 22 7.86853 22H16.1585C19.2075 22 21.4789 20.3535 20.9133 16.3147L20.1444 10.1201C19.676 7.90964 18.3503 7 17.0865 7H16.9303ZM15.4932 7C15.4654 6.92794 15.4506 6.85153 15.4497 6.77432C15.4497 4.85682 13.8899 3.30238 11.9657 3.30238C10.0416 3.30238 8.48184 4.85682 8.48184 6.77432C8.49502 6.84898 8.49502 6.92535 8.48184 7H15.4932ZM9.097 12.1486C8.60889 12.1486 8.21321 11.7413 8.21321 11.2389C8.21321 10.7366 8.60889 10.3293 9.097 10.3293C9.5851 10.3293 9.98079 10.7366 9.98079 11.2389C9.98079 11.7413 9.5851 12.1486 9.097 12.1486ZM14.002 11.2389C14.002 11.7413 14.3977 12.1486 14.8858 12.1486C15.3739 12.1486 15.7696 11.7413 15.7696 11.2389C15.7696 10.7366 15.3739 10.3293 14.8858 10.3293C14.3977 10.3293 14.002 10.7366 14.002 11.2389Z"
-                                                          fill="currentColor"></path>
-                                                </svg>
-                                            </div>
-                                        </div>
-                                        <div class="ms-3">
-                                            <h5>1153</h5>
-                                            <small class="mb-0">Products</small>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex align-itmes-center">
-                                        <div>
-                                            <div class="p-3 mb-2 rounded bg-soft-info">
-                                                <svg class="icon-20" width="20" viewBox="0 0 24 24" fill="none"
-                                                     xmlns="http://www.w3.org/2000/svg">
-                                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                                          d="M14.1213 11.2331H16.8891C17.3088 11.2331 17.6386 10.8861 17.6386 10.4677C17.6386 10.0391 17.3088 9.70236 16.8891 9.70236H14.1213C13.7016 9.70236 13.3719 10.0391 13.3719 10.4677C13.3719 10.8861 13.7016 11.2331 14.1213 11.2331ZM20.1766 5.92749C20.7861 5.92749 21.1858 6.1418 21.5855 6.61123C21.9852 7.08067 22.0551 7.7542 21.9652 8.36549L21.0159 15.06C20.8361 16.3469 19.7569 17.2949 18.4879 17.2949H7.58639C6.25742 17.2949 5.15828 16.255 5.04837 14.908L4.12908 3.7834L2.62026 3.51807C2.22057 3.44664 1.94079 3.04864 2.01073 2.64043C2.08068 2.22305 2.47038 1.94649 2.88006 2.00874L5.2632 2.3751C5.60293 2.43735 5.85274 2.72207 5.88272 3.06905L6.07257 5.35499C6.10254 5.68257 6.36234 5.92749 6.68209 5.92749H20.1766ZM7.42631 18.9079C6.58697 18.9079 5.9075 19.6018 5.9075 20.459C5.9075 21.3061 6.58697 22 7.42631 22C8.25567 22 8.93514 21.3061 8.93514 20.459C8.93514 19.6018 8.25567 18.9079 7.42631 18.9079ZM18.6676 18.9079C17.8282 18.9079 17.1487 19.6018 17.1487 20.459C17.1487 21.3061 17.8282 22 18.6676 22C19.4969 22 20.1764 21.3061 20.1764 20.459C20.1764 19.6018 19.4969 18.9079 18.6676 18.9079Z"
-                                                          fill="currentColor"></path>
-                                                </svg>
-                                            </div>
-                                        </div>
-                                        <div class="ms-3">
-                                            <h5>81K</h5>
-                                            <small class="mb-0">Order Served</small>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="mb-4">
-                                    <div class="flex-wrap d-flex justify-content-between">
-                                        <h2 class="mb-2">$405,012,300</h2>
-                                        <div>
-                                            <span class="badge bg-success rounded-pill">YoY 24%</span>
-                                        </div>
-                                    </div>
-                                    <p class="text-info">Lifetime sales</p>
-                                </div>
-                                <div class="grid-cols-2 d-grid gap-card">
-                                    <button class="p-2 btn btn-primary text-uppercase">SUMMARY</button>
-                                    <button class="p-2 btn btn-info text-uppercase">ANALYTICS</button>
+        </div>
+    </div>
+    <div class="section-padding bg-white">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <img src="../landing-pages/assets/images/home-1/aboutus.webp" alt="" class="img-fluid ">
+                </div>
+                <div class="col-md-6">
+                    <p class="mb-2 text-secondary text-uppercase">
+                        about us
+                    </p>
+                    <h2 class="text-secondary mb-4">What they say <br> <span class="text-primary">About Us</span></h2>
+                    <p class="mb-5">It is a long established fact that a reader will be distracted by the readable
+                        content
+                        of a page when looking at its layout. </p>
+                    <a href="#" class="btn btn-primary">Get Started</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="section-padding page-bg">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <p class="mb-2 text-secondary text-uppercase">
+                        Download now
+                    </p>
+                    <h2 class="text-secondary mb-4 fast-afrd-txt">Fast, easy, and <br> <span
+                            class="text-primary">Affordable</span></h2>
+                    <p class="mb-5">It is a long established fact that a reader will be distracted by the readable
+                        content
+                        of a page when looking at its layout. </p>
+                    <div class="d-flex align-items-center store-btn flex-wrap">
+                        <img src="../landing-pages/assets/images/home-1/playstore.webp" alt=""
+                             class="img-fluid mb-3 mb-md-0">
+                        <img src="../landing-pages/assets/images/home-1/appstore.webp" alt=""
+                             class="img-fluid ms-0 ms-md-3">
+                    </div>
+                </div>
+                <div class="col-lg-6 mt-5 mt-lg-0">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <img src="../landing-pages/assets/images/home-1/dwn-1.webp" alt="" class="img-fluid">
+                        </div>
+                        <div class="col">
+                            <img src="../landing-pages/assets/images/home-1/dwn-2.webp" alt="" class="img-fluid">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="section-card-padding  bg-white">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-4">
+                    <p class="mb-2 text-secondary text-uppercase">
+                        Pricing
+                    </p>
+                    <h2 class="text-secondary mb-4">Our <span class="text-primary">Price<br> Plans</span></h2>
+                    <p class="mb-4">It is a long established fact that a reader will be distracted by the readable
+                        content
+                        of a page when looking at its layout. </p>
+                    <a href="#" class="btn btn-primary mt-2">View demo</a>
+                </div>
+                <div class="col-lg-8 mt-4 mt-lg-0">
+                    <div class="row iq-star-inserted row-cols-1 row-cols-md-2 row-cols-lg-2 text-center">
+                        <div class="col iq-star-inserted-2">
+                            <div class="card shadow-lg">
+                                <div class="card-body">
+                                    <h5 class="my-0 fw-normal mb-4">Pro</h5>
+                                    <h4 class="card-title pricing-card-title mb-0 text-primary mb-4">$15<small
+                                            class="text-secondary"> / month</small></h4>
+                                    <p class="">Billed Yearly</p>
+                                    <p>$169.99 Billed Monthly</p>
+                                    <ul class="list-unstyled my-3 p-0">
+                                        <li class="mb-4">20 users included</li>
+                                        <li class="mb-4">10GB of storage</li>
+                                        <li class="mb-4">Priority Email support</li>
+                                        <li class="mb-4">Help center access</li>
+                                        <li class="mb-4">Help center access</li>
+                                        <li>
+                                            <p>Help center access</p>
+                                        </li>
+                                    </ul>
+                                    <button type="button" class="btn btn-primary w-100">Get Started</button>
                                 </div>
                             </div>
                         </div>
-                        <div class="card" data-aos="fade-up" data-aos-delay="500">
-                            <div class="text-center card-body d-flex justify-content-around">
-                                <div>
-                                    <h2 class="mb-2">750<small>K</small></h2>
-                                    <p class="mb-0 text-gray">Website Visitors</p>
-                                </div>
-                                <hr class="hr-vertial">
-                                <div>
-                                    <h2 class="mb-2">7,500</h2>
-                                    <p class="mb-0 text-gray">New Customers</p>
+                        <div class="col iq-star-inserted-3">
+                            <div class="card my-5">
+                                <div class="card-body page-bg">
+                                    <h5 class="my-0 fw-normal mb-4">Premium</h5>
+                                    <h4 class="card-title pricing-card-title mb-0 text-primary mb-4">$49 <small
+                                            class="text-secondary"> / month</small></h4>
+                                    <p class="">Billed Yearly</p>
+                                    <p>$169.9 Billed Monthly</p>
+                                    <ul class="list-unstyled my-3 p-0">
+                                        <li class="mb-3">30 users included</li>
+                                        <li class="mb-3">15 GB of storage</li>
+                                        <li class="mb-3">Call and email support</li>
+                                        <li class="mb-3">Help center access</li>
+                                        <li class="mb-3">Help center access</li>
+                                        <li>Help center access</li>
+                                    </ul>
+                                    <button type="button" class="btn btn-primary w-100">Get Started</button>
                                 </div>
                             </div>
                         </div>
@@ -502,4 +354,407 @@
             </div>
         </div>
     </div>
+    <div class="section-padding ">
+        <div class="container">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3">
+                <div class="col">
+                    <img src="../landing-pages/assets/images/home-1/01.webp" alt="" class="img-fluid ">
+                </div>
+                <div class="col">
+                    <img src="../landing-pages/assets/images/home-1/02.webp" alt="" class="img-fluid ">
+                </div>
+                <div class="col">
+                    <img src="../landing-pages/assets/images/home-1/03.webp" alt="" class="img-fluid ">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="section-card-padding bg-white">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-12 text-center">
+                    <p class="mb-2 text-uppercase text-secondary">
+                        team
+                    </p>
+                    <h2 class="text-secondary mb-4">Expert <span class="text-primary">Teams</span></h2>
+                </div>
+                <div class="col-md-3 col-sm-2">
+                    <div class="card team-image">
+                        <img src="../landing-pages/assets/images/home-1/team1.webp" alt="team-details"
+                             class="img-fluid rounded-top" loading="lazy">
+                        <div class="card-body">
+                            <h6 class="my-2">Darlene
+                                Robertson</h6>
+                            <p class="mb-0">Founder</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-2">
+                    <div class="card team-image">
+                        <img src="../landing-pages/assets/images/home-1/team2.webp" alt="team-details"
+                             class="img-fluid rounded-top" loading="lazy">
+                        <div class="card-body">
+                            <h6 class="my-2">Floyd Miles</h6>
+                            <p class="mb-0">UI designer</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-2">
+                    <div class="card team-image">
+                        <img src="../landing-pages/assets/images/home-1/team-3.webp" alt="team-details"
+                             class="img-fluid rounded-top" loading="lazy">
+                        <div class="card-body">
+                            <h6 class="my-2">Arlene McCoy</h6>
+                            <p class="mb-0">Researcher</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-2">
+                    <div class="card team-image">
+                        <img src="../landing-pages/assets/images/home-1/team-4.webp" alt="team-details"
+                             class="img-fluid rounded-top" loading="lazy">
+                        <div class="card-body">
+                            <h6 class="my-2">Darlene
+                                Robertson</h6>
+                            <p class="mb-0">Founder</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="section-card-padding page-bg">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-12 text-center">
+                    <p class="mb-2 text-uppercase text-secondary">
+                        Blog
+                    </p>
+                    <h2 class="text-secondary mb-4">All the <span class="text-primary">Support you Need</span></h2>
+                </div>
+                <div class="overflow-hidden slider-circle-btn mt-5" id="app-slider">
+                    <ul class="p-0 m-0 swiper-wrapper list-inline">
+                        <li class="swiper-slide card-slide card overflow-hidden">
+                            <img src="../landing-pages/assets/images/home-1/04.webp" alt="" class="img-fluid"
+                                 loading="lazy">
+                            <div class="card-body">
+                                <p>Video</p>
+                                <h6 class="my-2"><a href="../landing-pages/blog-detail.html">The
+                                    Shaping the futures, part by part.</a></h6>
+                            </div>
+                        </li>
+                        <li class="swiper-slide card-slide card overflow-hidden">
+                            <img src="../landing-pages/assets/images/home-1/05.webp" alt="" class="img-fluid"
+                                 loading="lazy">
+                            <div class="card-body">
+                                <p>Video</p>
+                                <h6 class="my-2"><a href="../landing-pages/blog-detail.html">Technology that unwinds
+                                    your potential.</a></h6>
+                            </div>
+                        </li>
+                        <li class="swiper-slide card-slide card overflow-hidden">
+                            <img src="../landing-pages/assets/images/home-1/06.webp" alt="" class="img-fluid"
+                                 loading="lazy">
+                            <div class="card-body">
+                                <p>Video</p>
+                                <h6 class="my-2"><a href="../landing-pages/blog-detail.html">Generating the best online
+                                    environment.</a></h6>
+                            </div>
+                        </li>
+                        <li class="swiper-slide card-slide card overflow-hidden">
+                            <img src="../landing-pages/assets/images/home-1/04.webp" alt="" class="img-fluid"
+                                 loading="lazy">
+                            <div class="card-body">
+                                <p>Video</p>
+                                <h6 class="my-2"><a href="../landing-pages/blog-detail.html">The
+                                    Shaping the futures, part by part.</a></h6>
+                            </div>
+                        </li>
+                        <li class="swiper-slide card-slide card overflow-hidden">
+                            <img src="../landing-pages/assets/images/home-1/05.webp" alt="" class="img-fluid"
+                                 loading="lazy">
+                            <div class="card-body">
+                                <p>Video</p>
+                                <h6 class="my-2"><a href="../landing-pages/blog-detail.html">Technology that unwinds
+                                    your potential.</a></h6>
+                            </div>
+                        </li>
+                        <li class="swiper-slide card-slide card overflow-hidden">
+                            <img src="../landing-pages/assets/images/home-1/06.webp" alt="" class="img-fluid"
+                                 loading="lazy">
+                            <div class="card-body">
+                                <p>Video</p>
+                                <h6 class="my-2"><a href="../landing-pages/blog-detail.html">Generating the best online
+                                    environment.</a></h6>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="swiper-button swiper-button-next"></div>
+                    <div class="swiper-button swiper-button-prev"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="section-padding bg-white">
+        <div class="container">
+            <div class="row align-items-center text-center row-cols-2 row-cols-sm-2 row-cols-md-2 row-cols-lg-4">
+                <div class="col mb-lg-0 mb-4">
+                    <h2 class=" mb-2 counter">3</h2>
+                    <h6>Best Designer Award</h6></div>
+                <div class="col mb-lg-0 mb-4">
+                    <h2 class=" mb-2 counter">50+</h2>
+                    <h6>Loyal Clients</h6></div>
+                <div class="col">
+                    <h2 class=" mb-2 counter">158+</h2>
+                    <h6>Nominee Awards</h6></div>
+                <div class="col">
+                    <h2 class=" mb-2 counter">92+</h2>
+                    <h6>CSS Designs</h6></div>
+            </div>
+        </div>
+    </div>
+    <div class="inner-box bg-secondary">
+        <div class="container">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-5 justify-content-center ">
+                <div class="col mb-md-0 mb-5 d-flex justify-content-center">
+                    <img src="../landing-pages/assets/images/home-1/07.webp" alt="client-details"
+                         class="img-fluid client-img" loading="lazy">
+                </div>
+                <div class="col mb-md-0 mb-5 d-flex justify-content-center">
+                    <img src="../landing-pages/assets/images/home-1/08.webp" alt="client-details"
+                         class="img-fluid client-img" loading="lazy">
+                </div>
+                <div class="col mb-md-0 mb-5 d-flex justify-content-center">
+                    <img src="../landing-pages/assets/images/home-1/09.webp" alt="client-details"
+                         class="img-fluid client-img" loading="lazy">
+                </div>
+                <div class="col mb-md-0 mb-5 d-flex justify-content-center">
+                    <img src="../landing-pages/assets/images/home-1/10.webp" alt="client-details"
+                         class="img-fluid client-img" loading="lazy">
+                </div>
+                <div class="col d-flex justify-content-center">
+                    <img src="../landing-pages/assets/images/home-1/11.webp" alt="client-details"
+                         class="img-fluid client-img" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="section-padding">
+        <div class="container">
+            <div class="row align-items-center text-center">
+                <div class="col-lg-12">
+                    <p class="mb-4 text-uppercase text-secondary">Testimony</p>
+                    <h2 class="text-secondary customer-txt">What our <span class="text-primary">Customer’s <br> are
+                        saying</span></h2>
+                </div>
+                <div class="overflow-hidden slider-circle-btn" id="testimonial-slider">
+                    <ul class="p-0 m-0 swiper-wrapper list-inline">
+                        <li class="swiper-slide">
+
+                            <svg width="98" height="99" class="mt-5" viewBox="0 0 98 99" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path d="M65.1171 0.5H93.4687L97.4572 8.44811L65.2733 98.5H50.2545L65.1171 0.5ZM14.9113 0.5H42.7957L46.7842 8.44811L14.6003 98.5H-0.415726L14.9113 0.5Z"
+                                      stroke="#3A57E8"/>
+                            </svg>
+                            <p class="mt-4 test-text">Torquatos nec eu, detr
+                                periculis ex, nihil expetendis in mei. Mei an pericula euripidis.hinc partem ei est. Eos
+                                ei nisl
+                                graecis, vix aperiri consequat an. Eius lorem tincidunt vix at, vel pertinax sensibus
+                                id, error
+                                epicurei mea. Mea facilisis urbanitas.Torquatos nec eu, detr periculis ex, nihil
+                                expetendis in
+                                mei.</p>
+                            <h6 class="">Elsa Schmidt</h6>
+                            <p class="mb-0 text-primary">Spa</p>
+                        </li>
+                        <li class="swiper-slide">
+
+                            <svg width="98" height="99" class="mt-5" viewBox="0 0 98 99" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path d="M65.1171 0.5H93.4687L97.4572 8.44811L65.2733 98.5H50.2545L65.1171 0.5ZM14.9113 0.5H42.7957L46.7842 8.44811L14.6003 98.5H-0.415726L14.9113 0.5Z"
+                                      stroke="#3A57E8"/>
+                            </svg>
+                            <p class="mt-4 test-text">Torquatos nec eu, detr
+                                periculis ex, nihil expetendis in mei. Mei an pericula euripidis.hinc partem ei est. Eos
+                                ei nisl
+                                graecis, vix aperiri consequat an. Eius lorem tincidunt vix at, vel pertinax sensibus
+                                id, error
+                                epicurei mea. Mea facilisis urbanitas.Torquatos nec eu, detr periculis ex, nihil
+                                expetendis in
+                                mei.</p>
+                            <h6 class="">Elsa Schmidt</h6>
+                            <p class="mb-0 text-primary">Spa</p>
+                        </li>
+                        <li class="swiper-slide">
+
+                            <svg width="98" height="99" class="mt-5" viewBox="0 0 98 99" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path d="M65.1171 0.5H93.4687L97.4572 8.44811L65.2733 98.5H50.2545L65.1171 0.5ZM14.9113 0.5H42.7957L46.7842 8.44811L14.6003 98.5H-0.415726L14.9113 0.5Z"
+                                      stroke="#3A57E8"/>
+                            </svg>
+                            <p class="mt-4 test-text">Torquatos nec eu, detr
+                                periculis ex, nihil expetendis in mei. Mei an pericula euripidis.hinc partem ei est. Eos
+                                ei nisl
+                                graecis, vix aperiri consequat an. Eius lorem tincidunt vix at, vel pertinax sensibus
+                                id, error
+                                epicurei mea. Mea facilisis urbanitas.Torquatos nec eu, detr periculis ex, nihil
+                                expetendis in
+                                mei.</p>
+                            <h6 class="">Elsa Schmidt</h6>
+                            <p class="mb-0 text-primary">Spa</p>
+                        </li>
+                        <li class="swiper-slide">
+
+                            <svg width="98" height="99" class="mt-5" viewBox="0 0 98 99" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path d="M65.1171 0.5H93.4687L97.4572 8.44811L65.2733 98.5H50.2545L65.1171 0.5ZM14.9113 0.5H42.7957L46.7842 8.44811L14.6003 98.5H-0.415726L14.9113 0.5Z"
+                                      stroke="#3A57E8"/>
+                            </svg>
+                            <p class="mt-4 test-text">Torquatos nec eu, detr
+                                periculis ex, nihil expetendis in mei. Mei an pericula euripidis.hinc partem ei est. Eos
+                                ei nisl
+                                graecis, vix aperiri consequat an. Eius lorem tincidunt vix at, vel pertinax sensibus
+                                id, error
+                                epicurei mea. Mea facilisis urbanitas.Torquatos nec eu, detr periculis ex, nihil
+                                expetendis in
+                                mei.</p>
+                            <h6 class="">Elsa Schmidt</h6>
+                            <p class="mb-0 text-primary">Spa</p>
+                        </li>
+                        <li class="swiper-slide">
+
+                            <svg width="98" height="99" class="mt-5" viewBox="0 0 98 99" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path d="M65.1171 0.5H93.4687L97.4572 8.44811L65.2733 98.5H50.2545L65.1171 0.5ZM14.9113 0.5H42.7957L46.7842 8.44811L14.6003 98.5H-0.415726L14.9113 0.5Z"
+                                      stroke="#3A57E8"/>
+                            </svg>
+                            <p class="mt-4 test-text">Torquatos nec eu, detr
+                                periculis ex, nihil expetendis in mei. Mei an pericula euripidis.hinc partem ei est. Eos
+                                ei nisl
+                                graecis, vix aperiri consequat an. Eius lorem tincidunt vix at, vel pertinax sensibus
+                                id, error
+                                epicurei mea. Mea facilisis urbanitas.Torquatos nec eu, detr periculis ex, nihil
+                                expetendis in
+                                mei.</p>
+                            <h6 class="">Elsa Schmidt</h6>
+                            <p class="mb-0 text-primary">Spa</p>
+                        </li>
+                    </ul>
+                    <div class="swiper-button swiper-button-next"></div>
+                    <div class="swiper-button swiper-button-prev"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </main>
+    <!-- Wrapper-End -->
+    <!-- Footer-start -->
+    <footer>
+        <div class="bg-secondary inner-box ">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <a href="../dashboard/index.html" class="navbar-brand  d-flex align-items-center">
+                            <svg class="icon-30 text-primary" width="30"
+                                 viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="-0.757324" y="19.2427" width="28" height="4" rx="2"
+                                      transform="rotate(-45 -0.757324 19.2427)" fill="currentColor"/>
+                                <rect x="7.72803" y="27.728" width="28" height="4" rx="2"
+                                      transform="rotate(-45 7.72803 27.728)"
+                                      fill="currentColor"/>
+                                <rect x="10.5366" y="16.3945" width="16" height="4" rx="2"
+                                      transform="rotate(45 10.5366 16.3945)" fill="currentColor"/>
+                                <rect x="10.5562" y="-0.556152" width="28" height="4" rx="2"
+                                      transform="rotate(45 10.5562 -0.556152)" fill="currentColor"/>
+                            </svg>
+                            <h4 class="logo-title ms-3 text-white">Hope UI</h4>
+                        </a>
+                        <p class="text-white my-4">It is a long established fact that a reader will be distracted by the
+                            readable content of a page when
+                            looking at its layout. </p>
+                        <div class="d-flex align-items-center mb-4">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path d="M1 6V22L8 18L16 22L23 18V2L16 6L8 2L1 6Z" stroke="white" stroke-width="2"
+                                      stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M16 6V22" stroke="white" stroke-width="2" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+                                <path d="M8 2V18" stroke="white" stroke-width="2" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+                            </svg>
+                            <p class="ms-4 mb-0 text-white">2798 Meadow Lane, Napa, California- 94559</p>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <svg width="22" height="22" viewBox="0 0 22 22" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                        d="M21 15.9201V18.9201C21.0011 19.1986 20.9441 19.4743 20.8325 19.7294C20.7209 19.9846 20.5573 20.2137 20.3521 20.402C20.1468 20.5902 19.9046 20.7336 19.6407 20.8228C19.3769 20.912 19.0974 20.9452 18.82 20.9201C15.7428 20.5857 12.787 19.5342 10.19 17.8501C7.77382 16.3148 5.72533 14.2663 4.18999 11.8501C2.49997 9.2413 1.44824 6.27109 1.11999 3.1801C1.095 2.90356 1.12787 2.62486 1.21649 2.36172C1.30512 2.09859 1.44756 1.85679 1.63476 1.65172C1.82196 1.44665 2.0498 1.28281 2.30379 1.17062C2.55777 1.05843 2.83233 1.00036 3.10999 1.0001H6.10999C6.5953 0.995321 7.06579 1.16718 7.43376 1.48363C7.80173 1.80008 8.04207 2.23954 8.10999 2.7201C8.23662 3.68016 8.47144 4.62282 8.80999 5.5301C8.94454 5.88802 8.97366 6.27701 8.8939 6.65098C8.81415 7.02494 8.62886 7.36821 8.35999 7.6401L7.08999 8.9101C8.51355 11.4136 10.5864 13.4865 13.09 14.9101L14.36 13.6401C14.6319 13.3712 14.9751 13.1859 15.3491 13.1062C15.7231 13.0264 16.1121 13.0556 16.47 13.1901C17.3773 13.5286 18.3199 13.7635 19.28 13.8901C19.7658 13.9586 20.2094 14.2033 20.5265 14.5776C20.8437 14.9519 21.0122 15.4297 21 15.9201Z"
+                                        stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <p class="ms-4 mb-0 text-white">(808) 555-0111</p>
+                        </div>
+                    </div>
+                    <div class="col-md-2 mt-md-0 mt-4">
+                        <h5 class="mb-4 text-white">Links</h5>
+                        <ul class="m-0 p-0 list-unstyled text-white">
+                            <li class="mb-3">About us</li>
+                            <li class="mb-3">Features</li>
+                            <li class="mb-3">Reviews</li>
+                            <li>Team</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-2 mt-md-0 mt-4">
+                        <h5 class="mb-4 text-white">Help</h5>
+                        <ul class="m-0 p-0 list-unstyled text-white">
+                            <li class="mb-3">My Account</li>
+                            <li class="mb-3">Returns & Refunds</li>
+                            <li class="mb-3">Payment Policy</li>
+                            <li>FAQ</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4 mt-md-0 mt-4">
+                        <h5 class="mb-4 text-white">Newsletter</h5>
+                        <div class="input-group mb-4">
+                            <input type="text" class="form-control input-email ps-0" placeholder="Username"
+                                   aria-label="Username"
+                                   aria-describedby="basic-addon1">
+                            <span class="input-group-text input-email-btn" id="basic-addon1"></span>
+                        </div>
+
+                        <ul class="list-unstyled p-0 m-0 d-flex mt-4">
+                            <li>
+                                <a href="#"><img src="../assets/images/brands/08.png" alt="fb" loading="lazy"
+                                                 class="rounded-pill"></a>
+                            </li>
+                            <li class="ps-3">
+                                <a href="#"><img src="../assets/images/brands/09.png" alt="gm" loading="lazy"
+                                                 class="rounded-pill"></a>
+                            </li>
+                            <li class="ps-3">
+                                <a href="#"><img src="../assets/images/brands/10.png" alt="im" loading="lazy"
+                                                 class="rounded-pill"></a>
+                            </li>
+                            <li class="ps-3">
+                                <a href="#"><img src="../assets/images/brands/13.png" alt="li" loading="lazy"
+                                                 class="rounded-pill"></a>
+                            </li>
+                        </ul>
+                    </div>
+                    <hr>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom bg-secondary ">
+            <div class="container border-top  py-4 border-primary">
+                <div class="row">
+                    <div class="col-md-12 text-center text-white">
+                        <p class="mb-0">©
+                            <script>document.write(new Date().getFullYear())</script>
+                            Hope UI, All Rights Reserved.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>    <!-- Footer-end -->
 {% endblock %}
