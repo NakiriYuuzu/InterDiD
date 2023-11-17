@@ -9,8 +9,9 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-import json
+
 import os
+from dotenv import load_dotenv
 from datetime import timedelta
 from pathlib import Path
 from django.conf import settings
@@ -18,28 +19,25 @@ from django.conf import settings
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Read config.json to setup Django's settings
-with open('config.json') as config_file:
-    config = json.load(config_file)
-
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config['DJANGO_SECRET_KEY']
-LINE_ACCESS_KEY = config['LINE_ACCESS_KEY']
-LINE_SECRET_KEY = config['LINE_SECRET_KEY']
+load_dotenv()
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
+LINE_ACCESS_KEY = os.getenv('LINE_ACCESS_KEY')
+LINE_SECRET_KEY = os.getenv('LINE_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 # Hosting
 ALLOWED_HOSTS = ['*']
-APP_HOST = config['APP_HOST']
+APP_HOST = os.getenv('APP_HOST')
 
 # Route
 LOGIN_URL = '/admin/login'
 ROOT_URLCONF = 'InterDiD.urls'
 
 # CSRF TRUST
-CSRF_TRUSTED_ORIGINS = [APP_HOST]
+CSRF_TRUSTED_ORIGINS = [f'{APP_HOST}']
 
 # Application definition
 INSTALLED_APPS = [
@@ -105,11 +103,11 @@ DATABASES = {
     # }
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'interdid_db',
-        'USER': 'root',
-        'PASSWORD': 'qwer',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'NAME': os.getenv('MYSQL_DATABASE'),
+        'USER': os.getenv('MYSQL_USER'),
+        'PASSWORD': os.getenv('MYSQL_PASSWORD'),
+        'HOST': os.getenv('MYSQL_HOST'),
+        'PORT': os.getenv('MYSQL_PORT'),
     }
 }
 
