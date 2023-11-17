@@ -3,15 +3,15 @@
 ---
 
 ## Features
-- [ ] Frontend
+- Frontend
   - [ ] Web
   - [ ] Quiz
   - [ ] puzzle
-- [ ] backend
+- backend
   - [x] API
   - [x] Database
   - [x] Linebot
-  - [ ] Dockerized
+  - [x] Dockerized
 
 ## Getting Started
 1. Clone the repository
