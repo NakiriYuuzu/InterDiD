@@ -11,10 +11,25 @@ class UsersSerializer(serializers.ModelSerializer):
 class ArtworkItemsSerializer(serializers.ModelSerializer):
     artwork_item_title = serializers.CharField(required=True)
     artwork_item_description = serializers.CharField(required=True)
+    artwork_product_title = serializers.CharField(write_only=True, required=False)
 
     class Meta:
         model = ArtworkItems
-        fields = ['artwork_item_id', 'artworks', 'artwork_item_image', 'artwork_item_title', 'artwork_item_description']
+        fields = ['artwork_item_id', 'artworks', 'artwork_item_image', 'artwork_item_title', 'artwork_item_description',
+                  'artwork_product_title']
+
+    def create(self, validated_data):
+        # 使用 pop 方法的第二个参数提供默认值，这样如果 'artwork_product_title' 键不存在也不会引发 KeyError
+        artwork_product_title = validated_data.pop('artwork_product_title', None)
+        artwork_item = ArtworkItems.objects.create(**validated_data)
+
+        # 如果提供了 artwork_product_title，则创建或获取 Artworks 实例
+        if artwork_product_title:
+            artwork, created = Artworks.objects.get_or_create(product_title=artwork_product_title)
+            artwork_item.artworks = artwork  # 关联 Artworks 实例
+            artwork_item.save()  # 保存 ArtworkItems 实例以更新 'artworks' 字段
+
+        return artwork_item
 
 
 class ArtworksSerializer(serializers.ModelSerializer):

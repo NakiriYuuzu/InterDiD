@@ -1,16 +1,19 @@
 import os
 
 from rest_framework import status, permissions
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from InterDiD import settings
 from ServerApi.serializer import *
+from ServerCommon import print_success, print_error, print_warning
 from ServerCommon.models import *
 
 
 class ArtworksView(APIView):
     permission_classes = [permissions.IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
 
     def get_permissions(self):
         if self.request.method == 'GET':
@@ -40,11 +43,21 @@ class ArtworksView(APIView):
 
     @staticmethod
     def post(request):
-        serializer = ArtworkItemsSerializer(data=request.data)
+        # 检查是否提供了 'artworks' 字段
+        if 'artworks' not in request.data and 'artwork_product_title' in request.data:
+            # 如果提供了 'artwork_product_title' 而没有提供 'artworks'，则创建新的 Artworks 实例
+            artwork_data = {'product_title': request.data['artwork_product_title']}
+            artwork_serializer = ArtworksSerializer(data=artwork_data)
+            if artwork_serializer.is_valid():
+                artwork = artwork_serializer.save()
+                request.data['artworks'] = artwork.artwork_id
+            else:
+                return Response(artwork_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-        # 检查数据是否有效
+        # 现在处理 ArtworkItems 的创建
+        serializer = ArtworkItemsSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()  # 保存 ArtworkItem 实例
+            serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -63,14 +76,12 @@ class ArtworksView(APIView):
                 if serializer.is_valid():
                     # 如果有新的图片文件上传
                     new_image_file = request.FILES.get('artwork_item_image', None)
-                    print(f'Incoming file: {new_image_file}')
                     if new_image_file:
                         # 删除旧图片
                         ArtworksView.delete_image_file(artwork_item.artwork_item_image)
 
                     # 保存其他字段
                     serializer.save()
-                    print(serializer.data)
                     return Response(serializer.data)
 
                 # 如果验证失败，返回错误
@@ -113,13 +124,13 @@ class ArtworksView(APIView):
         elif artwork_id:
             try:
                 artwork = Artworks.objects.get(artwork_id=artwork_id)
-                # 遍歷並刪除所有相關的圖片文件
-                for item in artwork.artworkitems_set.all():
+                for item in artwork.artwork_items.all():
                     ArtworksView.delete_image_file(item.artwork_item_image)
                 artwork.delete()
                 return Response({'message': 'Artwork deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
             except Artworks.DoesNotExist:
                 return Response({'error': 'Artwork not found'}, status=status.HTTP_404_NOT_FOUND)
+
         else:
             return Response({'error': 'No valid identifier provided'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -133,9 +144,9 @@ class ArtworksView(APIView):
             # 检查文件是否存在，并进行删除
             if os.path.exists(full_path):
                 os.remove(full_path)
-                print("\033[92m", f"刪除檔案{full_path}", end="\033[0m \n")
+                print_success(f"Deleted Successfully: {full_path}")
             else:
-                print("\033[91m", f"檔案{full_path}不存在", end="\033[0m \n")
+                print_error(f"File Not Found: {full_path}")
 
 
 class BeaconsView(APIView):

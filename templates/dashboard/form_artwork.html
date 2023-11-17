@@ -8,6 +8,9 @@
             <div :class="alertClass" role="alert" v-show="alert">
                 <span>[[message]]</span>
             </div>
+            <div v-if="showImage" class="full-screen-image-container" @click="showImage = null">
+                <img :src="showImage" class="full-screen-image" alt="">
+            </div>
             <div class="row">
                 <div class="col-sm-12 col-lg-12">
                     <div class="card">
@@ -96,9 +99,9 @@
                                                         </button>
                                                     </li>
                                                     <li class="nav-item" role="presentation">
-                                                        <button :class="switchButton" role="tab"
+                                                        <button :class="switchButtonNew" role="tab"
                                                                 type="button" @click="onNewOrSelectClick(false)"
-                                                                style="font-weight: bold">
+                                                                style="font-weight: bold;">
                                                             新增作品集
                                                         </button>
                                                     </li>
@@ -125,15 +128,15 @@
                                             </div>
                                             <div class="col-md-6" v-else>
                                                 <div class="form-group">
-                                                    <label class="form-label" for="artworks" style="font-weight: bold">
+                                                    <label class="form-label" for="artwork_product_title" style="font-weight: bold">
                                                         新增作品集: *
                                                     </label>
-                                                    <input type="text" class="form-control" id="artworks"
-                                                           v-model="artworkForm.artworks"/>
+                                                    <input type="text" class="form-control" id="artwork_product_title"
+                                                           v-model="artwork_product_title"/>
                                                 </div>
                                             </div>
                                         </div>
-                                        <button :disabled="artworkForm.artworks === ''" @click="verifyStep(2)"
+                                        <button :disabled="verifyFirstStep()" @click="verifyStep(2)"
                                                 type="button" class="btn btn-primary next action-button float-end">Next
                                         </button>
                                     </div>
@@ -186,7 +189,15 @@
                                         <div class="form-group">
                                             <label class="form-label">上傳您的作品: *</label>
                                             <input type="file" class="form-control" accept="image/*" ref="imageInput"
-                                                   @change="fileUpload">
+                                                   @change="fileUpload" style="margin-bottom: 16px;">
+                                            <svg class="bd-placeholder-img bd-placeholder-img-lg img-fluid"
+                                                 xmlns="http://www.w3.org/2000/svg"
+                                                 preserveAspectRatio="xMidYMid meet"
+                                                 @click="showImageFullScreen(tempImage)"
+                                                 viewBox="0 0 200 100"
+                                                 height="100%">
+                                                <image :href="tempImage" x="0" y="0" width="200" height="100"></image>
+                                            </svg>
                                         </div>
                                     </div>
                                     <button type="button" class="btn btn-primary next action-button float-end"
@@ -237,11 +248,15 @@
                     isSuccess: true,
                     alertTimer: null,
                     selectOrNew: true,
+                    tempImage: null,
+                    showImage: null,
                     isSubmit: false,
 
                     finishStep: 0,
                     currentStep: 1,
                     classForStep: {1: '', 2: '', 3: '', 4: ''},
+
+                    artwork_product_title: '',
 
                     artworks: [],
                     artworkForm: {
@@ -265,6 +280,9 @@
                 switchButton() {
                     return ['nav-link', 'd-flex', 'align-items-center', this.selectOrNew ? 'active' : '']
                 },
+                switchButtonNew() {
+                    return ['nav-link', 'd-flex', 'align-items-center', !this.selectOrNew ? 'active' : '']
+                },
                 alertClass() {
                     return [
                         'alert', 'alert-left', 'alert-dismissible', 'fade', 'show', 'mb-3',
@@ -282,16 +300,24 @@
                 },
                 updateClassForSteps() {
                     for (const step of [1, 2, 3, 4]) {
-                        this.classForStep[step] = this.calculateTitleClass(step).join(' ');
+                        this.classForStep[step] = this.calculateTitleClass(step).join(' ')
                     }
                 },
                 goToStep(step) {
                     if (step >= this.finishStep + 1) {
+                        if (this.isSubmit) return
                         this.showAlert(false, '請先完成上一步驟')
                         return
                     }
 
                     this.currentStep = step
+                },
+                verifyFirstStep() {
+                    if (this.selectOrNew) {
+                        return this.artworkForm.artworks === ''
+                    } else {
+                        return this.artwork_product_title === ''
+                    }
                 },
                 verifyStep(step) {
                     if (!this.validateStepData()) {
@@ -300,9 +326,17 @@
                     // 驗證資料
                     switch (this.currentStep) {
                         case 1:
-                            if (this.artworkForm.artworks === '') {
-                                this.showAlert(false, '請選擇作品集')
-                                return
+                            if (this.selectOrNew) {
+                                if (this.artworkForm.artworks === '') {
+                                    this.showAlert(false, '請選擇作品集')
+                                    return
+
+                                }
+                            } else {
+                                if (this.artwork_product_title === '') {
+                                    this.showAlert(false, '請填寫作品集名稱')
+                                    return
+                                }
                             }
                             break
 
@@ -344,7 +378,8 @@
                     switch (this.currentStep) {
                         case 1:
                             validations = [
-                                {condition: artworks === '', message: '請選擇作品集'}
+                                {condition: this.selectOrNew && artworks === '', message: '請選擇作品集'},
+                                {condition: !this.selectOrNew && this.artwork_product_title === '', message: '請填寫作品集名稱'}
                             ]
                             break
                         case 2:
@@ -373,13 +408,21 @@
                 calculateTitleClass(step) {
                     return ['mb-2', 'col-lg-3', 'col-md-6', 'text-start', this.currentStep === step ? 'active' : '']
                 },
+                showImageFullScreen(image) {
+                    this.showImage = image
+                },
                 onNewOrSelectClick(type) {
                     this.selectOrNew = type
-                    console.log(`${this.selectOrNew}`)
                 },
                 fileUpload(event) {
                     const file = event.target.files[0] // 獲取選擇的文件
                     if (file) {
+                        let reader = new FileReader()
+                        let vm = this
+                        reader.onload = function (e) {
+                            vm.tempImage = e.target.result
+                        }
+                        reader.readAsDataURL(file)
                         this.artworkForm.artwork_item_image = file
                     } else {
                         this.showAlert(false, '未選擇文件')
@@ -393,16 +436,12 @@
                         return
                     }
 
-                    if (this.selectOrNew === false) {
-                        if (/^\d+$/.test(this.artworkForm.artworks)) {
-                            this.showAlert(false, '作品集名稱不能為數字')
-                            this.isSubmit = false
-                            return
-                        }
-                    }
-
                     const formData = new FormData()
-                    formData.append('artworks', this.artworkForm.artworks)
+                    if (this.selectOrNew) {
+                        formData.append('artworks', this.artworkForm.artworks)
+                    } else {
+                        formData.append('artwork_product_title', this.artwork_product_title)
+                    }
                     formData.append('artwork_item_title', this.artworkForm.artwork_item_title)
                     formData.append('artwork_item_description', this.artworkForm.artwork_item_description)
                     formData.append('artwork_item_image', this.artworkForm.artwork_item_image)
@@ -411,11 +450,12 @@
                         method: 'post',
                         url: '/api/artworks',
                         headers: {
-                            'X-CSRFToken': this.token
+                            'X-CSRFToken': this.token,
+                            'Content-Type': 'multipart/form-data'
                         },
                         data: formData
                     }).then(response => {
-                        this.showAlert(true, '作品上傳成功，請等待3秒後繼續')
+                        this.showAlert(true, '作品上傳成功!')
                         setTimeout(() => this.resetFormAndState(response), 200)
                     }).catch(this.handleError)
                 },
@@ -426,19 +466,26 @@
                         artwork_item_description: '',
                         artwork_item_image: ''
                     }
+                    this.artwork_product_title = ''
                     this.$refs.imageInput.value = ''
 
+                    this.tempImage = null
                     this.selectOrNew = true
                     this.finishStep = 0
                     this.currentStep = 1
-                    this.isSubmit = false
 
                     this.fetchArtworks()
                     this.goToStep(1)
+                    this.isSubmit = false
                 },
                 handleError(error) {
                     this.isSubmit = false
-                    console.log(error.response.data)
+                    const errorData = error.response.data
+                    if (errorData === undefined || errorData === null) {
+                        this.showAlert(false, error.message)
+                        return
+                    }
+                    this.showAlert(false, errorData)
                 },
                 showAlert(isSuccess, message) {
                     if (this.alertTimer) {
