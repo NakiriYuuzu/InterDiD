@@ -7,7 +7,7 @@ from rest_framework.response import Response
 
 from InterDiD import settings
 from ServerApi.serializer import *
-from ServerCommon import print_success, print_error, print_warning
+from ServerCommon import print_success, print_error
 from ServerCommon.models import *
 
 

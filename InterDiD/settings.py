@@ -18,15 +18,15 @@ from django.conf import settings
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv()
 
 # SECURITY WARNING: keep the secret key used in production secret!
-load_dotenv()
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 LINE_ACCESS_KEY = os.getenv('LINE_ACCESS_KEY')
 LINE_SECRET_KEY = os.getenv('LINE_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DJANGO_DEBUG')
 
 # Hosting
 ALLOWED_HOSTS = ['*']
@@ -134,7 +134,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = f'{os.getenv("APP_LANGUAGE")}'
 
 TIME_ZONE = 'Asia/Taipei'
 

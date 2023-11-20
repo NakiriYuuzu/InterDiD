@@ -15,5 +15,7 @@
 
 ## Getting Started
 1. Clone the repository
-2. rename the file `example.json` to `config.json`
-3. Fill in the `config.json` file with your own api key
+2. rename the file `.env_example` to `.env`
+3. Fill in the `.env` file with your own api key
+4. run `docker-compose up` to start the server
+5. run `docker-compose down` to stop the server

@@ -22,6 +22,7 @@ from linebot.v3.messaging import (
 from InterDiD import settings
 from ServerApi.line.linebot_flex_message import image_with_text
 from ServerApi.serializer import ArtworksSerializer
+from ServerCommon import print_warning, print_success, print_error
 from ServerCommon.models import Users, Beacons
 
 # LineConfigurations
@@ -35,17 +36,17 @@ line_bot_api = MessagingApi(ApiClient(configuration))
 @handler.add(MessageEvent, message=TextMessageContent)
 @transaction.atomic
 def handle_message(event, _):
-    print(event, _)
-    flex_message = FlexMessage(
-        alt_text=event.message.text,
-        contents=FlexContainer.from_json(image_with_text)
-    )
-    line_bot_api.reply_message(
-        ReplyMessageRequest(
-            reply_token=event.reply_token,
-            messages=[flex_message]
-        )
-    )
+    print_warning(event)
+    # flex_message = FlexMessage(
+    #     alt_text=event.message.text,
+    #     contents=FlexContainer.from_json(image_with_text)
+    # )
+    # line_bot_api.reply_message(
+    #     ReplyMessageRequest(
+    #         reply_token=event.reply_token,
+    #         messages=[flex_message]
+    #     )
+    # )
 
 
 @handler.add(BeaconEvent)
@@ -137,11 +138,10 @@ def handle_beacon_event(event, _):
 
         # 轉換成 JSON
         json_result = json.dumps(template, ensure_ascii=False)
-        print(json_result)
 
         # alt_text 顯示在未打開聊天室時的訊息
         flex_message = FlexMessage(
-            alt_text="請點擊圖片查看詳細資訊",
+            alt_text=f'{serializer.data["product_title"]}: 點擊查看詳細資訊',
             contents=FlexContainer.from_json(json_result)
         )
         line_bot_api.reply_message(
@@ -150,6 +150,7 @@ def handle_beacon_event(event, _):
                 messages=[flex_message]
             )
         )
+        print_success(f'送出成功: {serializer.data["product_title"]}')
 
 
 class LinebotView(APIView):
@@ -158,12 +159,13 @@ class LinebotView(APIView):
     def post(request):
         signature = request.META['HTTP_X_LINE_SIGNATURE']
         body = request.body.decode('utf-8')
-        print("\033[93m", body, end="\033[0m \n")
+        print_warning(body)
 
         # 驗證signature
         try:
             handler.handle(body, signature)
         except InvalidSignatureError:
+            print_error('Invalid signature.')
             return Response("Invalid signature.", status=status.HTTP_400_BAD_REQUEST)
 
         return Response('OK', status=status.HTTP_200_OK)

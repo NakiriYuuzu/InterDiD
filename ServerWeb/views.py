@@ -56,6 +56,7 @@ def list_artwork(request):
     }
     return render(request, 'dashboard/list_artwork.html', msg)
 
+
 @login_required
 def form_artwork(request):
     msg = {
