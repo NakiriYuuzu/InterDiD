@@ -27,6 +27,10 @@ def index(request):
     return render(request, 'index.html', locals())
 
 
+def artworks(request):
+    return render(request, 'artworks.html', locals())
+
+
 @login_required
 def dashboard(request):
     msg = {
@@ -35,6 +39,16 @@ def dashboard(request):
         'username': request.user.username[0].upper() + request.user.username[1:],
     }
     return render(request, 'dashboard/dashboard.html', msg)
+
+
+@login_required
+def games(request):
+    msg = {
+        'title': 'InterDiD',
+        'mode': settings.DEBUG,
+        'username': request.user.username[0].upper() + request.user.username[1:],
+    }
+    return render(request, '404.html', msg)
 
 
 @login_required

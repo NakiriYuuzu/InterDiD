@@ -1,9 +1,29 @@
-{% extends 'base.html' %}
+{% extends 'back_base.html' %}
 {% load static %}
 {% block username %}{{ username }}{% endblock %}
 
 {% block content %}
-    <div id="app" class="conatiner-fluid content-inner mt-n5 py-0">
+    <div class="position-relative">
+        <div class="toast-container position-absolute top-0 end-0 px-3">
+            <div class="toast fade show" role="alert" aria-live="assertive" aria-atomic="true"
+                 v-for="toast in toasts" :key="toast.toastId">
+                <div class="toast-header">
+                    <svg class="bd-placeholder-img rounded me-2" width="20" height="20"
+                         xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice"
+                         focusable="false">
+                        <rect width="100%" height="100%" :fill="toast.status"></rect>
+                    </svg>
+                    <strong class="me-auto">[[ toast.title ]]</strong>
+                    <small class="text-muted">[[ toast.displayTime ]]</small>
+                    <button type="button" class="btn-close" aria-label="Close" @click="closeToast(toast.id)"></button>
+                </div>
+                <div class="toast-body">
+                    [[ toast.message ]]
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="conatiner-fluid content-inner mt-n5 py-0">
         <div class="row">
             <div class="col-md-12 col-lg-12">
                 <div class="row row-cols-1">
@@ -14,7 +34,7 @@
                                     <div class="progress-widget">
                                         <div id="circle-progress-01"
                                              class="text-center circle-progress-01 circle-progress circle-progress-primary"
-                                             data-min-value="0" data-max-value="100" data-value="90"
+                                             data-min-value="0" data-max-value="100" data-value="100"
                                              data-type="percent">
                                             <svg class="card-slie-arrow icon-24" width="24" viewBox="0 0 24 24">
                                                 <path fill="currentColor"
@@ -22,8 +42,8 @@
                                             </svg>
                                         </div>
                                         <div class="progress-detail">
-                                            <p class="mb-2">Total Sales</p>
-                                            <h4 class="counter">$560K</h4>
+                                            <p class="mb-2">Today Users</p>
+                                            <h4 class="counter">[[ users.users_today ]]</h4>
                                         </div>
                                     </div>
                                 </div>
@@ -32,17 +52,17 @@
                                 <div class="card-body">
                                     <div class="progress-widget">
                                         <div id="circle-progress-02"
-                                             class="text-center circle-progress-01 circle-progress circle-progress-info"
-                                             data-min-value="0" data-max-value="100" data-value="80"
+                                             class="text-center circle-progress-01 circle-progress circle-progress-primary"
+                                             data-min-value="0" data-max-value="100" data-value="100"
                                              data-type="percent">
                                             <svg class="card-slie-arrow icon-24" width="24" viewBox="0 0 24 24">
                                                 <path fill="currentColor"
-                                                      d="M19,6.41L17.59,5L7,15.59V9H5V19H15V17H8.41L19,6.41Z"></path>
+                                                      d="M5,17.59L15.59,7H9V5H19V15H17V8.41L6.41,19L5,17.59Z"></path>
                                             </svg>
                                         </div>
                                         <div class="progress-detail">
-                                            <p class="mb-2">Total Profit</p>
-                                            <h4 class="counter">$185K</h4>
+                                            <p class="mb-2">Monthly Users</p>
+                                            <h4 class="counter">[[ users.users_month ]]</h4>
                                         </div>
                                     </div>
                                 </div>
@@ -52,7 +72,7 @@
                                     <div class="progress-widget">
                                         <div id="circle-progress-03"
                                              class="text-center circle-progress-01 circle-progress circle-progress-primary"
-                                             data-min-value="0" data-max-value="100" data-value="70"
+                                             data-min-value="0" data-max-value="100" data-value="100"
                                              data-type="percent">
                                             <svg class="card-slie-arrow icon-24" width="24" viewBox="0 0 24 24">
                                                 <path fill="currentColor"
@@ -60,84 +80,8 @@
                                             </svg>
                                         </div>
                                         <div class="progress-detail">
-                                            <p class="mb-2">Total Cost</p>
-                                            <h4 class="counter">$375K</h4>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="swiper-slide card card-slide" data-aos="fade-up" data-aos-delay="1000">
-                                <div class="card-body">
-                                    <div class="progress-widget">
-                                        <div id="circle-progress-04"
-                                             class="text-center circle-progress-01 circle-progress circle-progress-info"
-                                             data-min-value="0" data-max-value="100" data-value="60"
-                                             data-type="percent">
-                                            <svg class="card-slie-arrow icon-24" width="24px" viewBox="0 0 24 24">
-                                                <path fill="currentColor"
-                                                      d="M5,17.59L15.59,7H9V5H19V15H17V8.41L6.41,19L5,17.59Z"></path>
-                                            </svg>
-                                        </div>
-                                        <div class="progress-detail">
-                                            <p class="mb-2">Revenue</p>
-                                            <h4 class="counter">$742K</h4>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="swiper-slide card card-slide" data-aos="fade-up" data-aos-delay="1100">
-                                <div class="card-body">
-                                    <div class="progress-widget">
-                                        <div id="circle-progress-05"
-                                             class="text-center circle-progress-01 circle-progress circle-progress-primary"
-                                             data-min-value="0" data-max-value="100" data-value="50"
-                                             data-type="percent">
-                                            <svg class="card-slie-arrow icon-24" width="24px" viewBox="0 0 24 24">
-                                                <path fill="currentColor"
-                                                      d="M5,17.59L15.59,7H9V5H19V15H17V8.41L6.41,19L5,17.59Z"></path>
-                                            </svg>
-                                        </div>
-                                        <div class="progress-detail">
-                                            <p class="mb-2">Net Income</p>
-                                            <h4 class="counter">$150K</h4>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="swiper-slide card card-slide" data-aos="fade-up" data-aos-delay="1200">
-                                <div class="card-body">
-                                    <div class="progress-widget">
-                                        <div id="circle-progress-06"
-                                             class="text-center circle-progress-01 circle-progress circle-progress-info"
-                                             data-min-value="0" data-max-value="100" data-value="40"
-                                             data-type="percent">
-                                            <svg class="card-slie-arrow icon-24" width="24" viewBox="0 0 24 24">
-                                                <path fill="currentColor"
-                                                      d="M19,6.41L17.59,5L7,15.59V9H5V19H15V17H8.41L19,6.41Z"></path>
-                                            </svg>
-                                        </div>
-                                        <div class="progress-detail">
-                                            <p class="mb-2">Today</p>
-                                            <h4 class="counter">$4600</h4>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="swiper-slide card card-slide" data-aos="fade-up" data-aos-delay="1300">
-                                <div class="card-body">
-                                    <div class="progress-widget">
-                                        <div id="circle-progress-07"
-                                             class="text-center circle-progress-01 circle-progress circle-progress-primary"
-                                             data-min-value="0" data-max-value="100" data-value="30"
-                                             data-type="percent">
-                                            <svg class="card-slie-arrow icon-24 " width="24" viewBox="0 0 24 24">
-                                                <path fill="currentColor"
-                                                      d="M19,6.41L17.59,5L7,15.59V9H5V19H15V17H8.41L19,6.41Z"></path>
-                                            </svg>
-                                        </div>
-                                        <div class="progress-detail">
-                                            <p class="mb-2">Members</p>
-                                            <h4 class="counter">11.2M</h4>
+                                            <p class="mb-2">Total Users</p>
+                                            <h4 class="counter">[[ users.users_total ]]</h4>
                                         </div>
                                     </div>
                                 </div>
@@ -157,56 +101,77 @@
             delimiters: ['[[', ']]'],
             data() {
                 return {
+                    token: null,
+
+                    toasts: [],
+                    toastId: 1,
+
                     alert: false,
                     message: null,
                     isSuccess: false,
 
-                    artworks: [],
-                    selectedArtwork: [],
+                    users: {},
                 }
             },
             created() {
-                this.getArtworks()
+                this.token = this.getCookie('csrftoken')
+                this.getUsers()
             },
-            computed: {
-                alertClass() {
-                    return [
-                        'alert', 'alert-left', 'alert-dismissible', 'fade', 'show', 'mb-3',
-                        this.isSuccess ? 'alert-success' : 'alert-danger'
-                    ]
-                },
+            mounted() {
+                setInterval(this.timeToast, 60000)
             },
+            computed: {},
             methods: {
-                getArtworks() {
-                    axios.get('/api/artworks')
-                        .then(response => {
-                            this.artworks = response.data
-                        })
-                        .catch(this.handleError)
-                },
-                onArtworksClicked(artwork) {
-                    this.selectedArtwork = artwork
-                },
-                handleError(error) {
-                    this.showAlert(false, error.response.data)
-                },
-                showAlert(isSuccess, message) {
-                    if (this.alertTimer) {
-                        clearTimeout(this.alertTimer)
+                getCookie(name) {
+                    let cookieValue = null;
+                    if (document.cookie && document.cookie !== '') {
+                        const cookies = document.cookie.split(';')
+                        for (let i = 0; i < cookies.length; i++) {
+                            const cookie = cookies[i].trim()
+                            // 判斷這個 cookie 的開頭是否為所需的名稱
+                            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                                cookieValue = decodeURIComponent(cookie.substring(name.length + 1))
+                                break
+                            }
+                        }
                     }
-                    this.alert = true
-                    this.isSuccess = isSuccess
-                    this.message = message
-                    this.alertTimer = setTimeout(() => this.hideAlert(), 3000)
+                    return cookieValue
                 },
-                hideAlert() {
-                    this.alert = false
-                    this.message = null
-                    if (this.alertTimer) {
-                        clearTimeout(this.alertTimer)
-                        this.alertTimer = null
-                    }
+                getUsers() {
+                    axios.get('/api/user', {
+                        headers: {'X-CSRFToken': this.token}
+                    }).then(response => {
+                        this.users = response.data
+                    }).catch(error => console.log(error))
                 },
+                showToast(title, message, status) {
+                    let colors = {success: "#1aa053", error: "#c03221", warning: "#f16a1b", info: "#007aff"}
+                    this.toasts.push({
+                        id: this.toastId++,
+                        title: title,
+                        message: message,
+                        date: new Date(),
+                        displayTime: '剛剛',
+                        status: colors[status],
+                    })
+                },
+                timeToast() {
+                    let now = new Date()
+                    this.toasts.forEach(toast => {
+                        let diff = Math.floor((now - toast.date) / 60000) // 分鐘數
+                        if (diff === 0) {
+                            toast.displayTime = '剛剛'
+                        } else {
+                            toast.displayTime = diff + ' 分鐘前'
+                        }
+                    })
+                },
+                closeToast(toastId) {
+                    console.log('Closing:', toastId)
+                    console.log('Before closing:', this.toasts)
+                    this.toasts = this.toasts.filter(toast => toast.id !== toastId)
+                    console.log('After closing:', this.toasts)
+                }
             }
         })
         app.mount('#App')

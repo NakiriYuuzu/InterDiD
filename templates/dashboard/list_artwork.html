@@ -1,8 +1,8 @@
-{% extends 'base.html' %}
+{% extends 'back_base.html' %}
 {% load static %}
 {% block title %}InterDiD Artwork{% endblock %}
 {% block content %}
-    <div id="app" xmlns:v-on="http://www.w3.org/1999/xhtml">
+    <div xmlns:v-on="http://www.w3.org/1999/xhtml">
         <div class="conatiner-fluid content-inner mt-n5 py-0">
             <div :class="alertClass" role="alert" v-show="alert">
                 <span>[[message]]</span>

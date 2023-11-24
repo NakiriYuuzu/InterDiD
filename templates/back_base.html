@@ -4,6 +4,8 @@
 <html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
+    <meta property="og:title" content=""/>
+    <meta property="og:image" content=""/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{% block title %}InterDiD Dashboard{% endblock %}</title>
 
@@ -50,7 +52,7 @@
     {% block aside %}
         <aside class="sidebar sidebar-default sidebar-white sidebar-base navs-rounded-all">
             <div class="sidebar-header d-flex align-items-center justify-content-start">
-                <a href="{% url 'index' %}" class="navbar-brand">
+                <a href="{% url 'admin' %}" class="navbar-brand">
 
                     <!--Logo start-->
                     <div class="logo-main">
@@ -109,8 +111,8 @@
                             </a>
                         </li> <!-- Home -->
                         <li class="nav-item">
-                            <a class="nav-link {% if request.resolver_match.url_name == 'index' %}active{% endif %}"
-                               aria-current="page" href="{% url 'index' %}">
+                            <a class="nav-link {% if request.resolver_match.url_name == 'admin' %}active{% endif %}"
+                               aria-current="page" href="{% url 'admin' %}">
                                 <i class="icon">
                                     <svg width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
                                          class="icon-20">
@@ -136,7 +138,7 @@
                         </li> <!-- Setup -->
                         <li class="nav-item">
                             <a class="nav-link {% if request.resolver_match.url_name == 'games' %}active{% endif %}"
-                               aria-current="page" href="{% url 'index' %}">
+                               aria-current="page" href="{% url 'games' %}">
                                 <i class="icon">
                                     <svg width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path opacity="0.4"
@@ -238,7 +240,7 @@
                 <!--Nav Start-->
                 <nav class="nav navbar navbar-expand-lg navbar-light iq-navbar">
                     <div class="container-fluid navbar-inner">
-                        <a href="{% url 'index' %}" class="navbar-brand">
+                        <a href="{% url 'admin' %}" class="navbar-brand">
 
                             <!--Logo start-->
                             <div class="logo-main">

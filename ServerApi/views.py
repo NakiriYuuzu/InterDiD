@@ -1,5 +1,6 @@
 import os
 
+from django.utils import timezone
 from rest_framework import status, permissions
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.views import APIView
@@ -9,6 +10,29 @@ from InterDiD import settings
 from ServerApi.serializer import *
 from ServerCommon import print_success, print_error
 from ServerCommon.models import *
+
+
+class UsersView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    @staticmethod
+    def get(request):
+        today = timezone.now().date()
+        users_today = Users.objects.filter(create_at__date=today).count()
+        users_month = Users.objects.filter(create_at__month=today.month).count()
+        users_total = Users.objects.all().count()
+        user_id = request.query_params.get('user_id', None)
+        if user_id:
+            users = Users.objects.filter(user_id=user_id)
+            serializer = UsersSerializer(users, many=True)
+            return Response(serializer.field_name, status=status.HTTP_200_OK)
+        else:
+            data = {
+                'users_today': users_today,
+                'users_month': users_month,
+                'users_total': users_total,
+            }
+            return Response(data, status=status.HTTP_200_OK)
 
 
 class ArtworksView(APIView):
@@ -115,6 +139,10 @@ class ArtworksView(APIView):
         if artwork_item_id:
             try:
                 artwork_item = ArtworkItems.objects.get(artwork_item_id=artwork_item_id)
+                print_error(artwork_item.artworks.artwork_id)
+                # 檢查是否只有一個 ArtworkItem
+                if Artworks.objects.get(artwork_id=artwork_item.artworks.artwork_id).artwork_items.count() == 1:
+                    return Response({'error': 'Cannot delete the only item in an artwork'},status=status.HTTP_400_BAD_REQUEST)
                 # 刪除圖片文件
                 ArtworksView.delete_image_file(artwork_item.artwork_item_image)
                 artwork_item.delete()
