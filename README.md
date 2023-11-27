@@ -4,7 +4,7 @@
 
 ## Features
 - Frontend
-  - [ ] Web
+  - [x] Web
   - [ ] Quiz
   - [ ] puzzle
 - backend
