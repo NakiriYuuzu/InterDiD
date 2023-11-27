@@ -7,6 +7,7 @@ from ServerWeb import views
 urlpatterns = [
     # LANDING PAGE
     path('', views.index, name='index'),
+    path('artworks/', views.artworks, name='artworks'),
 
     # ADMIN
     path('admin/', views.dashboard, name='admin'),

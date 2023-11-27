@@ -1,8 +1,92 @@
 {% extends 'front_base.html' %}
 {% load static %}
 {% block content %}
+    <div class="back-to-home btn-circle">
+        <a href="{% url 'index' %}"><span></span><em>Back</em></a>
+    </div>
 
+    <div class="container-fluid" id="fh5co-image-grid">
+        <div class="grid">
+            <div class="grid-sizer"></div>
+
+            <div class="grid-item item animate-box fadeIn animated-fast" data-animate-effect="fadeIn"
+                 v-for="artwork in artwork_items">
+
+                <a :href="artwork.artwork_item_image" class="image-popup" :title="artwork.artwork_item_description">
+
+                    <div class="img-wrap">
+                        <img :src="artwork.artwork_item_image" alt="" class="img-responsive">
+                    </div>
+
+                    <div class="text-wrap">
+                        <div class="text-inner popup">
+                            <div>
+                                <h2>[[ artwork.artwork_item_title ]]</h2>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 {% block script %}
+    <script type="application/javascript">
+        const app = Vue.createApp({
+            delimiters: ['[[', ']]'],
+            data() {
+                return {
+                    artwork_product_title: '',
+                    artwork_items: [],
+                }
+            },
+            created() {
+                this.getId()
+            },
+            methods: {
+                getId() {
+                    const urlParams = new URLSearchParams(window.location.search)
+                    const id = urlParams.get('id')
+                    if (id) {
+                        this.getArtworks(id)
+                    }
+                },
+                getArtworks(id) {
+                    axios.get(`/api/artworks?artwork_id=${id}`)
+                        .then(response => {
+                            if (response.data.length === 0) window.location.href = "{% url 'index' %}"
+                            const data = response.data[0]
+                            this.artwork_product_title = data.product_title
+                            this.artwork_items = data.artwork_items
 
+                            this.$nextTick(() => {
+                                $('.image-popup').magnificPopup({
+                                    type: 'image',
+                                    removalDelay: 300,
+                                    mainClass: 'mfp-with-zoom',
+                                    gallery: {
+                                        enabled: true
+                                    },
+                                    zoom: {
+                                        enabled: true, // By default it's false, so don't forget to enable it
+                                        duration: 300, // duration of the effect, in milliseconds
+                                        easing: 'ease-in-out', // CSS transition easing function
+                                        opener: function (openerElement) {
+                                            return openerElement.is('img') ? openerElement : openerElement.find('img')
+                                        }
+                                    }
+                                })
+                            })
+                        })
+                        .catch(error => {
+                            alert(`Error: ${error.message}`)
+                        })
+                },
+                popImage(image) {
+                    console.log(image)
+                }
+            }
+        })
+        app.mount('#App')
+    </script>
 {% endblock %}

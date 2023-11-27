@@ -5,16 +5,16 @@
         <div class="grid">
             <div class="grid-sizer"></div>
             <div class="grid-item item animate-box fadeIn animated-fast" data-animate-effect="fadeIn"
-                 v-for="artworks in artworksList">
-                <a href="{% url 'index' %}">
+                 v-for="artwork in artworksList">
+                <a :href="`/artworks?id=${artwork.artwork_id}`">
                     <div class="img-wrap">
-                        <img :src="artworks.artwork_items[0].artwork_item_image" alt="" class="img-responsive">
+                        <img :src="artwork.artwork_items[0].artwork_item_image" alt="" class="img-responsive">
                     </div>
                     <div class="text-wrap">
                         <div class="text-inner">
                             <div>
-                                <h2>[[ artworks.product_title ]]</h2>
-                                <span>[[ artworks.artwork_items.length ]] 筆資料</span>
+                                <h2>[[ artwork.product_title ]]</h2>
+                                <span>[[ artwork.artwork_items.length ]] 筆資料</span>
                             </div>
                         </div>
                     </div>
@@ -47,7 +47,7 @@
                         .catch(error => {
                             console.log(error)
                         })
-                },
+                }
             }
         })
         app.mount('#App')
