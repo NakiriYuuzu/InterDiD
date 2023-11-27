@@ -1,5 +1,11 @@
 {% extends 'front_base.html' %}
 {% load static %}
+{% block og %}
+    <meta property="og:title" content="{{ data.title }}"/>
+    <meta name="twitter:title" content="{{ data.title }}" />
+    <meta property="og:image" content="{{ data.image }}"/>
+    <meta name="twitter:image" content="{{ data.image }}" />
+{% endblock %}
 {% block content %}
     <div class="back-to-home btn-circle">
         <a href="{% url 'index' %}"><span></span><em>Back</em></a>

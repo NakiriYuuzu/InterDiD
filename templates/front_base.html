@@ -4,9 +4,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+
+    {% block og %}
+        <meta property="og:title" content=""/>
+        <meta property="og:image" content=""/>
+        <meta name="twitter:title" content="" />
+        <meta name="twitter:image" content="" />
+    {% endblock %}
+
+    <meta property="og:description" content="學生作品展覽"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:url" content="{{ data.url }}" />
+
+    <meta name="twitter:description" content='Example Webpage Description' />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="{{ data.url }}" />
+
+    <meta name="theme-color" content="#FF0000">
     <meta name="keywords" content="作品集,作品集展示,靜宜大學"/>
-    <meta property="og:title" content=""/>
-    <meta property="og:image" content=""/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="shortcut icon" href="{% static 'assets/images/favicon.ico' %}">
     <title>{% block title %}作品集展示{% endblock %}</title>
@@ -55,8 +70,8 @@
                         </div>
                         <div class="col-md-12 fh5co-social">
                             <a href="#"><i class="icon-envelope"></i></a>
-{#                            <a href="#"><i class="icon-twitter"></i></a>#}
-{#                            <a href="#"><i class="icon-linkedin"></i></a>#}
+                            {#                            <a href="#"><i class="icon-twitter"></i></a>#}
+                            {#                            <a href="#"><i class="icon-linkedin"></i></a>#}
                             <a href="#"><i class="icon-instagram"></i></a>
                             <a href="#"><i class="icon-google-plus"></i></a>
                         </div>
@@ -65,7 +80,7 @@
                             <p>200, Sec. 7, Taiwan Boulevard, Shalu Dist., Taichung City 43301 Taiwan</p>
                             <p>總機：04-2632-8001 TANet VoIP 網路電話：93160000</p>
                             <p>緊急事件通報專線：04-2652-9595、0921-382-470、19595 (校內分機)</p>
-                            <p>Copyright©<a href="https://www.pu.edu.tw">靜宜大學</a> </p>
+                            <p>Copyright©<a href="https://www.pu.edu.tw">靜宜大學</a></p>
                         </div>
                     </div>
                 </div>

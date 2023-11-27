@@ -32,6 +32,10 @@ DEBUG = os.getenv('DJANGO_DEBUG')
 ALLOWED_HOSTS = ['*']
 APP_HOST = os.getenv('APP_HOST')
 
+# Application
+APP_NAME = os.getenv('APP_NAME')
+APP_DESC = os.getenv('APP_DESC')
+
 # Route
 LOGIN_URL = '/admin/login'
 ROOT_URLCONF = 'InterDiD.urls'

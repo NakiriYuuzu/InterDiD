@@ -2,6 +2,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from InterDiD import settings
+from ServerApi.serializer import ArtworksSerializer
+from ServerCommon.models import Artworks
 
 
 def sign_in(request):
@@ -24,10 +26,34 @@ def sign_in(request):
 
 
 def index(request):
+    artwork = Artworks.objects.all()
+    serializer = ArtworksSerializer(artwork, many=True)
+    result = serializer.data
+    data = {
+        'title': settings.APP_NAME,
+        'image': result[0]['artwork_items'][0]['artwork_item_image'],
+        'url': settings.APP_HOST,
+    }
+    print(data)
     return render(request, 'index.html', locals())
 
 
 def artworks(request):
+    artwork_id = request.GET.get('id', None)
+    if artwork_id:
+        artwork = Artworks.objects.filter(artwork_id=artwork_id)
+        serializer = ArtworksSerializer(artwork, many=True)
+        result = serializer.data
+
+        data = {
+            'title': result[0]['product_title'],
+            'image': result[0]['artwork_items'][0]['artwork_item_image'],
+            'url': settings.APP_HOST + '/artworks?id=' + artwork_id,
+        }
+    else:
+        data = {
+            'url': settings.APP_HOST + '/artworks',
+        }
     return render(request, 'artworks.html', locals())
 
 
