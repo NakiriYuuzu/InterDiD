@@ -2,29 +2,36 @@
 {% load static %}
 {% block og %}
     <meta property="og:title" content="{{ data.title }}"/>
-    <meta name="twitter:title" content="{{ data.title }}" />
+    <meta name="twitter:title" content="{{ data.title }}"/>
     <meta property="og:image" content="{{ data.image }}"/>
-    <meta name="twitter:image" content="{{ data.image }}" />
+    <meta name="twitter:image" content="{{ data.image }}"/>
 {% endblock %}
 {% block content %}
     <div class="container-fluid" id="fh5co-image-grid">
         <div class="grid">
             <div class="grid-sizer"></div>
-            <div class="grid-item item animate-box fadeIn animated-fast" data-animate-effect="fadeIn"
-                 v-for="artwork in artworksList">
-                <a :href="`/artworks?id=${artwork.artwork_id}`">
-                    <div class="img-wrap">
-                        <img :src="artwork.artwork_items[0].artwork_item_image" alt="" class="img-responsive">
-                    </div>
-                    <div class="text-wrap">
-                        <div class="text-inner">
-                            <div>
-                                <h2>[[ artwork.product_title ]]</h2>
-                                <span>[[ artwork.artwork_items.length ]] 筆資料</span>
+            <div v-if="artworksList.length > 0">
+                <div class="grid-item item animate-box fadeIn animated-fast" data-animate-effect="fadeIn"
+                     v-for="artwork in artworksList">
+                    <a :href="`/artworks?id=${artwork.artwork_id}`">
+                        <div class="img-wrap">
+                            <img :src="artwork.artwork_items[0].artwork_item_image" alt="" class="img-responsive">
+                        </div>
+                        <div class="text-wrap">
+                            <div class="text-inner">
+                                <div>
+                                    <h2>[[ artwork.product_title ]]</h2>
+                                    <span>[[ artwork.artwork_items.length ]] 筆資料</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </a>
+                    </a>
+                </div>
+            </div>
+            <div class="grid-item item animate-box fadeIn animated-fast" v-else>
+                <div class="emptyItem">
+                    <h1 v-show="isCalled">目前沒有藝術作品可供顯示。</h1>
+                </div>
             </div>
         </div>
     </div>
@@ -35,6 +42,7 @@
             delimiters: ['[[', ']]'],
             data() {
                 return {
+                    isCalled: false,
                     artworksList: []
                 }
             },
@@ -45,12 +53,12 @@
                 getArtworks() {
                     axios.get('/api/artworks')
                         .then(response => {
+                            this.isCalled = true
                             this.artworksList = response.data
-                            console.log(response.data)
-                            console.log(this.artworksList[0].product_title)
-                            console.log(this.artworksList[0].artwork_items[0].artwork_item_image)
+                            console.log(this.artworksList.length)
                         })
                         .catch(error => {
+                            this.isCalled = true
                             console.log(error)
                         })
                 }

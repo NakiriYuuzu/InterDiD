@@ -18,7 +18,8 @@
             <div class="grid-item item animate-box fadeIn animated-fast" data-animate-effect="fadeIn"
                  v-for="artwork in artwork_items">
 
-                <a :href="artwork.artwork_item_image" class="image-popup" :title="artwork.artwork_item_description">
+                <a :href="artwork.artwork_item_image" class="image-popup"
+                   :title="`${artwork.artwork_item_title}<br>${artwork.artwork_item_description}`">
 
                     <div class="img-wrap">
                         <img :src="artwork.artwork_item_image" alt="" class="img-responsive">
@@ -87,9 +88,6 @@
                         .catch(error => {
                             alert(`Error: ${error.message}`)
                         })
-                },
-                popImage(image) {
-                    console.log(image)
                 }
             }
         })

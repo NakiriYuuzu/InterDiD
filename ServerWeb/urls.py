@@ -8,6 +8,7 @@ urlpatterns = [
     # LANDING PAGE
     path('', views.index, name='index'),
     path('artworks/', views.artworks, name='artworks'),
+    path('puzzle/', views.puzzle, name='puzzle'),
 
     # ADMIN
     path('admin/', views.dashboard, name='admin'),

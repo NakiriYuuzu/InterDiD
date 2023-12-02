@@ -1,1 +1,5 @@
-media/
+.env
+.idea
+ssl
+media
+staticfiles
