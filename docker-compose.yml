@@ -6,6 +6,8 @@ services:
     ports:
       - "80:80"
       - "443:443"
+    networks:
+      - app-network
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
       - ./ssl/certificate.crt:/etc/ssl/certs/certificate.crt:ro
@@ -19,6 +21,8 @@ services:
       - .:/app
     ports:
       - "8000:8000"
+    networks:
+      - app-network
     env_file:
       - .env
     depends_on:
@@ -34,8 +38,30 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
       - "3306:3306"
+    networks:
+      - app-network
     volumes:
       - mariadb_data:/var/lib/mysql
 
+  ngrok:
+    image: ngrok/ngrok:latest
+    restart: always
+    ports:
+      - "4040:4040"
+    networks:
+      - app-network
+    volumes:
+      - ./ngrok.yml:/etc/ngrok.yml
+    command:
+      - "start"
+      - "--all"
+      - "--authtoken=${NGROK_AUTH_TOKEN}"
+      - "--config"
+      - "/etc/ngrok.yml"
+
 volumes:
   mariadb_data:
+
+networks:
+  app-network:
+    driver: bridge

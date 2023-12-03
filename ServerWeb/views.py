@@ -30,9 +30,13 @@ def index(request):
     artwork = Artworks.objects.all()
     serializer = ArtworksSerializer(artwork, many=True)
     result = serializer.data
+    if result:
+        image = random_image(result)
+    else:
+        image = '/static/images/pages/01-page.png'
     data = {
         'title': settings.APP_NAME,
-        'image': settings.APP_HOST + result[0]['artwork_items'][0]['artwork_item_image'],
+        'image': settings.APP_HOST + image,
         'url': settings.APP_HOST,
     }
     return render(request, 'index.html', locals())

@@ -1,0 +1,8 @@
+version: 2
+
+tunnels:
+  website:
+    addr: web:8000
+    proto: http
+    domain: heron-absolute-openly.ngrok-free.app
+    host_header: "https://heron-absolute-openly.ngrok-free.app"
