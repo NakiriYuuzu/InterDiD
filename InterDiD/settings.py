@@ -51,13 +51,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.admindocs',
     # Self-defined apps
     'ServerApi',
     'ServerWeb',
     'ServerCommon',
     # Third-party apps
     'rest_framework',
-    'linebot'
+    'linebot',
 ]
 
 MIDDLEWARE = [

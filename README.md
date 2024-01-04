@@ -3,7 +3,10 @@
 - [中文](README_zh.md)
 
 ## Documentation
-this guys so lazy to write documentation, so just read the code
+This guy is too lazy to write documentation, so you can only understand it by reading the code.
+
+## Demo
+
 
 ## Architecture
 - Frontend
@@ -33,17 +36,25 @@ this guys so lazy to write documentation, so just read the code
 * clone this repository
 * rename the file `.env_example` to `.env`
 * fill in the `.env` file with your own api key and settings
+* How to get LINE_CHANNEL_SECRET and LINE_CHANNEL_ACCESS_TOKEN
+  * go to [LINE Developer Console](https://developers.line.biz/console/)
+  * create a new provider
+  * create a new channel
+  * go to Basic settings tab
+  * copy the Channel secret to `.env`
+  * go to Messaging API tab
+  * copy the Channel access token to `.env`
 
-### Customize Port (if needed, default server = 8000, db = 3306, ngrok = 4040, nginx = 80, 443)
-* go to `docker-compose.yml` and change the service (web, db, ngrok, nginx) port number to your own
+### Customize Port (if needed, default server = 8000, db = 3306, nginx = 80, 443)
+* go to `docker-compose.yml` and change the service (web, db, nginx) port number to your own
 * go to `Dockerfile` and change the export port number
 * go to `nginx.conf` and change the port number
-* go to `ngrok.yml` and change the port number
+* go to `entrypoint.sh` and change the port number
 
 ### With Webhook
 - go to `docker-compose.yml` and remove the nginx service.
-- go ngrok website and get your own authtoken and replace it in `.env`.
-- go to `ngrok.yml` and change the domain and host_header to your own ngrok domain.
+- go to [NGROK](https://ngrok.com/) and download the ngrok.
+- run `./ngrok http 8000` to start the ngrok server.
 - go to `.env` and set APP_HOST to `https://<your_domain>`
 
 ### Without Webhook (use own domain and ssl)
@@ -55,7 +66,7 @@ this guys so lazy to write documentation, so just read the code
 
 ### Deploy with Docker
 * run `docker-compose up -d --build` to start the server
-* go to line developer console and set webhook url to `https://<your_domain>/api/linebot`
+* go to [LINE Developer Console](https://developers.line.biz/console/) and set webhook url to `https://<your_domain>/api/linebot`
 
 ## Activity
 ![Alt](https://repobeats.axiom.co/api/embed/7a2e89f748c1cc8887da9f8b62a1a673c0710e10.svg "Repobeats analytics image")

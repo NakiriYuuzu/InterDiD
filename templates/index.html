@@ -28,11 +28,11 @@
                     </a>
                 </div>
             </div>
-            <div class="grid-item item animate-box fadeIn animated-fast" v-else>
-                <div class="emptyItem">
-                    <h1 v-show="isCalled">目前沒有藝術作品可供顯示。</h1>
-                </div>
-            </div>
+        </div>
+    </div>
+    <div v-if="artworksList.length === 0" class="animate-box fadeIn animated-fast">
+        <div class="emptyItem">
+            <h1 v-show="isCalled">目前沒有藝術作品可供顯示。</h1>
         </div>
     </div>
 {% endblock %}

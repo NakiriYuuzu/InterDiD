@@ -20,7 +20,7 @@ services:
     volumes:
       - .:/app
     ports:
-      - "8000:8000"
+      - "8080:8000"
     networks:
       - app-network
     env_file:
@@ -42,22 +42,6 @@ services:
       - app-network
     volumes:
       - mariadb_data:/var/lib/mysql
-
-  ngrok:
-    image: ngrok/ngrok:latest
-    restart: always
-    ports:
-      - "4040:4040"
-    networks:
-      - app-network
-    volumes:
-      - ./ngrok.yml:/etc/ngrok.yml
-    command:
-      - "start"
-      - "--all"
-      - "--authtoken=${NGROK_AUTH_TOKEN}"
-      - "--config"
-      - "/etc/ngrok.yml"
 
 volumes:
   mariadb_data:
