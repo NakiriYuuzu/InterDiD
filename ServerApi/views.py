@@ -1,6 +1,7 @@
 import os
 
 from django.utils import timezone
+from django.contrib.auth.models import User as Account
 from rest_framework import status, permissions
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.views import APIView
@@ -12,7 +13,24 @@ from ServerCommon import print_success, print_error
 from ServerCommon.models import *
 
 
+class AccountView(APIView):
+    """
+    使用模型為 Account : django.contrib.auth.models.User
+    處理用戶帳戶相關的請求 [給與權限登入後臺系統]
+    """
+    permission_classes = [permissions.IsAuthenticated]
+
+    @staticmethod
+    def get(request):
+
+        pass
+
+
 class UsersView(APIView):
+    """
+    使用模型為 Users : ServerCommon.models.Users
+    處理用戶相關的請求 [記錄LineApi的用戶資料]
+    """
     permission_classes = [permissions.IsAuthenticated]
 
     @staticmethod
@@ -142,7 +160,8 @@ class ArtworksView(APIView):
                 print_error(artwork_item.artworks.artwork_id)
                 # 檢查是否只有一個 ArtworkItem
                 if Artworks.objects.get(artwork_id=artwork_item.artworks.artwork_id).artwork_items.count() == 1:
-                    return Response({'error': 'Cannot delete the only item in an artwork'},status=status.HTTP_400_BAD_REQUEST)
+                    return Response({'error': 'Cannot delete the only item in an artwork'},
+                                    status=status.HTTP_400_BAD_REQUEST)
                 # 刪除圖片文件
                 ArtworksView.delete_image_file(artwork_item.artwork_item_image)
                 artwork_item.delete()

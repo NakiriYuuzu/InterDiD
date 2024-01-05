@@ -2,9 +2,9 @@
 {% load static %}
 {% block og %}
     <meta property="og:title" content="{{ data.title }}"/>
-    <meta name="twitter:title" content="{{ data.title }}" />
+    <meta name="twitter:title" content="{{ data.title }}"/>
     <meta property="og:image" content="{{ data.image }}"/>
-    <meta name="twitter:image" content="{{ data.image }}" />
+    <meta name="twitter:image" content="{{ data.image }}"/>
 {% endblock %}
 {% block content %}
     <div class="back-to-home btn-circle">
@@ -19,18 +19,10 @@
                  v-for="artwork in artwork_items">
 
                 <a :href="artwork.artwork_item_image" class="image-popup"
-                   :title="`${artwork.artwork_item_title}<br>${artwork.artwork_item_description}`">
-
+                   :title="`${artwork.artwork_item_title}<br>${artwork.artwork_item_description}`"
+                    :id="`image-${artwork.artwork_item_id}`">
                     <div class="img-wrap">
                         <img :src="artwork.artwork_item_image" alt="" class="img-responsive">
-                    </div>
-
-                    <div class="text-wrap">
-                        <div class="text-inner popup">
-                            <div>
-                                <h2>[[ artwork.artwork_item_title ]]</h2>
-                            </div>
-                        </div>
                     </div>
                 </a>
             </div>
@@ -65,6 +57,7 @@
                             const data = response.data[0]
                             this.artwork_product_title = data.product_title
                             this.artwork_items = data.artwork_items
+                            console.log(this.artwork_items)
 
                             this.$nextTick(() => {
                                 $('.image-popup').magnificPopup({
@@ -83,6 +76,15 @@
                                         }
                                     }
                                 })
+                                
+                                const urlParams = new URLSearchParams(window.location.search)
+                                const imageId = urlParams.get('imageId')
+                                if (imageId) {
+                                    const imageLink = document.getElementById(`image-${imageId}`)
+                                    if (imageLink) {
+                                        $(imageLink).click()
+                                    }
+                                }
                             })
                         })
                         .catch(error => {

@@ -68,6 +68,8 @@ def handle_beacon_event(event, _):
         unique_code = str(uuid.uuid4())
         Users.objects.create(line_id=event.source.user_id, unique_code=unique_code)
 
+    print(beacon)
+
     # 检查 Beacon 是否有关联的 Artworks
     if beacon.artworks is None:
         return
@@ -84,7 +86,8 @@ def handle_beacon_event(event, _):
         for artwork_item in serializer.data['artwork_items']:
             title = re.sub(r'[\x00-\x1F\x7F-\x9F]', '', artwork_item['artwork_item_title'])
             description = re.sub(r'[\x00-\x1F\x7F-\x9F]', '', artwork_item['artwork_item_description'])
-            image = settings.APP_HOST + artwork_item['artwork_item_image']
+            image = f'{settings.APP_HOST}{artwork_item["artwork_item_image"]}'
+            action = f'{settings.APP_HOST}/artworks/?id={artworks.artwork_id}&imageId={artwork_item["artwork_item_id"]}'
 
             template["contents"].append({
                 "type": "bubble",
@@ -96,7 +99,7 @@ def handle_beacon_event(event, _):
                     "aspectRatio": "1:1",
                     "action": {
                         "type": "uri",
-                        "uri": image
+                        "uri": action
                     }
                 },
                 "body": {
