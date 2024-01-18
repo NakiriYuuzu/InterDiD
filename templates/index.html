@@ -47,9 +47,18 @@
                 }
             },
             created() {
+                this.redirection()
                 this.getArtworks()
             },
             methods: {
+                redirection() {
+                    const urlParams = new URLSearchParams(window.location.search)
+                    const id = urlParams.get('id')
+                    const imageId = urlParams.get('imageId')
+                    if (id && imageId) {
+                        window.location.href = `/artworks?id=${id}&imageId=${imageId}`
+                    }
+                },
                 getArtworks() {
                     axios.get('/api/artworks')
                         .then(response => {

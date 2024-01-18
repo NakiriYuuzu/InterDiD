@@ -87,7 +87,7 @@ def handle_beacon_event(event, _):
             title = re.sub(r'[\x00-\x1F\x7F-\x9F]', '', artwork_item['artwork_item_title'])
             description = re.sub(r'[\x00-\x1F\x7F-\x9F]', '', artwork_item['artwork_item_description'])
             image = f'{settings.APP_HOST}{artwork_item["artwork_item_image"]}'
-            action = f'{settings.APP_HOST}/artworks/?id={artworks.artwork_id}&imageId={artwork_item["artwork_item_id"]}'
+            action = f'{settings.APP_HOST}?id={artworks.artwork_id}&imageId={artwork_item["artwork_item_id"]}'
 
             template["contents"].append({
                 "type": "bubble",
