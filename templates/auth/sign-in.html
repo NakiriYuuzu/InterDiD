@@ -12,7 +12,27 @@
 
 {#content#}
 {% block content %}
-    <div class="wrapper">
+    <div class="position-relative">
+        <div class="toast-container position-absolute top-0 end-0 px-3">
+            <div class="toast fade show" role="alert" aria-live="assertive" aria-atomic="true"
+                 v-for="toast in toasts" :key="toast.toastId">
+                <div class="toast-header">
+                    <svg class="bd-placeholder-img rounded me-2" width="20" height="20"
+                         xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice"
+                         focusable="false">
+                        <rect width="100%" height="100%" :fill="toast.status"></rect>
+                    </svg>
+                    <strong class="me-auto">[[ toast.title ]]</strong>
+                    <small class="text-muted">[[ toast.displayTime ]]</small>
+                    <button type="button" class="btn-close" aria-label="Close" @click="closeToast(toast.id)"></button>
+                </div>
+                <div class="toast-body">
+                    [[ toast.message ]]
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="wrapper" xmlns:v-on="http://www.w3.org/1999/xhtml">
         <section class="login-content">
             <div class="row m-0 align-items-center bg-white vh-100">
                 <div class="col-md-6">
@@ -65,14 +85,14 @@
                                     </a>
                                     <h2 class="mb-2 text-center">Sign In</h2>
                                     <p class="text-center">Login to Admin Dashboard.</p>
-                                    <form method="post">
+                                    <form novalidate v-on:submit.prevent="login()">
                                         {% csrf_token %}
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <div class="form-group">
                                                     <label for="account" class="form-label">Account</label>
                                                     <input type="text" class="form-control"
-                                                           id="account" name="account"
+                                                           id="account" name="account" v-model="account"
                                                            aria-describedby="account" placeholder=" " required>
                                                 </div>
                                             </div>
@@ -80,7 +100,7 @@
                                                 <div class="form-group">
                                                     <label for="password" class="form-label">Password</label>
                                                     <input type="password" class="form-control"
-                                                           id="password" name="password"
+                                                           id="password" name="password" v-model="password"
                                                            aria-describedby="password" placeholder=" " required>
                                                 </div>
                                             </div>
@@ -116,4 +136,84 @@
             </div>
         </section>
     </div>
+{% endblock %}
+{% block script %}
+    <script>
+        const app = Vue.createApp({
+            delimiters: ['[[', ']]'],
+            data() {
+                return {
+                    token: '{{ csrf_token }}',
+
+                    toasts: [],
+                    toastId: 1,
+
+                    alert: false,
+                    message: null,
+                    isSuccess: false,
+
+                    account: null,
+                    password: null,
+                }
+            },
+            created() {
+
+            },
+            mounted() {
+                setInterval(this.timeToast, 60000)
+            },
+            methods: {
+                login() {
+                    if (!this.account || !this.password) {
+                        this.showToast('登入失敗', '帳號或密碼不可為空', 'error')
+                        return
+                    }
+                    axios.post('/admin/login/', new URLSearchParams({
+                        'account': this.account,
+                        'password': this.password
+                    }).toString(), {
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'X-CSRFToken': this.token
+                        }
+                    }).then(res => {
+                        if (res.data.success) {
+                            window.location.href = res.data.next_url
+                        } else {
+                            this.showToast('登入失敗', res.data.error, 'error')
+                        }
+                    }).catch(err => {
+                        let message = err.response && err.response.data ? err.response.data.error : '登入失敗'
+                        this.showToast('登入失敗', message, 'error')
+                    });
+                },
+                showToast(title, message, status) {
+                    let colors = {success: "#1aa053", error: "#c03221", warning: "#f16a1b", info: "#007aff"}
+                    this.toasts.push({
+                        id: this.toastId++,
+                        title: title,
+                        message: message,
+                        date: new Date(),
+                        displayTime: '剛剛',
+                        status: colors[status],
+                    })
+                },
+                timeToast() {
+                    let now = new Date()
+                    this.toasts.forEach(toast => {
+                        let diff = Math.floor((now - toast.date) / 60000) // 分鐘數
+                        if (diff === 0) {
+                            toast.displayTime = '剛剛'
+                        } else {
+                            toast.displayTime = diff + ' 分鐘前'
+                        }
+                    })
+                },
+                closeToast(toastId) {
+                    this.toasts = this.toasts.filter(toast => toast.id !== toastId)
+                }
+            }
+        })
+        app.mount('#App')
+    </script>
 {% endblock %}

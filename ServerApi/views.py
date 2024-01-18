@@ -1,8 +1,9 @@
 import os
 
+from django.contrib.auth.hashers import make_password
 from django.utils import timezone
-from django.contrib.auth.models import User as Account
 from rest_framework import status, permissions
+from rest_framework.exceptions import ValidationError
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -13,17 +14,108 @@ from ServerCommon import print_success, print_error
 from ServerCommon.models import *
 
 
-class AccountView(APIView):
+class AccountsView(APIView):
     """
-    使用模型為 Account : django.contrib.auth.models.User
-    處理用戶帳戶相關的請求 [給與權限登入後臺系統]
+    這個是用於處理 Admin 相關的帳號，使用模型為 Accounts : ServerCommon.models.Accounts
+    主要用於管理後台的帳號，包含新增、修改、刪除
+    Superuser > Staff > None
     """
     permission_classes = [permissions.IsAuthenticated]
 
     @staticmethod
-    def get(request):
+    def check_required_fields(data, required_fields):
+        missing = [field for field in required_fields if field not in data]
+        if missing:
+            raise ValidationError(f'Missing fields: {missing}')
 
-        pass
+    @staticmethod
+    def get(request):
+        account_id = request.query_params.get('account_id', None)
+        serializer = AccountsSerializer(Account.objects.filter(pk=account_id) if account_id else Account.objects.all(),
+                                        many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @staticmethod
+    def post(request):
+        required_fields = ['amount', 'username']
+
+        if not request.user.is_superuser:
+            return Response({'error': 'Only admin can create accounts'}, status=status.HTTP_403_FORBIDDEN)
+
+        try:
+            AccountsView.check_required_fields(request.data, required_fields)
+
+            amount = int(request.data['amount'])
+            base_username = request.data['username']
+
+            for i in range(1, amount + 1):
+                username = f"{base_username}{i}"
+                if Account.objects.filter(username=username).exists():
+                    continue  # 如果用戶名已存在，則跳過並繼續下一個
+
+                Account.objects.create(
+                    username=username,
+                    password=make_password(username),  # 設置默認密碼
+                    is_staff=request.data.get('is_staff', False),
+                    is_active=request.data.get('is_active', True),
+                    is_superuser=request.data.get('is_superuser', False)
+                )
+
+        except ValidationError as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        except ValueError:
+            return Response({'error': 'Invalid amount value'}, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response({'message': f'{amount} accounts created successfully'}, status=status.HTTP_201_CREATED)
+
+    @staticmethod
+    def put(request):
+        required_fields = ['id']
+        try:
+            AccountsView.check_required_fields(request.data, required_fields)
+            account_id = request.data['id']
+            account = Account.objects.get(pk=account_id)
+
+            AccountsView.update_account(request, account)
+
+        except ValidationError as e:
+            return Response({'error': e.detail}, status=status.HTTP_400_BAD_REQUEST)
+        except Account.DoesNotExist as e:
+            return Response({'error': str(e)}, status=status.HTTP_404_NOT_FOUND)
+
+        return Response({'message': 'Account updated successfully'}, status=status.HTTP_200_OK)
+
+    @staticmethod
+    def update_account(request, account):
+        if request.data.get('password'):
+            if request.user.id == account.id or request.user.is_superuser:
+                account.set_password(request.data['password'])
+            else:
+                raise ValidationError('Only the owner or Admin can change the password')
+
+        if request.user.is_superuser:
+            account.is_superuser = request.data.get('is_superuser', account.is_superuser)
+            account.is_staff = request.data.get('is_staff', account.is_staff) == 'true'
+            account.username = request.data.get('username', account.username)
+        else:
+            if not request.data.get('username') == account.username:
+                return Response({'error': 'Only Admin can change username'}, status=status.HTTP_403_FORBIDDEN)
+
+        account.save()
+
+    @staticmethod
+    def delete(request):
+        account_id = request.data.get('id')
+        if not account_id:
+            return Response({'error': 'Username is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            user = Account.objects.get(pk=account_id)
+            user.delete()
+        except Account.DoesNotExist:
+            return Response({'error': 'Account not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        return Response({'message': 'Account deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
 
 
 class UsersView(APIView):

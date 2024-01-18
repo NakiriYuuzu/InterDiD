@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from InterDiD import settings
 from ServerApi.serializer import ArtworksSerializer
@@ -10,18 +11,18 @@ import random
 def sign_in(request):
     next_url = request.GET.get('next', '/admin')
     if request.method == 'POST':
-        acc = request.POST['account']
-        pwd = request.POST['password']
+        acc = request.POST.get('account')
+        pwd = request.POST.get('password')
+        print(acc, pwd)
         user = authenticate(request, username=acc, password=pwd)
 
         if user is not None:
             login(request, user)
-            if next_url:
-                return redirect(next_url)
-            else:
-                return redirect('/admin')
+            if not user.is_superuser:
+                next_url = '/admin/list_artwork'
+            return JsonResponse({'success': True, 'next_url': next_url})
         else:
-            return render(request, 'auth/sign-in.html', {'error': 'Wrong account or password'})
+            return JsonResponse({'success': False, 'error': 'Wrong account or password'})
     else:
         return render(request, 'auth/sign-in.html', locals())
 
@@ -78,8 +79,22 @@ def dashboard(request):
         'title': 'InterDiD',
         'mode': settings.DEBUG,
         'username': request.user.username[0].upper() + request.user.username[1:],
+        'is_superuser': request.user.is_superuser,
+        'is_staff': request.user.is_staff,
     }
     return render(request, 'dashboard/dashboard.html', msg)
+
+
+@login_required
+def accounts(request):
+    msg = {
+        'title': 'InterDiD',
+        'mode': settings.DEBUG,
+        'username': request.user.username[0].upper() + request.user.username[1:],
+        'is_superuser': request.user.is_superuser,
+        'is_staff': request.user.is_staff,
+    }
+    return render(request, 'dashboard/accounts.html', msg)
 
 
 @login_required
@@ -88,6 +103,8 @@ def games(request):
         'title': 'InterDiD',
         'mode': settings.DEBUG,
         'username': request.user.username[0].upper() + request.user.username[1:],
+        'is_superuser': request.user.is_superuser,
+        'is_staff': request.user.is_staff,
     }
     return render(request, '404.html', msg)
 
@@ -98,6 +115,8 @@ def form_beacon(request):
         'title': 'InterDiD',
         'mode': settings.DEBUG,
         'username': request.user.username[0].upper() + request.user.username[1:],
+        'is_superuser': request.user.is_superuser,
+        'is_staff': request.user.is_staff,
     }
     return render(request, 'dashboard/form_beacon.html', msg)
 
@@ -108,6 +127,8 @@ def list_artwork(request):
         'title': 'InterDiD',
         'mode': settings.DEBUG,
         'username': request.user.username[0].upper() + request.user.username[1:],
+        'is_superuser': request.user.is_superuser,
+        'is_staff': request.user.is_staff,
     }
     return render(request, 'dashboard/list_artwork.html', msg)
 
@@ -118,6 +139,8 @@ def form_artwork(request):
         'title': 'InterDiD',
         'mode': settings.DEBUG,
         'username': request.user.username[0].upper() + request.user.username[1:],
+        'is_superuser': request.user.is_superuser,
+        'is_staff': request.user.is_staff,
     }
     return render(request, 'dashboard/form_artwork.html', msg)
 

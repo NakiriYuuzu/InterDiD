@@ -114,6 +114,9 @@
                 }
             },
             created() {
+                if ('{{ is_superuser }}' !== 'True') {
+                    window.location.href = '/admin/list_artwork'
+                }
                 this.token = this.getCookie('csrftoken')
                 this.getUsers()
             },

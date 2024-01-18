@@ -220,6 +220,9 @@
                 }
             },
             created() {
+                if ('{{ is_superuser }}' !== 'True') {
+                    window.location.href = '/admin/list_artwork'
+                }
                 this.fetchData('beacons', '/api/beacons')
                 this.fetchData('artworks', '/api/artworks?query=True')
             },

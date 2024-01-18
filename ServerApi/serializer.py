@@ -1,5 +1,12 @@
 from rest_framework import serializers
 from ServerCommon.models import *
+from django.contrib.auth.models import User as Account
+
+
+class AccountsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Account
+        fields = ['id', 'username', 'is_staff', 'is_superuser']
 
 
 class UsersSerializer(serializers.ModelSerializer):

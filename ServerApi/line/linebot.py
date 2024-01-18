@@ -68,9 +68,9 @@ def handle_beacon_event(event, _):
         unique_code = str(uuid.uuid4())
         Users.objects.create(line_id=event.source.user_id, unique_code=unique_code)
 
-    print(beacon)
-
     # 检查 Beacon 是否有关联的 Artworks
+    if beacon is None:
+        return
     if beacon.artworks is None:
         return
 

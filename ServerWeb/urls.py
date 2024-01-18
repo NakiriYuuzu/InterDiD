@@ -13,6 +13,7 @@ urlpatterns = [
     # ADMIN
     path('admin/', views.dashboard, name='admin'),
     path('admin/login/', views.sign_in, name='login'),
+    path('admin/accounts/', views.accounts, name='accounts'),
     path('admin/games/', views.games, name='games'),
     path('admin/form_beacon/', views.form_beacon, name='form_beacon'),
     path('admin/list_artwork/', views.list_artwork, name='list_artwork'),

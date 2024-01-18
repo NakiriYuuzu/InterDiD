@@ -10,6 +10,7 @@ urlpatterns = [
     path('linebot', LinebotView.as_view()),
 
     path('user', UsersView.as_view()),
+    path('account', AccountsView.as_view()),
     path('beacons', BeaconsView.as_view()),
     path('artworks', ArtworksView.as_view()),
 ]
