@@ -9,9 +9,18 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from InterDiD import settings
+from ServerApi.utils.permission import IsSuperuser
 from ServerApi.serializer import *
 from ServerCommon import print_success, print_error
 from ServerCommon.models import *
+
+
+class GamesView(APIView):
+    """
+    使用模型為 Games : ServerCommon.models.Games
+    處理遊戲相關的請求，設定難易度，排行榜（通關時間）
+    """
+    pass
 
 
 class AccountsView(APIView):
@@ -123,7 +132,7 @@ class UsersView(APIView):
     使用模型為 Users : ServerCommon.models.Users
     處理用戶相關的請求 [記錄LineApi的用戶資料]
     """
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, IsSuperuser]
 
     @staticmethod
     def get(request):
@@ -179,6 +188,11 @@ class ArtworksView(APIView):
     def post(request):
         # 检查是否提供了 'artworks' 字段
         if 'artworks' not in request.data and 'artwork_product_title' in request.data:
+            # 只有 staff 和 superuser 可以创建 Artworks
+            if not request.user.is_superuser and not request.user.is_staff:
+                return Response({'error': 'Only admin or staff can create artworks'},
+                                status=status.HTTP_403_FORBIDDEN)
+
             # 如果提供了 'artwork_product_title' 而没有提供 'artworks'，则创建新的 Artworks 实例
             artwork_data = {'product_title': request.data['artwork_product_title']}
             artwork_serializer = ArtworksSerializer(data=artwork_data)
@@ -200,6 +214,10 @@ class ArtworksView(APIView):
     def put(request):
         artwork_id = request.data.get('artwork_id', None)
         artwork_item_id = request.data.get('artwork_item_id', None)
+
+        # 檢查是否是 Superuser 或 Staff
+        if not request.user.is_superuser and not request.user.is_staff:
+            return Response({'error': 'Only admin or staff can update artworks'}, status=status.HTTP_403_FORBIDDEN)
 
         if artwork_item_id:
             try:
@@ -240,6 +258,10 @@ class ArtworksView(APIView):
     def delete(request):
         artwork_id = request.query_params.get('artwork_id', None)
         artwork_item_id = request.query_params.get('artwork_item_id', None)
+
+        # 檢查是否是 Superuser
+        if not request.user.is_superuser:
+            return Response({'error': 'Only admin can delete artworks'}, status=status.HTTP_403_FORBIDDEN)
 
         # 檢查是否有 Beacon 正在使用該 Artwork
         if artwork_id and Beacons.objects.filter(artworks__artwork_id=artwork_id).exists():
@@ -289,88 +311,57 @@ class ArtworksView(APIView):
 
 
 class BeaconsView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, IsSuperuser]
 
     @staticmethod
     def get(request):
         beacon_id = request.query_params.get('beacon_id', None)
-        if beacon_id:
-            beacons = Beacons.objects.filter(beacon_id=beacon_id)
-        else:
-            beacons = Beacons.objects.all()
+        beacons = Beacons.objects.filter(beacon_id=beacon_id) if beacon_id else Beacons.objects.all()
         serializer = BeaconsSerializer(beacons, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     @staticmethod
     def post(request):
-        artwork_id = request.data.get("artworks", None)  # 默認值為 None
-        artwork = None
-        if artwork_id:
-            try:
-                artwork = Artworks.objects.get(pk=artwork_id)
-            except Artworks.DoesNotExist:
-                return Response({'error': 'Artwork not found'}, status=status.HTTP_404_NOT_FOUND)
-
-        # 驗證是否只有10 個 beacon
-        beacons = Beacons.objects.all()
-        if len(beacons) >= 10:
-            return Response({'error': 'Total Beacon is limited to 10'}, status=status.HTTP_400_BAD_REQUEST)
-
-        print(request.data)
         beacon_data = {
             'beacon_name': request.data.get('beacon_name'),
             'beacon_uuid': request.data.get('beacon_uuid'),
+            'artworks': request.data.get("artworks", None)
         }
         if not beacon_data['beacon_name'] or not beacon_data['beacon_uuid']:
             return Response({'error': 'Beacon name and uuid are required'}, status=status.HTTP_400_BAD_REQUEST)
 
         serializer = BeaconsSerializer(data=beacon_data)
         if serializer.is_valid():
-            beacon = serializer.save()
-            if artwork:  # 只有在 artwork 不為 None 時才保存
-                beacon.artworks = artwork
-                beacon.save()
-            return Response(BeaconsSerializer(beacon).data, status=status.HTTP_201_CREATED)
-
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @staticmethod
     def put(request):
         beacon_id = request.data.get('beacon_id')
+
         if beacon_id is None:
             return Response({'error': 'Beacon ID is required'}, status=status.HTTP_400_BAD_REQUEST)
 
-        try:
-            beacon = Beacons.objects.get(beacon_id=beacon_id)
-        except Beacons.DoesNotExist:
+        beacon = Beacons.objects.filter(beacon_id=beacon_id).first()
+        if not beacon:
             return Response({'error': 'Beacon not found'}, status=status.HTTP_404_NOT_FOUND)
-
-        artwork_id = request.data.get("artworks", None)  # 默認值為 None
-        if artwork_id:
-            try:
-                artwork = Artworks.objects.get(pk=artwork_id)
-                beacon.artworks = artwork  # 更新 artwork
-            except Artworks.DoesNotExist:
-                return Response({'error': 'Artwork not found'}, status=status.HTTP_404_NOT_FOUND)
-        else:
-            beacon.artworks = None  # 將 artwork 設為 None
 
         serializer = BeaconsSerializer(beacon, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response({'message': 'Beacon updated successfully'}, status=status.HTTP_200_OK)
-
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @staticmethod
     def delete(request):
-        beacon_id = request.data.get('beacon_id')  # 從請求數據中獲取 beacon_id
+        beacon_id = request.data.get('beacon_id')
+
         if beacon_id is None:
             return Response({'error': 'Beacon ID is required'}, status=status.HTTP_400_BAD_REQUEST)
 
-        try:
-            beacon = Beacons.objects.get(beacon_id=beacon_id)
-        except Beacons.DoesNotExist:
+        beacon = Beacons.objects.filter(beacon_id=beacon_id).first()
+        if not beacon:
             return Response({'error': 'Beacon not found'}, status=status.HTTP_404_NOT_FOUND)
 
         beacon.delete()

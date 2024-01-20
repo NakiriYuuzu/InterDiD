@@ -165,7 +165,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="account_password" class="col-form-label">帳號密碼</label>
-                                <input type="text" class="form-control" id="account_password" required
+                                <input type="password" class="form-control" id="account_password" required
                                        v-model="selectedAccount.password">
                             </div>
                             <div class="mb-3">
@@ -253,7 +253,7 @@
                         headers: {'X-CSRFToken': this.token}
                     }).then(_ => {
                         this.getAccounts()
-                        this.showToast('修改成功', `${this.originalAccount.username} 修改成 ${this.selectedAccount.username}!`, 'success')
+                        this.showToast('修改成功', `修改${this.selectedAccount.username}已完成!`, 'success')
                     }).catch(error => {
                         this.cancelEdit()
                         this.showToast('修改失敗', `${error.response.data.error}`, 'error')

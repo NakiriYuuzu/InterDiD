@@ -76,7 +76,7 @@ def artworks(request):
 @login_required
 def dashboard(request):
     msg = {
-        'title': 'InterDiD',
+        'title': settings.APP_NAME,
         'mode': settings.DEBUG,
         'username': request.user.username[0].upper() + request.user.username[1:],
         'is_superuser': request.user.is_superuser,
@@ -88,7 +88,7 @@ def dashboard(request):
 @login_required
 def accounts(request):
     msg = {
-        'title': 'InterDiD',
+        'title': settings.APP_NAME,
         'mode': settings.DEBUG,
         'username': request.user.username[0].upper() + request.user.username[1:],
         'is_superuser': request.user.is_superuser,
@@ -100,19 +100,19 @@ def accounts(request):
 @login_required
 def games(request):
     msg = {
-        'title': 'InterDiD',
+        'title': settings.APP_NAME,
         'mode': settings.DEBUG,
         'username': request.user.username[0].upper() + request.user.username[1:],
         'is_superuser': request.user.is_superuser,
         'is_staff': request.user.is_staff,
     }
-    return render(request, '404.html', msg)
+    return render(request, 'dashboard/games.html', msg)
 
 
 @login_required
 def form_beacon(request):
     msg = {
-        'title': 'InterDiD',
+        'title': settings.APP_NAME,
         'mode': settings.DEBUG,
         'username': request.user.username[0].upper() + request.user.username[1:],
         'is_superuser': request.user.is_superuser,
@@ -124,7 +124,7 @@ def form_beacon(request):
 @login_required
 def list_artwork(request):
     msg = {
-        'title': 'InterDiD',
+        'title': settings.APP_NAME,
         'mode': settings.DEBUG,
         'username': request.user.username[0].upper() + request.user.username[1:],
         'is_superuser': request.user.is_superuser,
@@ -136,7 +136,7 @@ def list_artwork(request):
 @login_required
 def form_artwork(request):
     msg = {
-        'title': 'InterDiD',
+        'title': settings.APP_NAME,
         'mode': settings.DEBUG,
         'username': request.user.username[0].upper() + request.user.username[1:],
         'is_superuser': request.user.is_superuser,

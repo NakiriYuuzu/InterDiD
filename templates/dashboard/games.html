@@ -2,7 +2,79 @@
 {% load static %}
 {% block title %}InterDiD Artwork{% endblock %}
 {% block content %}
-
+    <div class="position-relative">
+        <div class="toast-container position-absolute top-0 end-0 px-3">
+            <div class="toast fade show" role="alert" aria-live="assertive" aria-atomic="true"
+                 v-for="toast in toasts" :key="toast.toastId">
+                <div class="toast-header">
+                    <svg class="bd-placeholder-img rounded me-2" width="20" height="20"
+                         xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice"
+                         focusable="false">
+                        <rect width="100%" height="100%" :fill="toast.status"></rect>
+                    </svg>
+                    <strong class="me-auto">[[ toast.title ]]</strong>
+                    <small class="text-muted">[[ toast.displayTime ]]</small>
+                    <button type="button" class="btn-close" aria-label="Close" @click="closeToast(toast.id)"></button>
+                </div>
+                <div class="toast-body">
+                    [[ toast.message ]]
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 {% block script %}
+    <script>
+        const app = Vue.createApp({
+            delimiters: ['[[', ']]'],
+            data() {
+                return {
+                    token: '{{ csrf_token }}',
+
+                    toasts: [],
+                    toastId: 1,
+
+                    alert: false,
+                    message: null,
+                    isSuccess: false,
+                }
+            },
+            created() {
+                if ('{{ is_superuser }}' !== 'True') {
+                    window.location.href = '/admin/list_artwork'
+                }
+            },
+            mounted() {
+                setInterval(this.timeToast, 60000)
+            },
+            methods: {
+                showToast(title, message, status) {
+                    let colors = {success: "#1aa053", error: "#c03221", warning: "#f16a1b", info: "#007aff"}
+                    this.toasts.push({
+                        id: this.toastId++,
+                        title: title,
+                        message: message,
+                        date: new Date(),
+                        displayTime: '剛剛',
+                        status: colors[status],
+                    })
+                },
+                timeToast() {
+                    let now = new Date()
+                    this.toasts.forEach(toast => {
+                        let diff = Math.floor((now - toast.date) / 60000) // 分鐘數
+                        if (diff === 0) {
+                            toast.displayTime = '剛剛'
+                        } else {
+                            toast.displayTime = diff + ' 分鐘前'
+                        }
+                    })
+                },
+                closeToast(toastId) {
+                    this.toasts = this.toasts.filter(toast => toast.id !== toastId)
+                }
+            }
+        })
+        app.mount('#App')
+    </script>
 {% endblock %}

@@ -56,6 +56,7 @@ class Beacons(models.Model):
 class Games(models.Model):
     game_id = models.AutoField(primary_key=True)
     game_name = models.CharField(max_length=255)
+    game_diff = models.IntegerField(null=True)
 
     def __str__(self):
         return self.game_name

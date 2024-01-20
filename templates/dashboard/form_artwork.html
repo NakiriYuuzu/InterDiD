@@ -98,6 +98,7 @@
                                                             現有作品集
                                                         </button>
                                                     </li>
+                                                    {% if is_superuser or is_staff %}
                                                     <li class="nav-item" role="presentation">
                                                         <button :class="switchButtonNew" role="tab"
                                                                 type="button" @click="onNewOrSelectClick(false)"
@@ -105,6 +106,7 @@
                                                             新增作品集
                                                         </button>
                                                     </li>
+                                                    {% endif %}
                                                 </ul>
                                             </div>
                                             <div class="col-md-6" v-if="selectOrNew">
@@ -128,7 +130,8 @@
                                             </div>
                                             <div class="col-md-6" v-else>
                                                 <div class="form-group">
-                                                    <label class="form-label" for="artwork_product_title" style="font-weight: bold">
+                                                    <label class="form-label" for="artwork_product_title"
+                                                           style="font-weight: bold">
                                                         新增作品集: *
                                                     </label>
                                                     <input type="text" class="form-control" id="artwork_product_title"
@@ -186,7 +189,14 @@
                                                 </h2>
                                             </div>
                                         </div>
-                                        <div class="form-group">
+                                        <button type="button" class="btn btn-primary next action-button float-end"
+                                                @click="verifyStep(4)">Next
+                                        </button>
+                                        <button type="button" @click="goToStep(2)"
+                                                class="btn btn-dark previous action-button-previous float-end me-1">
+                                            Previous
+                                        </button>
+                                        <div class="form-group mt-5">
                                             <label class="form-label">上傳您的作品: *</label>
                                             <input type="file" class="form-control" accept="image/*" ref="imageInput"
                                                    @change="fileUpload" style="margin-bottom: 16px;">
@@ -200,12 +210,6 @@
                                             </svg>
                                         </div>
                                     </div>
-                                    <button type="button" class="btn btn-primary next action-button float-end"
-                                            @click="verifyStep(4)">Next
-                                    </button>
-                                    <button type="button" @click="goToStep(2)"
-                                            class="btn btn-dark previous action-button-previous float-end me-1">Previous
-                                    </button>
                                 </fieldset>
                                 <fieldset v-show="currentStep === 4">
                                     <div class="form-card">
@@ -379,7 +383,10 @@
                         case 1:
                             validations = [
                                 {condition: this.selectOrNew && artworks === '', message: '請選擇作品集'},
-                                {condition: !this.selectOrNew && this.artwork_product_title === '', message: '請填寫作品集名稱'}
+                                {
+                                    condition: !this.selectOrNew && this.artwork_product_title === '',
+                                    message: '請填寫作品集名稱'
+                                }
                             ]
                             break
                         case 2:

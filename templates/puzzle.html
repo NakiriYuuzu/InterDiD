@@ -16,9 +16,9 @@
 {% endblock %}
 
 {% block content %}
-    <div class="back-to-home btn-circle">
-        <a @click="onReframeClicked"><span></span><em>調整拼圖</em></a>
-    </div>
+{#    <div class="back-to-home btn-circle">#}
+{#        <a @click="onReframeClicked"><span></span><em>調整拼圖</em></a>#}
+{#    </div>#}
     <div class="puzzle">
         <div id="puzzle-game"></div>
         <img class="puzzle-overlay" id="puzzle-overlay" src="{{ data.image }}" alt=""/>
@@ -35,7 +35,7 @@
                     canvasHeight: window.innerHeight,
                     autogen: null,
                     puzzleImage: null,
-                    difficulty: 1.5,
+                    difficulty: 0.5,
                 }
             },
             beforeCreate() {
