@@ -20,7 +20,30 @@ class GamesView(APIView):
     使用模型為 Games : ServerCommon.models.Games
     處理遊戲相關的請求，設定難易度，排行榜（通關時間）
     """
-    pass
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            self.permission_classes = [permissions.AllowAny]
+        return super(GamesView, self).get_permissions()
+
+    @staticmethod
+    def get(request):
+
+        pass
+
+    @staticmethod
+    def post(request):
+
+        pass
+
+    @staticmethod
+    def put(request):
+        pass
+
+    @staticmethod
+    def delete(request):
+        pass
 
 
 class AccountsView(APIView):

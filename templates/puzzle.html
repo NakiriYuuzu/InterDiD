@@ -16,9 +16,9 @@
 {% endblock %}
 
 {% block content %}
-{#    <div class="back-to-home btn-circle">#}
-{#        <a @click="onReframeClicked"><span></span><em>調整拼圖</em></a>#}
-{#    </div>#}
+{#        <div class="back-to-home btn-circle">#}
+{#            <a @click="onReframeClicked"><span></span><em>調整拼圖</em></a>#}
+{#        </div>#}
     <div class="puzzle">
         <div id="puzzle-game"></div>
         <img class="puzzle-overlay" id="puzzle-overlay" src="{{ data.image }}" alt=""/>
@@ -33,87 +33,91 @@
                 return {
                     canvasWidth: window.innerWidth,
                     canvasHeight: window.innerHeight,
+                    puzzleWidth: 0,
+                    puzzleHeight: 0,
                     autogen: null,
-                    puzzleImage: null,
-                    difficulty: 0.5,
+                    pieceSize: 0,
+                    puzzleImage: new Image(),
+                    horizontalPiecesCount: 4,
+                    verticalPiecesCount: 4,
                 }
             },
-            beforeCreate() {
+            created() {
+                this.puzzleImage.src = '{{ data.image }}'
+                this.calculatePieceSize()
+                this.puzzleImage.onload = this.createPuzzle
                 document.getElementById("info-button").style.opacity = 0
                 document.getElementById("info-button").style.visibility = "hidden"
+                {#window.addEventListener('resize', this.onWindowResize)#}
             },
-            created() {
-                this.createPuzzle()
+            beforeUnmount() {
+                window.removeEventListener('resize', this.onWindowResize)
             },
             methods: {
                 createPuzzle() {
-                    this.puzzleImage = new Image()
-                    this.puzzleImage.src = '{{ data.image }}'
-                    this.puzzleImage.onload = () => {
-                        const aspectRatio = this.puzzleImage.width / this.puzzleImage.height
+                    this.calculatePuzzleSizeAndDifficulty()
 
-                        // 根据难度动态计算拼图块大小
-                        let basePieceSize = 100 // 基础拼图块大小
-                        let pieceSize = basePieceSize / this.difficulty // 根据难度调整拼图块大小
+                    this.autogen = new headbreaker.Canvas('puzzle-game', {
+                        width: this.canvasWidth,
+                        height: this.canvasHeight,
+                        pieceSize: this.pieceSize,
+                        proximity: 20,
+                        borderFill: 10,
+                        strokeWidth: 1,
+                        lineSoftness: 0.0,
+                        preventOffstageDrag: true,
+                        fixed: true,
+                        image: this.puzzleImage,
+                        outline: new headbreaker.outline.Rounded()
+                    })
 
-                        // 计算最大可能的拼图宽度和高度
-                        let maxPuzzleWidth = this.canvasWidth * 0.8
-                        let maxPuzzleHeight = this.canvasHeight * 0.8
-                        let puzzleWidth = Math.min(this.puzzleImage.width, maxPuzzleWidth)
-                        let puzzleHeight = puzzleWidth / aspectRatio
+                    this.autogen.adjustImagesToPuzzleHeight()
+                    this.autogen.autogenerate({
+                        horizontalPiecesCount: this.horizontalPiecesCount,
+                        verticalPiecesCount: this.verticalPiecesCount
+                    })
 
-                        if (puzzleHeight > maxPuzzleHeight) {
-                            puzzleHeight = maxPuzzleHeight
-                            puzzleWidth = puzzleHeight * aspectRatio
-                        }
+                    this.autogen.shuffle(0.375)
+                    this.autogen.draw()
 
-                        // 确保拼图块大小不会导致拼图超过canvas
-                        let horizontalPiecesCount = Math.min(Math.floor(puzzleWidth / pieceSize), Math.floor(this.canvasWidth / pieceSize))
-                        let verticalPiecesCount = Math.min(Math.floor(puzzleHeight / pieceSize), Math.floor(this.canvasHeight / pieceSize))
+                    this.autogen.attachSolvedValidator()
+                    this.autogen.onValid(() => {
+                        setTimeout(() => {
+                            document.getElementById("info-button").style.opacity = "1"
+                            document.getElementById("info-button").style.visibility = "visible"
 
-                        this.autogen = new headbreaker.Canvas('puzzle-game', {
-                            width: this.canvasWidth,
-                            height: this.canvasHeight,
-                            pieceSize: pieceSize, // 使用动态计算的拼图块大小
-                            proximity: 20,
-                            borderFill: 10,
-                            strokeWidth: 1,
-                            lineSoftness: 0.0,
-                            preventOffstageDrag: true,
-                            fixed: true,
-                            image: this.puzzleImage,
-                            outline: new headbreaker.outline.Rounded()
-                        })
+                            document.getElementById('puzzle-game').style.opacity = "0"
 
-                        this.autogen.adjustImagesToPuzzleHeight()
-                        this.autogen.autogenerate({
-                            horizontalPiecesCount: horizontalPiecesCount,
-                            verticalPiecesCount: verticalPiecesCount
-                        })
+                            document.getElementById('puzzle-overlay').classList.add('show')
+                            document.getElementById('puzzle-overlay').style.maxWidth = this.puzzleWidth + 'px'
+                            document.getElementById('puzzle-overlay').style.maxHeight = this.puzzleHeight + 'px'
+                        }, 500)
+                    })
+                },
+                calculatePieceSize() {
+                    let maxPieceSize = this.puzzleImage.width / this.horizontalPiecesCount + 1
+                    let totalWidthPieces = this.horizontalPiecesCount + 1
+                    this.pieceSize = Math.min(this.canvasWidth / totalWidthPieces, maxPieceSize)
+                    console.log(this.pieceSize)
+                    console.log(this.puzzleImage.width)
+                },
+                calculatePuzzleSizeAndDifficulty() {
+                    const aspectRatio = this.puzzleImage.width / this.puzzleImage.height
 
-                        this.autogen.shuffle(0.375)
-                        this.autogen.draw()
+                    let maxPuzzleWidth = this.canvasWidth * 0.8
+                    let maxPuzzleHeight = this.canvasHeight * 0.8
+                    this.puzzleWidth = Math.min(this.puzzleImage.width, maxPuzzleWidth)
+                    this.puzzleHeight = this.puzzleWidth / aspectRatio
 
-                        // validate
-                        this.autogen.attachSolvedValidator()
-                        this.autogen.onValid(() => {
-                            setTimeout(() => {
-                                document.getElementById("info-button").style.opacity = 1
-                                document.getElementById("info-button").style.visibility = "visible"
-
-                                document.getElementById('puzzle-game').style.opacity = 0
-
-                                document.getElementById('puzzle-overlay').classList.add('show')
-                                document.getElementById('puzzle-overlay').style.maxWidth = puzzleWidth + 'px'
-                                document.getElementById('puzzle-overlay').style.maxHeight = puzzleHeight + 'px'
-                            }, 500)
-                        })
+                    if (this.puzzleHeight > maxPuzzleHeight) {
+                        this.puzzleHeight = maxPuzzleHeight
+                        this.puzzleWidth = this.puzzleHeight * aspectRatio
                     }
                 },
-                onReframeClicked() {
-                    this.autogen.reframeWithinDimensions()
-                    this.autogen.solve()
-                    this.autogen.redraw()
+                onWindowResize() {
+                    this.canvasWidth = window.innerWidth
+                    this.canvasHeight = window.innerHeight
+                    this.createPuzzle() // 重新创建拼图
                 }
             }
         })

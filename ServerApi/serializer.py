@@ -58,7 +58,7 @@ class BeaconsSerializer(serializers.ModelSerializer):
 class GamesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Games
-        fields = ['game_id', 'game_name']
+        fields = ['game_id', 'game_name', 'game_diff']
 
 
 class UserGamesSerializer(serializers.ModelSerializer):
