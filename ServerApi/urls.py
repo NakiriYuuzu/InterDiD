@@ -1,3 +1,4 @@
+from django.conf.urls.static import static
 from django.urls import path
 from ServerApi.line.linebot import LinebotView
 from ServerApi.views import *
@@ -10,6 +11,7 @@ urlpatterns = [
     path('linebot', LinebotView.as_view()),
 
     path('user', UsersView.as_view()),
+    path('games', GamesView.as_view()),
     path('account', AccountsView.as_view()),
     path('beacons', BeaconsView.as_view()),
     path('artworks', ArtworksView.as_view()),

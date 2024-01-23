@@ -46,7 +46,7 @@
                 this.puzzleImage.src = '{{ data.image }}'
                 this.calculatePieceSize()
                 this.puzzleImage.onload = this.createPuzzle
-                document.getElementById("info-button").style.opacity = 0
+                document.getElementById("info-button").style.opacity = "0"
                 document.getElementById("info-button").style.visibility = "hidden"
                 {#window.addEventListener('resize', this.onWindowResize)#}
             },
@@ -96,10 +96,8 @@
                 },
                 calculatePieceSize() {
                     let maxPieceSize = this.puzzleImage.width / this.horizontalPiecesCount + 1
-                    let totalWidthPieces = this.horizontalPiecesCount + 1
+                    let totalWidthPieces = this.horizontalPiecesCount
                     this.pieceSize = Math.min(this.canvasWidth / totalWidthPieces, maxPieceSize)
-                    console.log(this.pieceSize)
-                    console.log(this.puzzleImage.width)
                 },
                 calculatePuzzleSizeAndDifficulty() {
                     const aspectRatio = this.puzzleImage.width / this.puzzleImage.height

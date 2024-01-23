@@ -23,19 +23,71 @@ class GamesView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_permissions(self):
-        if self.request.method == 'GET':
+        if self.request.method == 'GET' or self.request.method == 'POST':
             self.permission_classes = [permissions.AllowAny]
         return super(GamesView, self).get_permissions()
 
     @staticmethod
-    def get(request):
+    def check_required_fields(data, required_fields):
+        missing = [field for field in required_fields if field not in data]
+        if missing:
+            raise ValidationError(f'Missing fields: {missing}')
 
-        pass
+    @staticmethod
+    def get(request):
+        types = request.query_params.get('types', None)
+
+        if types == 'setting':
+            serializer = GamesSerializer(Games.objects.all(), many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        elif types == 'ranking':
+            game_name = request.query_params.get('game_name', None)
+            game = Games.objects.filter(game_name=game_name)
+            serializer = UserGamesSerializer(game, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        else:
+            return Response({'error': 'No valid identifier provided'}, status=status.HTTP_400_BAD_REQUEST)
 
     @staticmethod
     def post(request):
+        types = request.data.get('types', None)
 
-        pass
+        if types == 'setting':
+            try:
+                required_fields = ['game_name', 'game_diff']
+                GamesView.check_required_fields(request.data, required_fields)
+                game_name = request.data.get('game_name')
+                game_diff = request.data.get('game_diff')
+
+                if game_diff == 1:
+                    return Response({'error': 'Game difficulty cannot be set to 1'}, status=status.HTTP_400_BAD_REQUEST)
+
+                game = Games.objects.filter(game_name=game_name)
+                if game:
+                    game.update(game_name=game_name, game_diff=game_diff)
+                else:
+                    Games.objects.create(game_name=game_name, game_diff=game_diff)
+                return Response({'message': 'Game setting successfully'}, status=status.HTTP_201_CREATED)
+            except Exception as e:
+                return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+        elif types == 'ranking':
+            required_fields = ['game_name', 'user_id', 'time']
+            GamesView.check_required_fields(request.data, required_fields)
+            game_name = request.data.get('game_name')
+            user_id = request.data.get('user_id')
+            time = request.data.get('time')
+            game = Games.objects.filter(game_name=game_name)
+            if game:
+                game.update(user_id=user_id, time=time)
+            else:
+                Games.objects.create(game_name=game_name, user_id=user_id, time=time)
+            return Response({'message': 'Game ranking successfully'}, status=status.HTTP_201_CREATED)
+
+        else:
+            return Response({'error': 'No valid identifier provided'}, status=status.HTTP_400_BAD_REQUEST)
 
     @staticmethod
     def put(request):
@@ -43,7 +95,24 @@ class GamesView(APIView):
 
     @staticmethod
     def delete(request):
-        pass
+        types = request.data.get('types', None)
+
+        if types == 'setting':
+            game_id = request.data.get('game_id', None)
+            if not game_id:
+                return Response({'error': 'Game ID is required'}, status=status.HTTP_400_BAD_REQUEST)
+            try:
+                game = Games.objects.get(pk=game_id)
+                # 檢查是否有 UserGames 正在使用該 Game
+                if UserGames.objects.filter(game__game_id=game_id).exists():
+                    return Response({'error': 'Cannot delete game as it is currently assigned to a user'},
+                                    status=status.HTTP_400_BAD_REQUEST)
+                game.delete()
+                return Response({'message': 'Game deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
+            except Exception as e:
+                return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response({'error': 'No valid identifier provided'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class AccountsView(APIView):
