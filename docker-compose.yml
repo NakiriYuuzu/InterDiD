@@ -43,6 +43,21 @@ services:
     volumes:
       - mariadb_data:/var/lib/mysql
 
+  ngrok:
+    image: ngrok/ngrok:latest
+    restart: always
+    ports:
+      - "4040:4040"
+    networks:
+      - app-network
+    environment:
+      NGROK_AUTHTOKEN: "${NGROK_AUTHTOKEN}"
+    command:
+      - "tunnel"
+      - "--label=edge=${NGROK_EDGE}"
+      - "http://web:8000"
+
+
 volumes:
   mariadb_data:
 
