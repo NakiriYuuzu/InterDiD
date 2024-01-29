@@ -44,24 +44,25 @@ def index(request):
 
 
 def puzzle(request):
+    global game
     try:
-        artwork = Artworks.objects.all()
-        serializer = ArtworksSerializer(artwork, many=True)
-        result = serializer.data
-        image = random_image(result)
+        image = random_image(ArtworksSerializer(Artworks.objects.all(), many=True).data)
         game = Games.objects.filter(game_diff_select=1)
-
+        error = ''
     except Exception as e:
         image = ''
         error = str(e)
-    else:
-        error = ''
+
+    if game[0] is None:
+        error = 'No game data'
 
     data = {
         'title': settings.APP_NAME,
         'image': settings.APP_HOST + image,
         'url': settings.APP_HOST,
-        'diff': 0 if not game else game[0].game_diff,
+        'error': error,
+        'game_id': game[0].game_id if game else None,
+        'diff': game[0].game_diff if game else 0,
     }
     return render(request, 'puzzle.html', locals())
 

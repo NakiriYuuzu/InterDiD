@@ -16,14 +16,14 @@ from linebot.v3.exceptions import (
 from linebot.v3.messaging import (
     Configuration,
     ApiClient,
-    MessagingApi, FlexMessage, FlexContainer, ReplyMessageRequest
+    MessagingApi, FlexMessage, FlexContainer, ReplyMessageRequest, TextMessage
 )
 
 from InterDiD import settings
 from ServerApi.line.linebot_flex_message import image_with_text
 from ServerApi.serializer import ArtworksSerializer
-from ServerCommon import print_warning, print_success, print_error
-from ServerCommon.models import Users, Beacons
+from ServerCommon import print_success, print_error
+from ServerCommon.models import Users, Beacons, UserGames, Games
 
 # LineConfigurations
 configuration = Configuration(
@@ -33,20 +33,53 @@ handler = WebhookHandler(settings.LINE_SECRET_KEY)
 line_bot_api = MessagingApi(ApiClient(configuration))
 
 
+def send_message(token, msg):
+    line_bot_api.reply_message(
+        ReplyMessageRequest(
+            reply_token=token,
+            messages=[TextMessage(text=msg)]
+        )
+    )
+
+
 @handler.add(MessageEvent, message=TextMessageContent)
 @transaction.atomic
 def handle_message(event, _):
-    print_warning(event)
-    # flex_message = FlexMessage(
-    #     alt_text=event.message.text,
-    #     contents=FlexContainer.from_json(image_with_text)
-    # )
-    # line_bot_api.reply_message(
-    #     ReplyMessageRequest(
-    #         reply_token=event.reply_token,
-    #         messages=[flex_message]
-    #     )
-    # )
+    message = event.message.text
+    line_id = event.source.user_id
+    reply_token = event.reply_token
+    user = Users.objects.get(line_id=line_id)
+    # print_warning(event)
+    print_success(f'user_id: {user.user_id}, line_id: {line_id}, message: {message}, type: {event.type}')
+
+    if message == 'puzzle':
+        try:
+            url = f'{settings.APP_HOST}/puzzle?unique_code={user.unique_code}'
+            send_message(reply_token, url)
+        except Exception as e:
+            print_error(e)
+    elif message == 'ranking':
+        try:
+            user_game = UserGames.objects.get(user=user, game_id=Games.objects.get(game_diff_select=1))
+            ranking = UserGames.objects.filter(game_id=user_game.game_id, play_date__lt=user_game.play_date).count() + 1
+            message = f'難易度為 {user_game.game.game_name}，您的排名為第 {ranking} 名，用時為 {user_game.play_date} 秒'
+            send_message(reply_token, message)
+        except Exception as e:
+            send_message(reply_token, '您還沒有完成遊戲')
+            print_error(e)
+    else:
+        if message.startswith('name:'):
+            try:
+                name = message.split(':')[1]
+                Users.objects.update_or_create(
+                    line_id=line_id,
+                    defaults={'user_name': name}
+                )
+                send_message(reply_token, f'您的名字已更改為: {name}')
+            except Exception as e:
+                print_error(e)
+        else:
+            send_message(reply_token, '更換名字請輸入: name:你的名字')
 
 
 @handler.add(BeaconEvent)
@@ -162,8 +195,6 @@ class LinebotView(APIView):
     def post(request):
         signature = request.META['HTTP_X_LINE_SIGNATURE']
         body = request.body.decode('utf-8')
-        print_warning(body)
-
         # 驗證signature
         try:
             handler.handle(body, signature)

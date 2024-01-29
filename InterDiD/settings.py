@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 import os
+from urllib.parse import urlparse
+
 from dotenv import load_dotenv
 from datetime import timedelta
 from pathlib import Path
@@ -41,7 +43,9 @@ LOGIN_URL = '/admin/login'
 ROOT_URLCONF = 'InterDiD.urls'
 
 # CSRF TRUST
-CSRF_TRUSTED_ORIGINS = [f'{APP_HOST}']
+parsed_url = urlparse(APP_HOST)
+clean_url = parsed_url.scheme + '://' + parsed_url.netloc
+CSRF_TRUSTED_ORIGINS = [clean_url]
 
 # Application definition
 INSTALLED_APPS = [

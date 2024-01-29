@@ -34,6 +34,9 @@
             data() {
                 return {
                     error: '',
+                    usedTime: null,
+                    startTime: null,
+                    endTime: null,
 
                     canvasWidth: window.innerWidth,
                     canvasHeight: window.innerHeight,
@@ -42,21 +45,23 @@
                     autogen: null,
                     pieceSize: 0,
                     puzzleImage: new Image(),
-                    horizontalPiecesCount: 4,
-                    verticalPiecesCount: 4,
+                    horizontalPiecesCount: 0,
+                    verticalPiecesCount: 0,
                 }
             },
             created() {
                 if ('{{ error }}' !== '') this.error = '錯誤，無法加載圖片！'
                 if ({{ data.diff }} < 1) this.error = '尚未設定遊戲難度！'
-                
+
                 if (this.error.length > 0) return
-                
+
                 this.horizontalPiecesCount = {{ data.diff }}
                 this.verticalPiecesCount = {{ data.diff }}
                 this.puzzleImage.src = '{{ data.image }}'
-                
+
+                this.calculatePuzzleSizeAndDifficulty()
                 this.calculatePieceSize()
+
                 this.puzzleImage.onload = this.createPuzzle
                 document.getElementById("info-button").style.opacity = "0"
                 document.getElementById("info-button").style.visibility = "hidden"
@@ -67,8 +72,7 @@
             },
             methods: {
                 createPuzzle() {
-                    this.calculatePuzzleSizeAndDifficulty()
-
+                    this.startTime = new Date()
                     this.autogen = new headbreaker.Canvas('puzzle-game', {
                         width: this.canvasWidth,
                         height: this.canvasHeight,
@@ -95,6 +99,10 @@
                     this.autogen.attachSolvedValidator()
                     this.autogen.onValid(() => {
                         setTimeout(() => {
+                            this.endTime = new Date()
+                            this.calculateUsedTime()
+                            this.postRanking()
+
                             document.getElementById("info-button").style.opacity = "1"
                             document.getElementById("info-button").style.visibility = "visible"
 
@@ -107,9 +115,18 @@
                     })
                 },
                 calculatePieceSize() {
-                    let maxPieceSize = this.puzzleImage.width / this.horizontalPiecesCount + 1
-                    let totalWidthPieces = this.horizontalPiecesCount
-                    this.pieceSize = Math.min(this.canvasWidth / totalWidthPieces, maxPieceSize)
+                    let maxWidthPiece = this.puzzleWidth / this.horizontalPiecesCount + 1
+                    let maxHeightPiece = this.puzzleHeight / this.verticalPiecesCount + 1
+
+                    this.pieceSize = Math.min(
+                        maxWidthPiece - (maxWidthPiece / this.horizontalPiecesCount),
+                        maxHeightPiece - (maxHeightPiece / this.verticalPiecesCount)
+                    )
+
+                    console.log(this.pieceSize, maxWidthPiece, maxHeightPiece)
+
+                    {#let maxPieceSize = this.puzzleWidth / this.horizontalPiecesCount + 1#}
+                    {#this.pieceSize = Math.min(this.canvasWidth / this.horizontalPiecesCount, maxPieceSize)#}
                 },
                 calculatePuzzleSizeAndDifficulty() {
                     const aspectRatio = this.puzzleImage.width / this.puzzleImage.height
@@ -128,6 +145,32 @@
                     this.canvasWidth = window.innerWidth
                     this.canvasHeight = window.innerHeight
                     this.createPuzzle() // 重新创建拼图
+                },
+                calculateUsedTime() {
+                    if (this.startTime && this.endTime) {
+                        this.usedTime = (this.endTime - this.startTime) / 1000
+                        console.log(`完成拼圖所用時間：${this.usedTime}秒`)
+                    }
+                },
+                postRanking() {
+                    // get url params "uuid"
+                    const urlParams = new URLSearchParams(window.location.search)
+                    const uniqueCode = urlParams.get('unique_code')
+
+                    if (uniqueCode === null) return
+
+                    axios.post('/api/games', {
+                        types: 'ranking',
+                        game_id: '{{ data.game_id }}',
+                        play_date: this.usedTime,
+                        unique_code: uniqueCode,
+                    }, {
+                        headers: {'X-CSRFToken': '{{ csrf_token }}'}
+                    }).then(_ => {
+                        console.log(_)
+                    }).catch(err => {
+                        console.log(err)
+                    })
                 }
             }
         })

@@ -12,7 +12,7 @@ class AccountsSerializer(serializers.ModelSerializer):
 class UsersSerializer(serializers.ModelSerializer):
     class Meta:
         model = Users
-        fields = ['user_id', 'line_id', 'unique_code', 'create_at']
+        fields = ['user_id', 'line_id', 'unique_code', 'create_at', 'user_name']
 
 
 class ArtworkItemsSerializer(serializers.ModelSerializer):
@@ -67,4 +67,4 @@ class UserGamesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserGames
-        fields = ['user_game_id', 'user', 'game', 'passed', 'play_date']
+        fields = ['user_game_id', 'user', 'game', 'play_date']

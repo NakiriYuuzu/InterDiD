@@ -42,10 +42,16 @@ class GamesView(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
 
         elif types == 'ranking':
-            game_name = request.query_params.get('game_name', None)
-            game = Games.objects.filter(game_name=game_name)
-            serializer = UserGamesSerializer(game, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            game_id = request.query_params.get('game_id', None)
+            if not game_id:
+                game_id = Games.objects.filter(game_diff_select=1)[0].game_id
+                game = UserGames.objects.filter(game_id=game_id)
+                serializer = UserGamesSerializer(game, many=True)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                game = UserGames.objects.filter(game_id=game_id)
+                serializer = UserGamesSerializer(game, many=True)
+                return Response(serializer.data, status=status.HTTP_200_OK)
 
         elif types == 'select':
             query = Games.objects.filter(game_diff_select=1)
@@ -71,7 +77,7 @@ class GamesView(APIView):
 
                 game, created = Games.objects.update_or_create(
                     game_name=game_name,
-                    defaults={'game_diff': game_diff}
+                    defaults={'game_diff': game_diff, 'game_diff_select': 0}
                 )
                 message = 'Game created successfully' if created else 'Game updated successfully'
                 return Response({'message': message}, status=status.HTTP_201_CREATED)
@@ -81,20 +87,26 @@ class GamesView(APIView):
         elif types == 'ranking':
             try:
                 # 驗證欄位
-                required_fields = ['game_id', 'user_id', 'play_date']
+                required_fields = ['game_id', 'unique_code', 'play_date']
                 GamesView.check_required_fields(request.data, required_fields)
 
                 # 取得欄位
                 game_id = request.data.get('game_id')
-                user_id = request.data.get('user_id')
+                unique_code = request.data.get('unique_code')
                 play_date = request.data.get('play_date')
 
+                # 驗證是否有此用戶
+                user = Users.objects.get(unique_code=unique_code)
+                if not user:
+                    return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
                 # 檢查是否有重複的 user_id
-                current_selected = UserGames.objects.filter(user_id=user_id, game_id=game_id)
+                current_selected = UserGames.objects.filter(user_id=user.user_id, game_id=game_id)
                 if current_selected:
-                    current_selected.update(play_date=play_date)
+                    if float(current_selected[0].play_date) > float(play_date):
+                        current_selected.update(play_date=play_date)
                 else:
-                    UserGames.objects.create(user_id=user_id, game_id=game_id, play_date=play_date)
+                    UserGames.objects.create(user_id=user.user_id, game_id=game_id, play_date=play_date)
 
                 return Response({'message': 'Game ranking successfully'}, status=status.HTTP_201_CREATED)
             except Exception as e:
@@ -466,29 +478,40 @@ class BeaconsView(APIView):
     @staticmethod
     def put(request):
         beacon_id = request.data.get('beacon_id')
-
         if beacon_id is None:
             return Response({'error': 'Beacon ID is required'}, status=status.HTTP_400_BAD_REQUEST)
 
-        beacon = Beacons.objects.filter(beacon_id=beacon_id).first()
-        if not beacon:
+        try:
+            beacon = Beacons.objects.get(beacon_id=beacon_id)
+        except Beacons.DoesNotExist:
             return Response({'error': 'Beacon not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        artwork_id = request.data.get("artworks", None)  # 默認值為 None
+        if artwork_id:
+            try:
+                artwork = Artworks.objects.get(pk=artwork_id)
+                beacon.artworks = artwork  # 更新 artwork
+            except Artworks.DoesNotExist:
+                return Response({'error': 'Artwork not found'}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            beacon.artworks = None  # 將 artwork 設為 None
 
         serializer = BeaconsSerializer(beacon, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response({'message': 'Beacon updated successfully'}, status=status.HTTP_200_OK)
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @staticmethod
     def delete(request):
-        beacon_id = request.data.get('beacon_id')
-
+        beacon_id = request.data.get('beacon_id')  # 從請求數據中獲取 beacon_id
         if beacon_id is None:
             return Response({'error': 'Beacon ID is required'}, status=status.HTTP_400_BAD_REQUEST)
 
-        beacon = Beacons.objects.filter(beacon_id=beacon_id).first()
-        if not beacon:
+        try:
+            beacon = Beacons.objects.get(beacon_id=beacon_id)
+        except Beacons.DoesNotExist:
             return Response({'error': 'Beacon not found'}, status=status.HTTP_404_NOT_FOUND)
 
         beacon.delete()

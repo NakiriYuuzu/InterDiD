@@ -5,6 +5,7 @@ from ServerCommon import unique_file_name
 class Users(models.Model):
     user_id = models.AutoField(primary_key=True)
     line_id = models.CharField(max_length=255, unique=True)
+    user_name = models.CharField(max_length=255, null=True)
     unique_code = models.CharField(max_length=255, null=True, unique=True)
     create_at = models.DateTimeField(auto_now_add=True)
 
@@ -71,7 +72,7 @@ class UserGames(models.Model):
     user = models.ForeignKey(Users, on_delete=models.CASCADE)
     game = models.ForeignKey(Games, on_delete=models.CASCADE)
     passed = models.BooleanField(default=False)
-    play_date = models.DateTimeField(auto_now_add=True)
+    play_date = models.FloatField(null=True)
 
     def __str__(self):
         return self.user_game_id
