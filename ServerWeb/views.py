@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from InterDiD import settings
 from ServerApi.serializer import ArtworksSerializer
-from ServerCommon.models import Artworks
+from ServerCommon.models import Artworks, Games
 import random
 
 
@@ -44,13 +44,24 @@ def index(request):
 
 
 def puzzle(request):
-    artwork = Artworks.objects.all()
-    serializer = ArtworksSerializer(artwork, many=True)
-    result = serializer.data
+    try:
+        artwork = Artworks.objects.all()
+        serializer = ArtworksSerializer(artwork, many=True)
+        result = serializer.data
+        image = random_image(result)
+        game = Games.objects.filter(game_diff_select=1)
+
+    except Exception as e:
+        image = ''
+        error = str(e)
+    else:
+        error = ''
+
     data = {
         'title': settings.APP_NAME,
-        'image': settings.APP_HOST + random_image(result),
+        'image': settings.APP_HOST + image,
         'url': settings.APP_HOST,
+        'diff': 0 if not game else game[0].game_diff,
     }
     return render(request, 'puzzle.html', locals())
 
@@ -153,7 +164,10 @@ def sign_out(request):
 
 def random_image(artwork_list):
     # random_artworks = random.choice(artwork_list)
-    random_artworks = artwork_list[0]
-    random_artwork_items = random.choice(random_artworks['artwork_items'])
-    random_artwork_image = random_artwork_items['artwork_item_image']
-    return random_artwork_image
+    try:
+        random_artworks = artwork_list[0]
+        random_artwork_items = random.choice(random_artworks['artwork_items'])
+        random_artwork_image = random_artwork_items['artwork_item_image']
+        return random_artwork_image
+    except Exception as e:
+        return '0|' + e.__str__()

@@ -16,10 +16,12 @@
 {% endblock %}
 
 {% block content %}
-{#        <div class="back-to-home btn-circle">#}
-{#            <a @click="onReframeClicked"><span></span><em>調整拼圖</em></a>#}
-{#        </div>#}
-    <div class="puzzle">
+    <div v-if="error.length > 0" class="animate-box fadeIn animated-fast">
+        <div class="emptyItem">
+            <h1>[[ error ]]</h1>
+        </div>
+    </div>
+    <div v-else class="puzzle">
         <div id="puzzle-game"></div>
         <img class="puzzle-overlay" id="puzzle-overlay" src="{{ data.image }}" alt=""/>
     </div>
@@ -31,6 +33,8 @@
             delimiters: ['[[', ']]'],
             data() {
                 return {
+                    error: '',
+
                     canvasWidth: window.innerWidth,
                     canvasHeight: window.innerHeight,
                     puzzleWidth: 0,
@@ -43,7 +47,15 @@
                 }
             },
             created() {
+                if ('{{ error }}' !== '') this.error = '錯誤，無法加載圖片！'
+                if ({{ data.diff }} < 1) this.error = '尚未設定遊戲難度！'
+                
+                if (this.error.length > 0) return
+                
+                this.horizontalPiecesCount = {{ data.diff }}
+                this.verticalPiecesCount = {{ data.diff }}
                 this.puzzleImage.src = '{{ data.image }}'
+                
                 this.calculatePieceSize()
                 this.puzzleImage.onload = this.createPuzzle
                 document.getElementById("info-button").style.opacity = "0"

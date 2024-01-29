@@ -23,7 +23,7 @@ class GamesView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_permissions(self):
-        if self.request.method == 'GET' or self.request.method == 'POST':
+        if self.request.method in ['GET', 'POST']:
             self.permission_classes = [permissions.AllowAny]
         return super(GamesView, self).get_permissions()
 
@@ -47,6 +47,11 @@ class GamesView(APIView):
             serializer = UserGamesSerializer(game, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
 
+        elif types == 'select':
+            query = Games.objects.filter(game_diff_select=1)
+            serializer = GamesSerializer(query, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
         else:
             return Response({'error': 'No valid identifier provided'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -64,28 +69,58 @@ class GamesView(APIView):
                 if game_diff == 1:
                     return Response({'error': 'Game difficulty cannot be set to 1'}, status=status.HTTP_400_BAD_REQUEST)
 
-                game = Games.objects.filter(game_name=game_name)
-                if game:
-                    game.update(game_name=game_name, game_diff=game_diff)
-                else:
-                    Games.objects.create(game_name=game_name, game_diff=game_diff)
-                return Response({'message': 'Game setting successfully'}, status=status.HTTP_201_CREATED)
+                game, created = Games.objects.update_or_create(
+                    game_name=game_name,
+                    defaults={'game_diff': game_diff}
+                )
+                message = 'Game created successfully' if created else 'Game updated successfully'
+                return Response({'message': message}, status=status.HTTP_201_CREATED)
             except Exception as e:
                 return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
         elif types == 'ranking':
-            required_fields = ['game_name', 'user_id', 'time']
-            GamesView.check_required_fields(request.data, required_fields)
-            game_name = request.data.get('game_name')
-            user_id = request.data.get('user_id')
-            time = request.data.get('time')
-            game = Games.objects.filter(game_name=game_name)
-            if game:
-                game.update(user_id=user_id, time=time)
-            else:
-                Games.objects.create(game_name=game_name, user_id=user_id, time=time)
-            return Response({'message': 'Game ranking successfully'}, status=status.HTTP_201_CREATED)
+            try:
+                # 驗證欄位
+                required_fields = ['game_id', 'user_id', 'play_date']
+                GamesView.check_required_fields(request.data, required_fields)
 
+                # 取得欄位
+                game_id = request.data.get('game_id')
+                user_id = request.data.get('user_id')
+                play_date = request.data.get('play_date')
+
+                # 檢查是否有重複的 user_id
+                current_selected = UserGames.objects.filter(user_id=user_id, game_id=game_id)
+                if current_selected:
+                    current_selected.update(play_date=play_date)
+                else:
+                    UserGames.objects.create(user_id=user_id, game_id=game_id, play_date=play_date)
+
+                return Response({'message': 'Game ranking successfully'}, status=status.HTTP_201_CREATED)
+            except Exception as e:
+                return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+        elif types == 'select':
+            try:
+                # 驗證欄位
+                required_fields = ['game_id']
+                GamesView.check_required_fields(request.data, required_fields)
+
+                # 取得欄位
+                game_id = request.data.get('game_id')
+
+                # 檢查是否有重複的 game_diff_select = 1
+                current_selected = Games.objects.filter(game_diff_select=1)
+                if current_selected:
+                    current_selected.update(game_diff_select=0)
+
+                # 更新欄位
+                Games.objects.filter(game_id=game_id).update(game_diff_select=1)
+                return Response({'message': 'Game difficulty successfully'}, status=status.HTTP_201_CREATED)
+            except ValidationError as e:
+                return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            except ValueError:
+                return Response({'error': 'Invalid amount value'}, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response({'error': 'No valid identifier provided'}, status=status.HTTP_400_BAD_REQUEST)
 

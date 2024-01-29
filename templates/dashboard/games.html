@@ -36,10 +36,20 @@
                                     <h4 class="mb-3" style="font-weight: bold">目前難易度：</h4>
                                 </div>
                                 <div class="col-auto">
-                                    <h4 class="counter mb-3" style="visibility: visible;">0.5</h4>
+                                    <h4 v-if="currentDiff" class="counter mb-3" style="visibility: visible;">
+                                        [[ currentDiff.game_diff ]]
+                                    </h4>
+                                    <h4 v-else class="counter mb-3" style="visibility: visible;">
+                                        尚未設定
+                                    </h4>
                                 </div>
                             </div>
-                            <a href="#" class="mt-4 btn btn-primary d-block rounded">設定難易度</a>
+                            <a href="#" class="mt-4 btn btn-primary d-block rounded"
+                               @click=""
+                               data-bs-toggle="modal"
+                               data-bs-target="#settingModal">
+                                設定難易度
+                            </a>
                         </div>
                     </div>
                     <div class="overflow-hidden card" data-aos="fade-up" data-aos-delay="600">
@@ -148,34 +158,19 @@
                                                     colspan="1" aria-sort="ascending"
                                                     aria-label="Name: activate to sort column descending"
                                                     style="width: 376.406px;">
-                                                    Name
+                                                    PlayerID
                                                 </th>
                                                 <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1"
                                                     colspan="1"
                                                     aria-label="Position: activate to sort column ascending"
-                                                    style="width: 567.984px;">Position
+                                                    style="width: 567.984px;">
+                                                    PlayerName
                                                 </th>
                                                 <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1"
                                                     colspan="1"
                                                     aria-label="Office: activate to sort column ascending"
-                                                    style="width: 292.453px;">Office
-                                                </th>
-                                                <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1"
-                                                    colspan="1"
-                                                    aria-label="Age: activate to sort column ascending"
-                                                    style="width: 129.625px;">
-                                                    Age
-                                                </th>
-                                                <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1"
-                                                    colspan="1"
-                                                    aria-label="Start date: activate to sort column ascending"
-                                                    style="width: 257.594px;">Start date
-                                                </th>
-                                                <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1"
-                                                    colspan="1"
-                                                    aria-label="Salary: activate to sort column ascending"
-                                                    style="width: 244.75px;">
-                                                    Salary
+                                                    style="width: 292.453px;">
+                                                    PlayedTime
                                                 </th>
                                             </tr>
                                             </thead>
@@ -184,91 +179,58 @@
                                                 <td class="sorting_1">Airi Satou</td>
                                                 <td>Accountant</td>
                                                 <td>Tokyo</td>
-                                                <td>33</td>
-                                                <td>2008/11/28</td>
-                                                <td>$162,700</td>
                                             </tr>
                                             <tr class="even">
                                                 <td class="sorting_1">Angelica Ramos</td>
                                                 <td>Chief Executive Officer (CEO)</td>
                                                 <td>London</td>
-                                                <td>47</td>
-                                                <td>2009/10/09</td>
-                                                <td>$1,200,000</td>
                                             </tr>
                                             <tr class="odd">
                                                 <td class="sorting_1">Ashton Cox</td>
                                                 <td>Junior Technical Author</td>
                                                 <td>San Francisco</td>
-                                                <td>66</td>
-                                                <td>2009/01/12</td>
-                                                <td>$86,000</td>
                                             </tr>
                                             <tr class="even">
                                                 <td class="sorting_1">Bradley Greer</td>
                                                 <td>Software Engineer</td>
                                                 <td>London</td>
-                                                <td>41</td>
-                                                <td>2012/10/13</td>
-                                                <td>$132,000</td>
                                             </tr>
                                             <tr class="odd">
                                                 <td class="sorting_1">Brenden Wagner</td>
                                                 <td>Software Engineer</td>
                                                 <td>San Francisco</td>
-                                                <td>28</td>
-                                                <td>2011/06/07</td>
-                                                <td>$206,850</td>
                                             </tr>
                                             <tr class="even">
                                                 <td class="sorting_1">Brielle Williamson</td>
                                                 <td>Integration Specialist</td>
                                                 <td>New York</td>
-                                                <td>61</td>
-                                                <td>2012/12/02</td>
-                                                <td>$372,000</td>
                                             </tr>
                                             <tr class="odd">
                                                 <td class="sorting_1">Bruno Nash</td>
                                                 <td>Software Engineer</td>
                                                 <td>London</td>
-                                                <td>38</td>
-                                                <td>2011/05/03</td>
-                                                <td>$163,500</td>
                                             </tr>
                                             <tr class="even">
                                                 <td class="sorting_1">Caesar Vance</td>
                                                 <td>Pre-Sales Support</td>
                                                 <td>New York</td>
-                                                <td>21</td>
-                                                <td>2011/12/12</td>
-                                                <td>$106,450</td>
                                             </tr>
                                             <tr class="odd">
                                                 <td class="sorting_1">Cara Stevens</td>
                                                 <td>Sales Assistant</td>
                                                 <td>New York</td>
-                                                <td>46</td>
-                                                <td>2011/12/06</td>
-                                                <td>$145,600</td>
                                             </tr>
                                             <tr class="even">
                                                 <td class="sorting_1">Cedric Kelly</td>
                                                 <td>Senior Javascript Developer</td>
                                                 <td>Edinburgh</td>
-                                                <td>22</td>
-                                                <td>2012/03/29</td>
-                                                <td>$433,060</td>
                                             </tr>
                                             </tbody>
                                             <tfoot>
                                             <tr>
-                                                <th rowspan="1" colspan="1">Name</th>
-                                                <th rowspan="1" colspan="1">Position</th>
-                                                <th rowspan="1" colspan="1">Office</th>
-                                                <th rowspan="1" colspan="1">Age</th>
-                                                <th rowspan="1" colspan="1">Start date</th>
-                                                <th rowspan="1" colspan="1">Salary</th>
+                                                <th rowspan="1" colspan="1">PlayerID</th>
+                                                <th rowspan="1" colspan="1">PlayerName</th>
+                                                <th rowspan="1" colspan="1">PlayedTime</th>
                                             </tr>
                                             </tfoot>
                                         </table>
@@ -317,6 +279,37 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="settingModal" tabindex="-1" aria-labelledby="settingModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">設定難易度：</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" xmlns:v-on="http://www.w3.org/1999/xhtml">
+                    <form novalidate v-on:submit.prevent="setDiff()">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="game_diff" class="form-label">難易度</label>
+                            <select class="form-select" id="game_diff" v-model="pickingDiff">
+                                <option v-for="(gameDiff, index) in gamesDiffList" :value="index">
+                                    [[ gameDiff.game_name ]]
+                                </option>
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                    @click="">Close
+                            </button>
+                            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">
+                                Save
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 {% block script %}
     <script>
@@ -332,11 +325,13 @@
                     alert: false,
                     message: null,
                     isSuccess: false,
-
+                    
+                    currentDiff: {},
+                    pickingDiff: {},
                     originalDiff: {},
                     selectedDiff: {},
                     gamesDiffList: [],
-                    gamesLeaderboard: [],
+                    gamesLeaderboardList: [],
                 }
             },
             created() {
@@ -357,12 +352,28 @@
                     }
                 },
                 getDiff() {
+                    axios.get('/api/games?types=select', {
+                        headers: {'X-CSRFToken': this.token}
+                    }).then(response => {
+                        this.currentDiff = response.data[0]
+                    }).catch(error => {
+                        this.showToast('錯誤：無法取得資料，', `${error}`, 'error')
+                    })
+                    
                     axios.get('/api/games?types=setting', {
                         headers: {'X-CSRFToken': this.token}
                     }).then(response => {
                         this.gamesDiffList = response.data
                     }).catch(error => {
-                        this.showToast('取得帳號列表失敗', `${error}`, 'error')
+                        this.showToast('錯誤：無法取得資料，', `${error}`, 'error')
+                    })
+
+                    axios.get('/api/games?types=ranking', {
+                        headers: {'X-CSRFToken': this.token}
+                    }).then(response => {
+                        this.gamesLeaderboardList = response.data
+                    }).catch(error => {
+                        this.showToast('錯誤：無法取得資料，', `${error}`, 'error')
                     })
                 },
                 addDiff() {
@@ -382,6 +393,34 @@
                 editDiff() {
 
                 },
+                setDiff() {
+                    this.pickingDiff = this.gamesDiffList[this.pickingDiff]
+                    axios.post('/api/games', {
+                        types: 'select',
+                        game_id: this.pickingDiff.game_id,
+                        game_diff_select: this.pickingDiff.game_diff,
+                    }, {
+                        headers: {'X-CSRFToken': this.token}
+                    }).then(_ => {
+                        this.getDiff()
+                        this.showToast('設定成功', `設定難度為 ${this.pickingDiff.game_diff}!`, 'success')
+                    }).catch(error => {
+                        if (error.response.data.error) {
+                            this.showToast('設定失敗', `${error.response.data.error}`, 'error')
+                        } else {
+                            switch (error.message) {
+                                case '401':
+                                    this.showToast('設定失敗', '請先登入', 'error')
+                                    break
+                                case '403':
+                                    this.showToast('設定失敗', '權限不足', 'error')
+                                    break
+                                default:
+                                    this.showToast('設定失敗', `${error.message}`, 'error')
+                            }
+                        }
+                    })
+                },
                 addDiffClicked() {
                     this.selectedDiff = {}
                     this.selectedDiff.game_diff = 3
@@ -391,6 +430,7 @@
                     this.selectedDiff = Object.assign({}, diff)
                 },
                 deleteDiffClicked(diff) {
+                    diff.types = 'setting'
                     axios.delete('/api/games', {
                         headers: {'X-CSRFToken': this.token},
                         data: diff

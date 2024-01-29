@@ -1,5 +1,6 @@
 .env
 .idea
+.idea*
 ssl
 media
 staticfiles
