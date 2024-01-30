@@ -2,11 +2,11 @@
 
 - [英文版](README.md)
 
-## 技術文檔
-這傢伙太懶了，沒有寫文檔，所以只能通過閱讀代碼來了解。
-
-## 演示
-https://youtu.be/V_X3ksqzREA
+## 設置演示
+- [設置 line](https://youtu.be/???)
+- [設置 ngrok](https://youtu.be/???)
+- [設置服務器](https://youtu.be/???)
+- [演示視頻](https://youtu.be/V_X3ksqzREA)
 
 ## 架構
 - 前端
@@ -33,7 +33,6 @@ https://youtu.be/V_X3ksqzREA
   - [x] Docker化
 
 ## 開始使用
-- [僅 Docker 的逐步視頻](https://youtu.be/???)
 1. 克隆此存儲庫
 2. 將文件 `.env_example` 重命名為 `.env`
 3. 用您自己的 api 密鑰和設置填寫 `.env` 文件
@@ -46,6 +45,8 @@ https://youtu.be/V_X3ksqzREA
    6. 轉到 Messaging API 選項卡
    7. 將頻道訪問令牌複製到 `.env`
    8. 並將 webhook url 設置為 `https://<your_domain>/api/linebot`
+5. 如果使用 docker，運行 `chmod +x install_docker.sh` 和 `./install_docker.sh` 以安裝 docker 和 docker-compose。
+6. 按照下面的步驟部署。
 
 ### 不使用 Docker 部署 [僅 WebHook]
 1. 轉到 [NGROK](https://ngrok.com/) 下載並設置 Ngrok。

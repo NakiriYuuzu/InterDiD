@@ -2,11 +2,12 @@
 
 - [中文](README_zh.md)
 
-## Documentation
-This guy is too lazy to write documentation, so you can only understand it by reading the code.
+## demo
+- [setup line](https://youtu.be/???)
+- [setup ngrok](https://youtu.be/???)
+- [setup server](https://youtu.be/???)
+- [demo video](https://youtu.be/V_X3ksqzREA)
 
-## Demo
-https://youtu.be/V_X3ksqzREA
 
 ## Architecture
 - Frontend
@@ -33,7 +34,6 @@ https://youtu.be/V_X3ksqzREA
   - [x] Dockerized
 
 ## Getting Started
-- [Step-By-Step Video Docker Only](https://youtu.be/???)
 1. Clone this repository
 2. Rename the file `.env_example` to `.env`
 3. Fill in the `.env` file with your own api key and settings
@@ -46,6 +46,8 @@ https://youtu.be/V_X3ksqzREA
    6. go to Messaging API tab
    7. copy the Channel access token to `.env`
    8. and set webhook url to `https://<your_domain>/api/linebot`
+5. If using docker, run `chmod +x install_docker.sh` and `./install_docker.sh` to install docker and docker-compose.
+6. Follow the steps below to deploy.
 
 ### Deploy without Docker [Only WebHook]
 1. Go to [NGROK](https://ngrok.com/) download and setup Ngrok.
@@ -69,7 +71,6 @@ https://youtu.be/V_X3ksqzREA
 2. Fill in the `.env` file with your own `NGROK_AUTHTOKEN`, `NGROK_EDGE` and `APP_HOST`.
 3. go to [LINE Developer Console](https://developers.line.biz/console/) and set webhook url to `https://<your_domain>/api/linebot`.
 4. run `docker-compose up -d --build` to start the server.
-
 
 ### Deploy with Docker [Without Webhook]
 1. Go to `docker-compose.yml` and delete the ngrok service.

@@ -330,7 +330,7 @@
                         this.gamesLeaderboardList = response.data
                         console.log(this.gamesLeaderboardList)
                     }).catch(error => {
-                        this.showToast('錯誤：無法取得資料，', `${error}`, 'error')
+                        this.showToast('錯誤：請先設定難易度，', `${error}`, 'error')
                     })
                 },
                 addDiff() {

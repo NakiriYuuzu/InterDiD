@@ -167,8 +167,9 @@
                     }, {
                         headers: {'X-CSRFToken': '{{ csrf_token }}'}
                     }).then(_ => {
-                        console.log(_)
+                        alert(`已成功提交成績，成績為${this.usedTime}秒！`)
                     }).catch(err => {
+                        alert('提交成績失敗！')
                         console.log(err)
                     })
                 }
