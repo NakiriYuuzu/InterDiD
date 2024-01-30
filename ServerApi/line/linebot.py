@@ -33,6 +33,22 @@ handler = WebhookHandler(settings.LINE_SECRET_KEY)
 line_bot_api = MessagingApi(ApiClient(configuration))
 
 
+@transaction.atomic
+def add_user(event):
+    # 新增用户
+    user = Users.objects.filter(line_id=event.source.user_id).first()
+    if user:
+        if not user.unique_code:
+            unique_code = str(uuid.uuid4())
+            Users.objects.update_or_create(
+                line_id=event.source.user_id,
+                defaults={'unique_code': unique_code}
+            )
+    else:
+        unique_code = str(uuid.uuid4())
+        Users.objects.create(line_id=event.source.user_id, unique_code=unique_code)
+
+
 def send_message(token, msg):
     line_bot_api.reply_message(
         ReplyMessageRequest(
@@ -43,13 +59,15 @@ def send_message(token, msg):
 
 
 @handler.add(MessageEvent, message=TextMessageContent)
-@transaction.atomic
 def handle_message(event, _):
+    # 新增用户
+    add_user(event)
+
+    # 取得用户信息
     message = event.message.text
     line_id = event.source.user_id
     reply_token = event.reply_token
     user = Users.objects.get(line_id=line_id)
-    # print_warning(event)
     print_success(f'user_id: {user.user_id}, line_id: {line_id}, message: {message}, type: {event.type}')
 
     if message == 'puzzle':
@@ -83,23 +101,12 @@ def handle_message(event, _):
 
 
 @handler.add(BeaconEvent)
-@transaction.atomic
 def handle_beacon_event(event, _):
     hwid = event.beacon.hwid
     beacon = Beacons.objects.filter(beacon_uuid=hwid).first()
 
     # 新增用户
-    user = Users.objects.filter(line_id=event.source.user_id).first()
-    if user:
-        if not user.unique_code:
-            unique_code = str(uuid.uuid4())
-            Users.objects.update_or_create(
-                line_id=event.source.user_id,
-                defaults={'unique_code': unique_code}
-            )
-    else:
-        unique_code = str(uuid.uuid4())
-        Users.objects.create(line_id=event.source.user_id, unique_code=unique_code)
+    add_user(event)
 
     # 检查 Beacon 是否有关联的 Artworks
     if beacon is None:
