@@ -1,8 +1,8 @@
 # InterDiD 項目
 
-- [英文版](README.md)
+- [English](README.md)
 
-## 設置演示
+## 演示
 - [設置 line](https://youtu.be/???)
 - [設置 ngrok](https://youtu.be/???)
 - [設置服務器](https://youtu.be/???)
@@ -44,39 +44,20 @@
    5. 將頻道秘密複製到 `.env`
    6. 轉到 Messaging API 選項卡
    7. 將頻道訪問令牌複製到 `.env`
-   8. 並將 webhook url 設置為 `https://<your_domain>/api/linebot`
-5. 如果使用 docker，運行 `chmod +x install_docker.sh` 和 `./install_docker.sh` 以安裝 docker 和 docker-compose。
-6. 按照下面的步驟部署。
-
-### 不使用 Docker 部署 [僅 WebHook]
-1. 轉到 [NGROK](https://ngrok.com/) 下載並設置 Ngrok。
+5. 如果使用 Ngrok，轉到 [NGROK](https://ngrok.com/) 下載並設置 Ngrok。
    1. 註冊一個免費帳戶
    2. 下載 ngrok 客戶端
    3. 創建一個域
    4. 創建一個邊緣，然後轉到 Request Headers 並粘貼名稱：`ngrok-skip-browser-warning` 值：`69420`
    5. 點擊開始隧道並從命令行開始。
-2. 轉到 `.env` 並將 APP_HOST 設置為 `https://<your_domain>`。
-3. 轉到 [LINE Developer Console](https://developers.line.biz/console/) 並將 webhook url 設置為 `https://<your_domain>/api/linebot`。
-4. 運行 `ngrok http 8000` 以啟動 ngrok 服務器。
-5. 運行 `python manage.py runserver 0.0.0.0:8000` 以啟動服務器。
-
-### 使用 Docker 部署 [Webhook]
-1. 轉到 [NGROK](https://ngrok.com/) 下載並設置 Ngrok。
-   1. 註冊一個免費帳戶
-   2. 下載 ngrok 客戶端
-   3. 創建一個域
-   4. 創建一個邊緣，然後轉到 Request Headers 並粘貼名稱：`ngrok-skip-browser-warning` 值：`69420`
-   5. 點擊開始隧道並從 docker 開始。
-2. 用您自己的 `NGROK_AUTHTOKEN`，`NGROK_EDGE` 和 `APP_HOST` 填寫 `.env` 文件。
-3. 轉到 [LINE Developer Console](https://developers.line.biz/console/) 並將 webhook url 設置為 `https://<your_domain>/api/linebot`。
-4. 運行 `docker-compose up -d --build` 以啟動服務器。
-
-### 使用 Docker 部署 [無 Webhook]
-1. 轉到 `docker-compose.yml` 並刪除 ngrok 服務。
-2. 在根目錄中創建一個名為 `ssl` 的文件夾，並將您自己的 ssl 證書和密鑰放入其中。
-3. 轉到 `nginx.conf` 並更改 ssl 證書，密鑰路徑和域名。
-4. 轉到 `.env` 並將 APP_HOST 設置為 `https://<your_domain>`。
-5. 運行 `docker-compose up -d --build` 以啟動服務器。
+6. 轉到 [LINE Developer Console](https://developers.line.biz/console/) 並將 webhook url 設置為 `https://<your_domain>/api/linebot`。
+7. 如果使用 Docker：
+   1. （如果已安裝則跳過）運行 `chmod +x install_docker.sh` 和 `./install_docker.sh` 以安裝 docker 和 docker-compose。
+   2. 運行 `docker-compose up -d --build` 以啟動服務器。
+8. 如果不使用 Docker：
+   1. 使用您自己的域名，並將 `.env` 和 `Line Developer Console` 中的 `APP_HOST` 替換為它。
+   2. 運行從 ngrok 複製的命令。
+   3. 運行 `python manage.py runserver 0.0.0.0:8000` 以啟動服務器。
 
 ### 自定義端口（如果需要，默認服務器 = 8000，db = 3306，nginx = 80, 443，ngrok = 4040）
 * 轉到 `docker-compose.yml` 並將服務（web，db，nginx，ngrok）端口號更改為您自己的
