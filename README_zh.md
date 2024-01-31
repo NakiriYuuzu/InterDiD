@@ -65,5 +65,12 @@
 * 轉到 `nginx.conf` 並更改端口號
 * 轉到 `entrypoint.sh` 並更改端口號
 
+### Line Beacon 設置
+1. 轉到 [LINE Developer Beacon](https://manager.line.biz/beacon/register)。
+2. 點擊 `Line Simple Beacon` 按鈕。
+3. 選擇您創建的 Linebot。
+4. 點擊 `Hardware ID` 按鈕。
+5. 複製 `Hardware ID` 並轉到 `https://<your_domain>/admin/beacon/` 創建一個新的 beacon。
+
 ## 活動
 ![Alt](https://repobeats.axiom.co/api/embed/7a2e89f748c1cc8887da9f8b62a1a673c0710e10.svg "Repobeats 分析圖像")
