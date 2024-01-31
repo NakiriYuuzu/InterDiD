@@ -4,7 +4,7 @@
 
 ## demo
 - [setup server](https://www.youtube.com/watch?v=M37pfq72HPY&ab_channel=%E3%82%86%E3%81%9A)
-- [demo video](https://youtu.be/V_X3ksqzREA)
+- [web preview](https://youtu.be/zyp4eNCiXhs)
 
 ## Architecture
 - Frontend

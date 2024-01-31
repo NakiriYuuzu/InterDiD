@@ -4,7 +4,7 @@
 
 ## 演示
 - [設置服務器](https://www.youtube.com/watch?v=M37pfq72HPY&ab_channel=%E3%82%86%E3%81%9A)
-- [演示視頻](https://youtu.be/V_X3ksqzREA)
+- [網頁預覽](https://youtu.be/zyp4eNCiXhs)
 
 ## 架構
 - 前端
