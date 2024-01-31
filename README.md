@@ -5,6 +5,7 @@
 ## demo
 - [setup server](https://www.youtube.com/watch?v=M37pfq72HPY&ab_channel=%E3%82%86%E3%81%9A)
 - [web preview](https://youtu.be/zyp4eNCiXhs)
+- [Line App Preview](https://youtu.be/DHHUUk9R9S4)
 
 ## Architecture
 - Frontend
