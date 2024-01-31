@@ -121,21 +121,21 @@
                                         <div v-if="beacon.beacon_uuid !== ''" class="valid-tooltip">Looks good!</div>
                                         <div v-else class="invalid-tooltip">Required Beacon UUID!</div>
                                     </div>
-                                    <div class="col-md-12 position-relative">
-                                        <label for="artworks" class="form-label">Artwork Pairing</label>
-                                        <select class="form-select" id="artworks" name="artwork"
-                                                v-model="beacon.artworks">
-                                            <option v-if="artworks.length > 0" selected value="">
-                                                None
-                                            </option>
-                                            <option v-else value="">
-                                                No Artworks Available
-                                            </option>
-                                            <option v-for="artwork in artworks" :value="artwork.artwork_id">
-                                                [[artwork.product_title]]
-                                            </option>
-                                        </select>
-                                    </div>
+{#                                    <div class="col-md-12 position-relative">#}
+{#                                        <label for="artworks" class="form-label">Artwork Pairing</label>#}
+{#                                        <select class="form-select" id="artworks" name="artwork"#}
+{#                                                v-model="beacon.artworks">#}
+{#                                            <option v-if="artworks.length > 0" selected value="">#}
+{#                                                None#}
+{#                                            </option>#}
+{#                                            <option v-else value="">#}
+{#                                                No Artworks Available#}
+{#                                            </option>#}
+{#                                            <option v-for="artwork in artworks" :value="artwork.artwork_id">#}
+{#                                                [[artwork.product_title]]#}
+{#                                            </option>#}
+{#                                        </select>#}
+{#                                    </div>#}
                                     <div class="col-12">
                                         <button class="btn btn-primary" type="submit"
                                                 :disabled="beacon.beacon_name === '' || beacon.beacon_uuid === ''">

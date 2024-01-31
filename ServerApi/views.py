@@ -469,6 +469,13 @@ class BeaconsView(APIView):
         if not beacon_data['beacon_name'] or not beacon_data['beacon_uuid']:
             return Response({'error': 'Beacon name and uuid are required'}, status=status.HTTP_400_BAD_REQUEST)
 
+        artworks = beacon_data['artworks']
+        if artworks:
+            try:
+                beacon_data['artworks_id'] = Artworks.objects.get(pk=artworks).artwork_id
+            except Artworks.DoesNotExist:
+                pass
+
         serializer = BeaconsSerializer(data=beacon_data)
         if serializer.is_valid():
             serializer.save()
