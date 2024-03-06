@@ -32,6 +32,11 @@
   - [x] Dockerized
 
 ## Getting Started
+### WARNING 
+#### IF WINDOWS Please use this command on git
+```bash
+git config --global core.autocrlf false
+```
 1. Clone this repository
 2. Rename the file `.env_example` to `.env`
 3. Fill in the `.env` file with your own api key and settings

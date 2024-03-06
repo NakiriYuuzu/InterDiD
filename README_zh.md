@@ -32,6 +32,11 @@
   - [x] Docker化
 
 ## 開始使用
+### 警告
+#### 如果使用 Windows，請在 git 上使用此命令
+```bash
+git config --global core.autocrlf false
+```
 1. 克隆此存儲庫
 2. 將文件 `.env_example` 重命名為 `.env`
 3. 用您自己的 api 密鑰和設置填寫 `.env` 文件
