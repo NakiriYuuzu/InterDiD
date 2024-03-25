@@ -47,6 +47,7 @@ def puzzle(request):
     global game
     try:
         image = random_image(ArtworksSerializer(Artworks.objects.all(), many=True).data)
+        print(image)
         game = Games.objects.filter(game_diff_select=1)
         error = ''
     except Exception as e:
@@ -164,9 +165,9 @@ def sign_out(request):
 
 
 def random_image(artwork_list):
-    # random_artworks = random.choice(artwork_list)
     try:
-        random_artworks = artwork_list[0]
+        ran = random.randint(0, len(artwork_list) - 1)
+        random_artworks = artwork_list[ran]
         random_artwork_items = random.choice(random_artworks['artwork_items'])
         random_artwork_image = random_artwork_items['artwork_item_image']
         return random_artwork_image

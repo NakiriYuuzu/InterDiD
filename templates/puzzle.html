@@ -49,15 +49,23 @@
                     verticalPiecesCount: 0,
                 }
             },
+            beforeCreate() {
+
+            },
             created() {
                 if ('{{ error }}' !== '') this.error = '錯誤，無法加載圖片！'
                 if ({{ data.diff }} < 1) this.error = '尚未設定遊戲難度！'
 
-                if (this.error.length > 0) return
-
                 this.horizontalPiecesCount = {{ data.diff }}
                 this.verticalPiecesCount = {{ data.diff }}
                 this.puzzleImage.src = '{{ data.image }}'
+                {#window.addEventListener('resize', this.onWindowResize)#}
+            },
+            beforeUnmount() {
+                window.removeEventListener('resize', this.onWindowResize)
+            },
+            mounted() {
+                if (this.error.length > 0) return
 
                 this.calculatePuzzleSizeAndDifficulty()
                 this.calculatePieceSize()
@@ -65,10 +73,6 @@
                 this.puzzleImage.onload = this.createPuzzle
                 document.getElementById("info-button").style.opacity = "0"
                 document.getElementById("info-button").style.visibility = "hidden"
-                {#window.addEventListener('resize', this.onWindowResize)#}
-            },
-            beforeUnmount() {
-                window.removeEventListener('resize', this.onWindowResize)
             },
             methods: {
                 createPuzzle() {
