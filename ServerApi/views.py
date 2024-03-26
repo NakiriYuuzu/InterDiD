@@ -138,7 +138,21 @@ class GamesView(APIView):
 
     @staticmethod
     def put(request):
-        pass
+        try:
+            required_fields = ['game_id']
+            GamesView.check_required_fields(request.data, required_fields)
+            game_id = request.data.get('game_id')
+            game = Games.objects.get(pk=game_id)
+            serializer = GamesSerializer(game, data=request.data, partial=True)
+
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Games.DoesNotExist:
+            return Response({'error': 'Game not found'}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     @staticmethod
     def delete(request):

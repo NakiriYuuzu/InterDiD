@@ -29,13 +29,13 @@
     <!-- Yuuzu CSS -->
     <link rel="stylesheet" href="{% static 'assets/css/yuuzu.css' %}">
     <!-- init js -->
+    <script src="{% static 'assets/js/core/axios.min.js' %}"></script>
+    <script src="{% static 'assets/js/core/jquery-3.7.1.min.js' %}"></script>
     {% if mode %}
         <script src="{% static 'assets/js/core/vue.global.js' %}"></script>
     {% else %}
         <script src="{% static 'assets/js/core/vue.global.prod.js' %}"></script>
     {% endif %}
-    <script src="{% static 'assets/js/core/axios.min.js' %}"></script>
-    <script src="{% static 'assets/js/core/jquery-3.7.1.min.js' %}"></script>
     {% block css %}{% endblock %}
 </head>
 <body class="">
@@ -105,83 +105,87 @@
                 <div class="sidebar-list">
                     <!-- Sidebar Menu Start -->
                     <ul class="navbar-nav iq-main-menu" id="sidebar-menu">
-                    {% if is_superuser %}
-                        <li class="nav-item static-item">
-                            <a class="nav-link static-item disabled" href="#" tabindex="-1">
-                                <span class="default-icon">Home</span>
-                                <span class="mini-icon">-</span>
-                            </a>
-                        </li> <!-- Home -->
-                        <li class="nav-item">
-                            <a class="nav-link {% if request.resolver_match.url_name == 'admin' %}active{% endif %}"
-                               aria-current="page" href="{% url 'admin' %}">
-                                <i class="icon">
-                                    <svg width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                         class="icon-20">
-                                        <path opacity="0.4"
-                                              d="M16.0756 2H19.4616C20.8639 2 22.0001 3.14585 22.0001 4.55996V7.97452C22.0001 9.38864 20.8639 10.5345 19.4616 10.5345H16.0756C14.6734 10.5345 13.5371 9.38864 13.5371 7.97452V4.55996C13.5371 3.14585 14.6734 2 16.0756 2Z"
-                                              fill="currentColor"></path>
-                                        <path fill-rule="evenodd" clip-rule="evenodd"
-                                              d="M4.53852 2H7.92449C9.32676 2 10.463 3.14585 10.463 4.55996V7.97452C10.463 9.38864 9.32676 10.5345 7.92449 10.5345H4.53852C3.13626 10.5345 2 9.38864 2 7.97452V4.55996C2 3.14585 3.13626 2 4.53852 2ZM4.53852 13.4655H7.92449C9.32676 13.4655 10.463 14.6114 10.463 16.0255V19.44C10.463 20.8532 9.32676 22 7.92449 22H4.53852C3.13626 22 2 20.8532 2 19.44V16.0255C2 14.6114 3.13626 13.4655 4.53852 13.4655ZM19.4615 13.4655H16.0755C14.6732 13.4655 13.537 14.6114 13.537 16.0255V19.44C13.537 20.8532 14.6732 22 16.0755 22H19.4615C20.8637 22 22 20.8532 22 19.44V16.0255C22 14.6114 20.8637 13.4655 19.4615 13.4655Z"
-                                              fill="currentColor"></path>
-                                    </svg>
-                                </i>
-                                <span class="item-name">Dashboard</span>
-                            </a>
-                        </li> <!-- dashboard -->
-                        <li>
-                            <hr class="hr-horizontal">
-                        </li> <!-- horizontal line -->
-                    {% endif %}
+                        {% if is_superuser %}
+                            <li class="nav-item static-item">
+                                <a class="nav-link static-item disabled" href="#" tabindex="-1">
+                                    <span class="default-icon">Home</span>
+                                    <span class="mini-icon">-</span>
+                                </a>
+                            </li> <!-- Home -->
+                            <li class="nav-item">
+                                <a class="nav-link {% if request.resolver_match.url_name == 'admin' %}active{% endif %}"
+                                   aria-current="page" href="{% url 'admin' %}">
+                                    <i class="icon">
+                                        <svg width="20" viewBox="0 0 24 24" fill="none"
+                                             xmlns="http://www.w3.org/2000/svg"
+                                             class="icon-20">
+                                            <path opacity="0.4"
+                                                  d="M16.0756 2H19.4616C20.8639 2 22.0001 3.14585 22.0001 4.55996V7.97452C22.0001 9.38864 20.8639 10.5345 19.4616 10.5345H16.0756C14.6734 10.5345 13.5371 9.38864 13.5371 7.97452V4.55996C13.5371 3.14585 14.6734 2 16.0756 2Z"
+                                                  fill="currentColor"></path>
+                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                  d="M4.53852 2H7.92449C9.32676 2 10.463 3.14585 10.463 4.55996V7.97452C10.463 9.38864 9.32676 10.5345 7.92449 10.5345H4.53852C3.13626 10.5345 2 9.38864 2 7.97452V4.55996C2 3.14585 3.13626 2 4.53852 2ZM4.53852 13.4655H7.92449C9.32676 13.4655 10.463 14.6114 10.463 16.0255V19.44C10.463 20.8532 9.32676 22 7.92449 22H4.53852C3.13626 22 2 20.8532 2 19.44V16.0255C2 14.6114 3.13626 13.4655 4.53852 13.4655ZM19.4615 13.4655H16.0755C14.6732 13.4655 13.537 14.6114 13.537 16.0255V19.44C13.537 20.8532 14.6732 22 16.0755 22H19.4615C20.8637 22 22 20.8532 22 19.44V16.0255C22 14.6114 20.8637 13.4655 19.4615 13.4655Z"
+                                                  fill="currentColor"></path>
+                                        </svg>
+                                    </i>
+                                    <span class="item-name">Dashboard</span>
+                                </a>
+                            </li> <!-- dashboard -->
+                            <li>
+                                <hr class="hr-horizontal">
+                            </li> <!-- horizontal line -->
+                        {% endif %}
                         <li class="nav-item static-item">
                             <a class="nav-link static-item disabled" href="#" tabindex="-1">
                                 <span class="default-icon">設置</span>
                                 <span class="mini-icon">-</span>
                             </a>
                         </li> <!-- Setup -->
-                    {% if is_superuser %}
-                        <li class="nav-item">
-                            <a class="nav-link {% if request.resolver_match.url_name == 'accounts' %}active{% endif %}"
-                               aria-current="page" href="{% url 'accounts' %}">
-                                <i class="icon">
-                                    <svg width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path fill-rule="evenodd" clip-rule="evenodd"
-                                              d="M14.2124 7.76241C14.2124 10.4062 12.0489 12.5248 9.34933 12.5248C6.6507 12.5248 4.48631 10.4062 4.48631 7.76241C4.48631 5.11865 6.6507 3 9.34933 3C12.0489 3 14.2124 5.11865 14.2124 7.76241ZM2 17.9174C2 15.47 5.38553 14.8577 9.34933 14.8577C13.3347 14.8577 16.6987 15.4911 16.6987 17.9404C16.6987 20.3877 13.3131 21 9.34933 21C5.364 21 2 20.3666 2 17.9174ZM16.1734 7.84875C16.1734 9.19506 15.7605 10.4513 15.0364 11.4948C14.9611 11.6021 15.0276 11.7468 15.1587 11.7698C15.3407 11.7995 15.5276 11.8177 15.7184 11.8216C17.6167 11.8704 19.3202 10.6736 19.7908 8.87118C20.4885 6.19676 18.4415 3.79543 15.8339 3.79543C15.5511 3.79543 15.2801 3.82418 15.0159 3.87688C14.9797 3.88454 14.9405 3.90179 14.921 3.93246C14.8955 3.97174 14.9141 4.02253 14.9396 4.05607C15.7233 5.13216 16.1734 6.44206 16.1734 7.84875ZM19.3173 13.7023C20.5932 13.9466 21.4317 14.444 21.7791 15.1694C22.0736 15.7635 22.0736 16.4534 21.7791 17.0475C21.2478 18.1705 19.5335 18.5318 18.8672 18.6247C18.7292 18.6439 18.6186 18.5289 18.6333 18.3928C18.9738 15.2805 16.2664 13.8048 15.5658 13.4656C15.5364 13.4493 15.5296 13.4263 15.5325 13.411C15.5345 13.4014 15.5472 13.3861 15.5697 13.3832C17.0854 13.3545 18.7155 13.5586 19.3173 13.7023Z"
-                                              fill="currentColor"></path>
-                                    </svg>
-                                </i>
-                                <span class="item-name">帳號</span>
-                            </a>
-                        </li> <!-- Account -->
-                        <li class="nav-item">
-                            <a class="nav-link {% if request.resolver_match.url_name == 'games' %}active{% endif %}"
-                               aria-current="page" href="{% url 'games' %}">
-                                <i class="icon">
-                                    <svg width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path opacity="0.4"
-                                              d="M12.9763 3.11361L15.2028 7.58789C15.3668 7.91205 15.6799 8.13717 16.041 8.18719L21.042 8.91556C21.3341 8.95658 21.5992 9.11066 21.7782 9.34578C21.9552 9.5779 22.0312 9.87205 21.9882 10.1612C21.9532 10.4013 21.8402 10.6234 21.6672 10.7935L18.0434 14.3063C17.7783 14.5514 17.6583 14.9146 17.7223 15.2698L18.6145 20.2083C18.7095 20.8046 18.3144 21.3669 17.7223 21.48C17.4783 21.519 17.2282 21.478 17.0082 21.3659L12.5472 19.0417C12.2161 18.8746 11.8251 18.8746 11.494 19.0417L7.03303 21.3659C6.48491 21.657 5.80576 21.4589 5.5007 20.9187C5.38767 20.7036 5.34766 20.4584 5.38467 20.2193L6.27686 15.2798C6.34088 14.9256 6.21985 14.5604 5.95579 14.3153L2.33202 10.8045C1.90092 10.3883 1.88792 9.70296 2.30301 9.27175C2.31201 9.26274 2.32201 9.25274 2.33202 9.24273C2.50405 9.06764 2.7301 8.95658 2.97415 8.92757L7.97523 8.1982C8.33531 8.14717 8.64837 7.92406 8.81341 7.59789L10.9599 3.11361C11.1509 2.72942 11.547 2.4903 11.9771 2.5003H12.1111C12.4842 2.54533 12.8093 2.77644 12.9763 3.11361Z"
-                                              fill="currentColor"></path>
-                                        <path d="M11.992 18.9171C11.7983 18.9231 11.6096 18.9752 11.4399 19.0682L7.00072 21.3871C6.45756 21.6464 5.80756 21.4452 5.50303 20.9258C5.39021 20.7136 5.34927 20.4704 5.38721 20.2322L6.27384 15.3032C6.33375 14.9449 6.21394 14.5806 5.95334 14.3284L2.32794 10.8185C1.8976 10.3971 1.88961 9.70556 2.31096 9.27421C2.31695 9.26821 2.32195 9.2632 2.32794 9.2582C2.49967 9.08806 2.72133 8.97597 2.95996 8.94094L7.96523 8.20433C8.32767 8.1583 8.64219 7.93211 8.80194 7.60384L10.9776 3.06312C11.1843 2.69682 11.5806 2.47864 12 2.50166C11.992 2.7989 11.992 18.715 11.992 18.9171Z"
-                                              fill="currentColor"></path>
-                                    </svg>
-                                </i>
-                                <span class="item-name">游戲</span>
-                            </a>
-                        </li> <!-- games -->
-                        <li class="nav-item">
-                            <a class="nav-link {% if request.resolver_match.url_name == 'form_beacon' %}active{% endif %}"
-                               aria-current="page" href="{% url 'form_beacon' %}">
-                                <i class="icon">
-                                    <svg width="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path fill-rule="evenodd" clip-rule="evenodd"
-                                              d="M2 12C2 6.48 6.47 2 12 2C17.52 2 22 6.48 22 12C22 17.53 17.52 22 12 22C6.47 22 2 17.53 2 12ZM14.23 13.83L15.85 8.71C15.96 8.36 15.64 8.03 15.29 8.14L10.17 9.74C9.96 9.81 9.79 9.97 9.73 10.18L8.13 15.31C8.02 15.65 8.35 15.98 8.69 15.87L13.79 14.27C14 14.21 14.17 14.04 14.23 13.83Z"
-                                              fill="currentColor"></path>
-                                    </svg>
-                                </i>
-                                <span class="item-name">Line Beacon</span>
-                            </a>
-                        </li> <!-- beacon -->
-                    {% endif %}
+                        {% if is_superuser %}
+                            <li class="nav-item">
+                                <a class="nav-link {% if request.resolver_match.url_name == 'accounts' %}active{% endif %}"
+                                   aria-current="page" href="{% url 'accounts' %}">
+                                    <i class="icon">
+                                        <svg width="20" viewBox="0 0 24 24" fill="none"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                  d="M14.2124 7.76241C14.2124 10.4062 12.0489 12.5248 9.34933 12.5248C6.6507 12.5248 4.48631 10.4062 4.48631 7.76241C4.48631 5.11865 6.6507 3 9.34933 3C12.0489 3 14.2124 5.11865 14.2124 7.76241ZM2 17.9174C2 15.47 5.38553 14.8577 9.34933 14.8577C13.3347 14.8577 16.6987 15.4911 16.6987 17.9404C16.6987 20.3877 13.3131 21 9.34933 21C5.364 21 2 20.3666 2 17.9174ZM16.1734 7.84875C16.1734 9.19506 15.7605 10.4513 15.0364 11.4948C14.9611 11.6021 15.0276 11.7468 15.1587 11.7698C15.3407 11.7995 15.5276 11.8177 15.7184 11.8216C17.6167 11.8704 19.3202 10.6736 19.7908 8.87118C20.4885 6.19676 18.4415 3.79543 15.8339 3.79543C15.5511 3.79543 15.2801 3.82418 15.0159 3.87688C14.9797 3.88454 14.9405 3.90179 14.921 3.93246C14.8955 3.97174 14.9141 4.02253 14.9396 4.05607C15.7233 5.13216 16.1734 6.44206 16.1734 7.84875ZM19.3173 13.7023C20.5932 13.9466 21.4317 14.444 21.7791 15.1694C22.0736 15.7635 22.0736 16.4534 21.7791 17.0475C21.2478 18.1705 19.5335 18.5318 18.8672 18.6247C18.7292 18.6439 18.6186 18.5289 18.6333 18.3928C18.9738 15.2805 16.2664 13.8048 15.5658 13.4656C15.5364 13.4493 15.5296 13.4263 15.5325 13.411C15.5345 13.4014 15.5472 13.3861 15.5697 13.3832C17.0854 13.3545 18.7155 13.5586 19.3173 13.7023Z"
+                                                  fill="currentColor"></path>
+                                        </svg>
+                                    </i>
+                                    <span class="item-name">帳號</span>
+                                </a>
+                            </li> <!-- Account -->
+                            <li class="nav-item">
+                                <a class="nav-link {% if request.resolver_match.url_name == 'games' %}active{% endif %}"
+                                   aria-current="page" href="{% url 'games' %}">
+                                    <i class="icon">
+                                        <svg width="20" viewBox="0 0 24 24" fill="none"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <path opacity="0.4"
+                                                  d="M12.9763 3.11361L15.2028 7.58789C15.3668 7.91205 15.6799 8.13717 16.041 8.18719L21.042 8.91556C21.3341 8.95658 21.5992 9.11066 21.7782 9.34578C21.9552 9.5779 22.0312 9.87205 21.9882 10.1612C21.9532 10.4013 21.8402 10.6234 21.6672 10.7935L18.0434 14.3063C17.7783 14.5514 17.6583 14.9146 17.7223 15.2698L18.6145 20.2083C18.7095 20.8046 18.3144 21.3669 17.7223 21.48C17.4783 21.519 17.2282 21.478 17.0082 21.3659L12.5472 19.0417C12.2161 18.8746 11.8251 18.8746 11.494 19.0417L7.03303 21.3659C6.48491 21.657 5.80576 21.4589 5.5007 20.9187C5.38767 20.7036 5.34766 20.4584 5.38467 20.2193L6.27686 15.2798C6.34088 14.9256 6.21985 14.5604 5.95579 14.3153L2.33202 10.8045C1.90092 10.3883 1.88792 9.70296 2.30301 9.27175C2.31201 9.26274 2.32201 9.25274 2.33202 9.24273C2.50405 9.06764 2.7301 8.95658 2.97415 8.92757L7.97523 8.1982C8.33531 8.14717 8.64837 7.92406 8.81341 7.59789L10.9599 3.11361C11.1509 2.72942 11.547 2.4903 11.9771 2.5003H12.1111C12.4842 2.54533 12.8093 2.77644 12.9763 3.11361Z"
+                                                  fill="currentColor"></path>
+                                            <path d="M11.992 18.9171C11.7983 18.9231 11.6096 18.9752 11.4399 19.0682L7.00072 21.3871C6.45756 21.6464 5.80756 21.4452 5.50303 20.9258C5.39021 20.7136 5.34927 20.4704 5.38721 20.2322L6.27384 15.3032C6.33375 14.9449 6.21394 14.5806 5.95334 14.3284L2.32794 10.8185C1.8976 10.3971 1.88961 9.70556 2.31096 9.27421C2.31695 9.26821 2.32195 9.2632 2.32794 9.2582C2.49967 9.08806 2.72133 8.97597 2.95996 8.94094L7.96523 8.20433C8.32767 8.1583 8.64219 7.93211 8.80194 7.60384L10.9776 3.06312C11.1843 2.69682 11.5806 2.47864 12 2.50166C11.992 2.7989 11.992 18.715 11.992 18.9171Z"
+                                                  fill="currentColor"></path>
+                                        </svg>
+                                    </i>
+                                    <span class="item-name">游戲</span>
+                                </a>
+                            </li> <!-- games -->
+                            <li class="nav-item">
+                                <a class="nav-link {% if request.resolver_match.url_name == 'form_beacon' %}active{% endif %}"
+                                   aria-current="page" href="{% url 'form_beacon' %}">
+                                    <i class="icon">
+                                        <svg width="20" viewBox="0 0 24 24" fill="none"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                  d="M2 12C2 6.48 6.47 2 12 2C17.52 2 22 6.48 22 12C22 17.53 17.52 22 12 22C6.47 22 2 17.53 2 12ZM14.23 13.83L15.85 8.71C15.96 8.36 15.64 8.03 15.29 8.14L10.17 9.74C9.96 9.81 9.79 9.97 9.73 10.18L8.13 15.31C8.02 15.65 8.35 15.98 8.69 15.87L13.79 14.27C14 14.21 14.17 14.04 14.23 13.83Z"
+                                                  fill="currentColor"></path>
+                                        </svg>
+                                    </i>
+                                    <span class="item-name">Line Beacon</span>
+                                </a>
+                            </li> <!-- beacon -->
+                        {% endif %}
                         <li class="nav-item">
                             <a class="nav-link collapsed" data-bs-toggle="collapse" href="#sidebar-form" role="button"
                                aria-expanded="false" aria-controls="sidebar-form">
@@ -298,19 +302,19 @@
                                 </svg>
                             </i>
                         </div>
-{#                        <div class="input-group search-input">#}
-{#              <span class="input-group-text" id="search-input">#}
-{#                <svg class="icon-18" width="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">#}
-{#                    <circle cx="11.7669" cy="11.7666" r="8.98856" stroke="currentColor" stroke-width="1.5"#}
-{#                            stroke-linecap="round" stroke-linejoin="round"></circle>#}
-{#                    <path d="M18.0186 18.4851L21.5426 22" stroke="currentColor" stroke-width="1.5"#}
-{#                          stroke-linecap="round" stroke-linejoin="round"></path>#}
-{#                </svg>#}
-{#              </span>#}
-{#                            <label>#}
-{#                                <input type="search" class="form-control" placeholder="Search...">#}
-{#                            </label>#}
-{#                        </div>#}
+                        {#                        <div class="input-group search-input">#}
+                        {#              <span class="input-group-text" id="search-input">#}
+                        {#                <svg class="icon-18" width="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">#}
+                        {#                    <circle cx="11.7669" cy="11.7666" r="8.98856" stroke="currentColor" stroke-width="1.5"#}
+                        {#                            stroke-linecap="round" stroke-linejoin="round"></circle>#}
+                        {#                    <path d="M18.0186 18.4851L21.5426 22" stroke="currentColor" stroke-width="1.5"#}
+                        {#                          stroke-linecap="round" stroke-linejoin="round"></path>#}
+                        {#                </svg>#}
+                        {#              </span>#}
+                        {#                            <label>#}
+                        {#                                <input type="search" class="form-control" placeholder="Search...">#}
+                        {#                            </label>#}
+                        {#                        </div>#}
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                                 aria-expanded="false" aria-label="Toggle navigation">

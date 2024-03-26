@@ -28,7 +28,7 @@ LINE_ACCESS_KEY = os.getenv('LINE_ACCESS_KEY')
 LINE_SECRET_KEY = os.getenv('LINE_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DJANGO_DEBUG')
+DEBUG = os.getenv('DJANGO_DEBUG') == 'True'
 
 # Hosting
 ALLOWED_HOSTS = ['*']

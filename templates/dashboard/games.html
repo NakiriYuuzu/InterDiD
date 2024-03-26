@@ -148,7 +148,8 @@
                             <div class="table-responsive">
                                 <div id="datatable_wrapper" class="dataTables_wrapper dt-bootstrap5">
                                     <div class="table-responsive border-bottom my-3">
-                                        <table id="datatable" class="table table-striped dataTable"
+                                        <table id="datatable" class="table table-striped dataTable hover"
+                                               style="width: 100%;"
                                                data-toggle="data-table"
                                                aria-describedby="datatable_info">
                                             <thead>
@@ -157,13 +158,13 @@
                                                     rowspan="1"
                                                     colspan="1" aria-sort="ascending"
                                                     aria-label="Name: activate to sort column descending"
-                                                    style="width: 376.406px;">
+                                                    style="width: 567.984px;">
                                                     PlayerID
                                                 </th>
                                                 <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1"
                                                     colspan="1"
                                                     aria-label="Position: activate to sort column ascending"
-                                                    style="width: 567.984px;">
+                                                    style="width: 376.406px;">
                                                     PlayerName
                                                 </th>
                                                 <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1"
@@ -175,12 +176,6 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr v-for="(item, index) in gamesLeaderboardList" :key="index"
-                                                :class="{'odd': index % 2 === 0, 'even': index % 2 !== 0}">
-                                                <td class="sorting_1">[[ item.user.unique_code ]]</td>
-                                                <td>[[ item.user.user_name ]]</td>
-                                                <td>[[ item.play_date ]]</td>
-                                            </tr>
                                             </tbody>
                                             <tfoot>
                                             <tr>
@@ -290,14 +285,19 @@
                     gamesLeaderboardList: [],
                 }
             },
-            created() {
+            beforeCreate() {
                 if ('{{ is_superuser }}' !== 'True') {
                     window.location.href = '/admin/list_artwork'
                 }
+            },
+            created() {
                 this.getDiff()
             },
             mounted() {
                 setInterval(this.timeToast, 60000)
+            },
+            beforeDestroy() {
+                clearInterval(this.timeToast)
             },
             methods: {
                 methodDiff() {
@@ -308,6 +308,30 @@
                     }
                 },
                 getDiff() {
+                    axios.get('/api/games?types=ranking', {
+                        headers: {'X-CSRFToken': this.token}
+                    }).then(response => {
+                        this.gamesLeaderboardList = response.data
+                        let table = $('#datatable').DataTable({
+                            destroy: true,
+                            data: response.data,
+                            columns: [
+                                {data: 'user.unique_code'},
+                                {data: 'user.user_name'},
+                                {data: 'play_date'},
+                            ],
+                            order: [[2, 'asc']],
+                            pageLength: 10,
+                            lengthMenu: [10, 25, 50, 100],
+                            language: {
+                                url: 'https://cdn.datatables.net/plug-ins/1.10.25/i18n/Chinese-traditional.json'
+                            }
+                        })
+                        table.draw(false)
+                    }).catch(error => {
+                        this.showToast('錯誤：請先設定難易度，', `${error}`, 'error')
+                    })
+
                     axios.get('/api/games?types=select', {
                         headers: {'X-CSRFToken': this.token}
                     }).then(response => {
@@ -322,15 +346,6 @@
                         this.gamesDiffList = response.data
                     }).catch(error => {
                         this.showToast('錯誤：無法取得資料，', `${error}`, 'error')
-                    })
-
-                    axios.get('/api/games?types=ranking', {
-                        headers: {'X-CSRFToken': this.token}
-                    }).then(response => {
-                        this.gamesLeaderboardList = response.data
-                        console.log(this.gamesLeaderboardList)
-                    }).catch(error => {
-                        this.showToast('錯誤：請先設定難易度，', `${error}`, 'error')
                     })
                 },
                 addDiff() {
@@ -348,7 +363,18 @@
                     })
                 },
                 editDiff() {
-
+                    axios.put('/api/games', {
+                        game_id: this.selectedDiff.game_id,
+                        game_name: this.selectedDiff.game_name,
+                        game_diff: this.selectedDiff.game_diff,
+                    }, {
+                        headers: {'X-CSRFToken': this.token}
+                    }).then(_ => {
+                        this.getDiff()
+                        this.showToast('修改成功', `修改 ${this.selectedDiff.game_name} 難度為 ${this.selectedDiff.game_diff}!`, 'success')
+                    }).catch(error => {
+                        this.showToast('修改失敗', `${error.response.data.error}`, 'error')
+                    })
                 },
                 setDiff() {
                     this.pickingDiff = this.gamesDiffList[this.pickingDiff]
