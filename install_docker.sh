@@ -27,23 +27,34 @@ then
     # Update the package database (again) with the Docker packages
     sudo apt-get update
 
-    # Install Docker
+    # Install Docker and its plugins
     sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
     # Add the current user to the docker group so that you don't have to use sudo for docker commands
     sudo usermod -aG docker $USER
 
-    echo -e "${CYAN}Docker has been installed.${NC}"
-  else
+    echo -e "${CYAN}Docker and plugins have been installed.${NC}"
+else
     echo -e "${YELLOW}Docker is already installed. Skipping installation.${NC}"
 fi
 
+# Check and install docker-compose if not found
 if ! command -v docker-compose &> /dev/null
 then
-    echo -e "${RED}Docker Compose could not be found. Installing Docker Compose...${NC}"
-    sudo apt-get install docker-compose -y
-    echo -e "${CYAN}Docker Compose has been installed.${NC}"
+    echo -e "${RED}Docker Compose could not be found. Installing Docker Compose plugin...${NC}"
+    sudo apt-get install -y docker-compose-plugin
+    echo -e "${CYAN}Docker Compose plugin has been installed.${NC}"
     echo -e "${BLUE}You may need to restart the server for the changes to take effect.${NC}"
 else
-    echo -e "${YELLOW}Docker Compose is already installed. Skipping installation.${NC}"
+    echo -e "${YELLOW}Docker Compose plugin is already installed. Skipping installation.${NC}"
+fi
+
+# Check and install docker-buildx if not found
+if ! command -v docker buildx &> /dev/null
+then
+    echo -e "${RED}Docker Buildx could not be found. Installing Docker Buildx plugin...${NC}"
+    sudo apt-get install -y docker-buildx-plugin
+    echo -e "${CYAN}Docker Buildx plugin has been installed.${NC}"
+else
+    echo -e "${YELLOW}Docker Buildx plugin is already installed. Skipping installation.${NC}"
 fi
